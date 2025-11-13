@@ -1,4 +1,4 @@
-#Clinico — Professional & Admin Portal (Frontend)
+# Clinico — Professional & Admin Portal (Frontend)
 
 ![GitHub repo size](https://img.shields.io/github/repo-size/your-username/clinico-frontend?color=0ea5e9&label=Repo%20Size)
 ![GitHub issues](https://img.shields.io/github/issues/your-username/clinico-frontend?color=22c55e)
