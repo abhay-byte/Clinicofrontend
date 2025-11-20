@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import './SignInPage.css';
 
 const LogInPage = () => {
@@ -126,7 +126,7 @@ const LogInPage = () => {
             </div>
 
             <div className="signin-login-link">
-              No Account yet? <strong>SIGN UP</strong>
+              No Account yet? <Link to="/signup"><strong>SIGN UP</strong></Link>
             </div>
           </div>
         </div>
