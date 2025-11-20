@@ -1,6 +1,7 @@
 import React from 'react';
 import './LandingPage.css';
 
+
 const LandingPage: React.FC = () => {
   return (
     <div className="landing-page">
@@ -76,7 +77,7 @@ const LandingPage: React.FC = () => {
        <div className="prof-content">
          <div className="prof-text">
            <h2 className="prof-headline">
-             Make a <span className="highlight">Difference</span>, On Your Schedule
+             Make a <span className="highlight">Difference</span><br />On Your Schedule
            </h2>
            
            <ul className="benefit-list">

@@ -253,49 +253,36 @@
   max-width: 50%;
 }
 
-/* 1. Define the Animation Keyframes */
-@keyframes shimmer {
-  0% {
-    background-position: -200% center;
-  }
-  100% {
-    background-position: 200% center;
-  }
-}
-
-/* 2. Apply styles to the Title */
+/* 2. Apply styles to the Title with safety fallback */
 .prof-headline {
   font-size: 4rem;
   font-weight: 800;
   line-height: 1.1;
   margin-bottom: 24px;
+  position: relative;
+  white-space: pre-wrap;
   
-  /* --- THE SHIMMER ANIMATION MAGIC --- */
+  /* Safety Fallback - ensure text is visible even if animation fails */
+  color: #00224A;
   
-  /* Create the gradient: Navy -> Light Blue -> Navy */
+  /* Define the Gradient */
   background: linear-gradient(
     110deg,
     #00224A 40%,   /* Main Text Color (b5) */
     #5DB4E0 50%,   /* Shine Color (b2) */
     #00224A 60%    /* Main Text Color (b5) */
   );
-  
-  /* Size the background larger than the text so we can move it */
   background-size: 200% auto;
   
   /* Clip the background to the text shape */
   -webkit-background-clip: text;
   background-clip: text;
   
-  /* Make the text fill transparent so background shows */
+  /* Make the text fill transparent so the background shows */
   -webkit-text-fill-color: transparent;
-  color: transparent;
   
   /* Run the animation */
   animation: shimmer 5s linear infinite;
-  
-  position: relative;
-  white-space: pre-wrap; /* Allows text to wrap to new lines */
 }
 
 /* 3. Add the green brush stroke underline to the highlight class */
@@ -303,8 +290,8 @@
   position: relative;
   display: inline-block;
   /* Override the shimmer for the "Quality" word to keep it stable */
-  -webkit-text-fill-color: #00224A;
-  color: #00224A;
+  -webkit-text-fill-color: #00224A !important;
+  color: #00224A !important;
 }
 
 .prof-headline .highlight::after {
