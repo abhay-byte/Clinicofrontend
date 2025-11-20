@@ -9,8 +9,18 @@
   align-items: center;
   padding: 24px 80px;
   background-color: #EBF1FA !important; /* bg1 - Light Blue-Grey */
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px rgba(0,0,0.1);
   width: 100%;
+  z-index: 100;
+}
+
+/* More specific selector to ensure styling is applied */
+.landing-page .navbar-container {
+  background-color: #EBF1FA !important;
+}
+
+nav.navbar-container {
+  background-color: #EBF1FA !important;
 }
 
 .navbar-content {
