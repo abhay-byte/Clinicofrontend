@@ -118,30 +118,7 @@
   justify-content: center;
 }
 
-/* Individual blob elements instead of background */
-.blob-1 {
-  position: absolute;
-  width: 200px;
-  height: 200px;
- background-color: #E1FFBF; /* g3 - Light Green */
-  border-radius: 50%;
-  top: 20%;
-  left: 30%;
-  z-index: 0;
-  opacity: 0.7;
-}
-
-.blob-2 {
-  position: absolute;
-  width: 180px;
- height: 180px;
- background-color: #5DB4E0; /* b2 - Light Blue */
-  border-radius: 50%;
-  top: 60%;
-  left: 60%;
-  z-index: 0;
-  opacity: 0.7;
-}
+/* Remove blob elements completely */
 
 .mascot-img {
   position: relative;
@@ -167,28 +144,38 @@
   max-width: 180px;
 }
 
+.chat-bubble {
+  position: absolute;
+  padding: 12px 16px;
+  font-size: 0.9rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1); /* Needs shadow to pop off background */
+  z-index: 3;
+  max-width: 180px;
+  min-width: 150px;
+}
+
 .chat-bubble.bubble-1 { /* Robot's bubble - Dark Blue */
-  top: 30%;
-  left: 15%;
+  top: 20%;
+  left: 25%;
   background-color: #00224A; /* Navy Blue */
   color: #FFFFFF; /* White Text */
   border-radius: 16px 16px 0; /* Robot's bubble */
 }
 
 .chat-bubble.bubble-2 { /* Patient's bubble - White */
-  top: 50%;
-  left: 60%;
+  top: 40%;
+  left: 45%;
   background-color: #FFFFFF; /* White Background */
   color: #00224A; /* Navy Text */
-  border-radius: 16px 0 16px; /* Patient's bubble */
+  border-radius: 16px 16px 0 16px; /* Patient's bubble */
 }
 
 .chat-bubble.bubble-3 { /* Third bubble - Robot's bubble */
-  top: 25%;
-  left: 45%;
+  top: 60%;
+  left: 65%;
   background-color: #00224A; /* Navy Blue */
   color: #FFFFFF; /* White Text */
-  border-radius: 16px 0 16px; /* Robot's bubble */
+  border-radius: 16px 16px 0; /* Robot's bubble */
 }
 
 .main-content {

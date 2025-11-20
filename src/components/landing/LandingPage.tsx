@@ -54,8 +54,6 @@ const LandingPage: React.FC = () => {
            </div>
          </div>
          <div className="hero-visual">
-           <div className="blob-1"></div>
-           <div className="blob-2"></div>
            <img
              src="/src/assets/landing/hero/mascot.png"
              alt="Clinico AI Assistant"
