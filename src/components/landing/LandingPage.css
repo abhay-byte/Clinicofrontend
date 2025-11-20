@@ -143,6 +143,9 @@
   z-index: 3;
   max-width: 180px;
   min-width: 150px;
+  opacity: 0;
+  transform: scale(0.8);
+  animation: chatSequence 8s infinite;
 }
 
 .chat-bubble.bubble-1 { /* Robot's bubble - Dark Blue */
@@ -151,6 +154,7 @@
   background-color: #00224A; /* Navy Blue */
   color: #FFFFFF; /* White Text */
   border-radius: 16px 0; /* Robot's bubble */
+  animation-delay: 0s;
 }
 
 .chat-bubble.bubble-2 { /* Patient's bubble - White */
@@ -159,6 +163,7 @@
   background-color: #FFFFFF; /* White Background */
   color: #00224A; /* Navy Text */
   border-radius: 16px 0 16px; /* Patient's bubble */
+  animation-delay: 2s;
 }
 
 .chat-bubble.bubble-3 { /* Third bubble - Robot's bubble */
@@ -167,6 +172,30 @@
   background-color: #00224A; /* Navy Blue */
   color: #FFFFFF; /* White Text */
   border-radius: 16px 0 16px; /* Robot's bubble */
+  animation-delay: 4s;
+}
+
+@keyframes chatSequence {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  10% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  70% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  80% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
 }
 
 .main-content {
