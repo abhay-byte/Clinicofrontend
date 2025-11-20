@@ -1,5 +1,12 @@
-import { useState, useEffect } from "react";
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+  useNavigate,
+  useParams,
+} from "react-router-dom";
+
 import { DashboardPage } from "./components/dashboard/DashboardPage";
 import { SchedulePage } from "./components/schedule/SchedulePage";
 import { AppointmentsPage } from "./components/appointments/AppointmentsPage";
@@ -13,68 +20,50 @@ import { HelpSupportPage } from "./components/support/HelpSupportPage";
 import { NotificationSettingsPage } from "./components/settings/NotificationSettingsPage";
 import { TermsConditionsPage } from "./components/legal/TermsConditionsPage";
 import { PrivacyPolicyPage } from "./components/legal/PrivacyPolicyPage";
+
 import LandingPage from "./components/landing/LandingPage";
 import SignInPage from "./components/auth/SignInPage";
 import LogInPage from "./components/auth/LogInPage";
 
-export default function App() {
-  const [currentPage, setCurrentPage] = useState<"dashboard" | "schedule" | "appointments" | "consultation" | "patients" | "patient-details" | "report-requests" | "messages" | "profile" | "help" | "notifications" | "terms" | "privacy" | "landing" | "signup">("landing");
- const [selectedPatientId, setSelectedPatientId] = useState<string | undefined>(undefined);
+// Wrapper so each page still gets onNavigate + patientId props (from old app)
+function PageWrapper({ Component }: { Component: any }) {
+  const navigate = useNavigate();
+  const params = useParams();
 
- const handleNavigate = (page: string, patientId?: string) => {
-    setCurrentPage(page as any);
-    if (patientId) {
-      setSelectedPatientId(patientId);
-    }
- };
-
-
-  // Render the appropriate component based on state for non-routed pages
-  const renderCurrentPage = () => {
-    switch(currentPage) {
-      case 'dashboard':
-        return <DashboardPage onNavigate={handleNavigate} />;
-      case 'schedule':
-        return <SchedulePage onNavigate={handleNavigate} />;
-      case 'consultation':
-        return <LiveConsultationPage onNavigate={handleNavigate} />;
-      case 'patients':
-        return <PatientDirectoryPage onNavigate={handleNavigate} />;
-      case 'patient-details':
-        return <PatientDetailsPage onNavigate={handleNavigate} patientId={selectedPatientId} />;
-      case 'report-requests':
-        return <ReportRequestsPage onNavigate={handleNavigate} />;
-      case 'messages':
-        return <SecureMessagesPage onNavigate={handleNavigate} />;
-      case 'profile':
-        return <MyProfilePage onNavigate={handleNavigate} />;
-      case 'help':
-        return <HelpSupportPage onNavigate={handleNavigate} />;
-      case 'notifications':
-        return <NotificationSettingsPage onNavigate={handleNavigate} />;
-      case 'terms':
-        return <TermsConditionsPage onNavigate={handleNavigate} />;
-      case 'privacy':
-        return <PrivacyPolicyPage onNavigate={handleNavigate} />;
-      case 'appointments':
-      default:
-        return <AppointmentsPage onNavigate={handleNavigate} />;
-    }
+  const handleNavigate = (path: string, id?: string) => {
+    if (id) navigate(`${path}/${id}`);
+    else navigate(path);
   };
 
- return (
+  return <Component onNavigate={handleNavigate} patientId={params.id} />;
+}
+
+export default function App() {
+  return (
     <Router>
       <Routes>
+        {/* Public Pages */}
+        <Route path="/" element={<LandingPage />} />
         <Route path="/signup" element={<SignInPage />} />
         <Route path="/login" element={<LogInPage />} />
-        <Route path="/dashboard" element={
-          <DashboardPage onNavigate={handleNavigate} />
-        } />
-        <Route path="*" element={
-          currentPage === 'landing' ?
-          <LandingPage /> :
-          renderCurrentPage()
-        } />
+
+        {/* Internal Authenticated Pages */}
+        <Route path="/dashboard" element={<PageWrapper Component={DashboardPage} />} />
+        <Route path="/schedule" element={<PageWrapper Component={SchedulePage} />} />
+        <Route path="/appointments" element={<PageWrapper Component={AppointmentsPage} />} />
+        <Route path="/consultation" element={<PageWrapper Component={LiveConsultationPage} />} />
+        <Route path="/patients" element={<PageWrapper Component={PatientDirectoryPage} />} />
+        <Route path="/patient-details/:id" element={<PageWrapper Component={PatientDetailsPage} />} />
+        <Route path="/report-requests" element={<PageWrapper Component={ReportRequestsPage} />} />
+        <Route path="/messages" element={<PageWrapper Component={SecureMessagesPage} />} />
+        <Route path="/profile" element={<PageWrapper Component={MyProfilePage} />} />
+        <Route path="/help" element={<PageWrapper Component={HelpSupportPage} />} />
+        <Route path="/notifications" element={<PageWrapper Component={NotificationSettingsPage} />} />
+        <Route path="/terms" element={<PageWrapper Component={TermsConditionsPage} />} />
+        <Route path="/privacy" element={<PageWrapper Component={PrivacyPolicyPage} />} />
+
+        {/* Fallback */}
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Router>
   );

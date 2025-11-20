@@ -11,7 +11,7 @@ import imgStar from "figma:asset/6c33196cc20ee6a2e6bed740869ebff7beab78ab.png";
 import { useState } from "react";
 
 interface DashboardPageProps {
-  onNavigate: (page: string, appointmentId?: string) => void;
+  onNavigate: (path: string, id?: string) => void;
 }
 
 export function DashboardPage({ onNavigate }: DashboardPageProps) {
@@ -138,7 +138,7 @@ export function DashboardPage({ onNavigate }: DashboardPageProps) {
                   </div>
                   <p className="text-sm text-gray-600">Tuesday,</p>
                   <p className="text-xl text-[#174880]">Welcome Back!</p>
-                  <p className="text-lg text-gray-700">Dr. Bhumika Choudhary</p>
+                  <p className="text-lg text-gray-70">Dr. Bhumika Choudhary</p>
                 </div>
                 <div className="absolute -right-4 -bottom-4">
                   <img src={imgMascot1} alt="Mascot" className="w-48 h-48 object-contain" />
@@ -419,7 +419,7 @@ export function DashboardPage({ onNavigate }: DashboardPageProps) {
                             <Button
                               size="sm"
                               className="bg-[#174880] hover:bg-[#123a66] text-white"
-                              onClick={() => onNavigate("consultation", appointment.id.toString())}
+                              onClick={() => onNavigate("/consultation", appointment.id.toString())}
                             >
                               JOIN CALL
                             </Button>
@@ -445,5 +445,5 @@ export function DashboardPage({ onNavigate }: DashboardPageProps) {
         </div>
       </div>
     </DashboardLayout>
-  );
+ );
 }

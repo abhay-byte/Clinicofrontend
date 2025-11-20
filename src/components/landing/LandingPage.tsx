@@ -1,9 +1,21 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import './LandingPage.css';
 import Footer from './Footer';
 
+
 const LandingPage: React.FC = () => {
+useEffect(() => {
+  const link = document.createElement("link");
+  link.rel = "stylesheet";
+  link.href = "/src/components/landing/LandingPage.css";
+  document.head.appendChild(link);
+
+  return () => {
+    link.remove(); // cleans up when leaving Landing page
+  };
+}, []);
+
+
   // Create refs for the elements we want to watch
   const missionHeadlineRef = useRef<HTMLHeadingElement>(null);
   const heroHeadlineRef = useRef<HTMLHeadingElement>(null);

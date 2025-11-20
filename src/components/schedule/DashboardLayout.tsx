@@ -12,7 +12,7 @@ import { LogoutDialog } from "../auth/LogoutDialog";
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
-  onNavigate: (page: string, patientId?: string) => void;
+  onNavigate: (path: string, id?: string) => void;
   currentPage?: "dashboard" | "schedule" | "appointments" | "consultation" | "patients" | "patient-details" | "report-requests" | "messages" | "profile" | "help" | "notifications" | "terms" | "privacy";
   hideNavigation?: boolean;
 }
@@ -21,8 +21,8 @@ export function DashboardLayout({ children, onNavigate, currentPage = "dashboard
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [logoutDialogOpen, setLogoutDialogOpen] = useState(false);
 
-  const handleNavigation = (page: string) => {
-    onNavigate(page);
+  const handleNavigation = (path: string) => {
+    onNavigate(path);
   };
 
   const handleLogout = () => {
@@ -155,44 +155,44 @@ export function DashboardLayout({ children, onNavigate, currentPage = "dashboard
 
               {/* Main Navigation */}
               <div className="space-y-1">
-                <p className="px-4 pt-2 pb-1 text-xs text-gray-500 uppercase tracking-wider">Main Navigation</p>
+                <p className="px-4 pt-2 pb-1 text-xs text-gray-50 uppercase tracking-wider">Main Navigation</p>
                 <SidebarItem 
                   icon={<DashboardIcon />} 
                   label="Dashboard" 
                   active={currentPage === "dashboard"}
-                  onClick={() => handleNavigation("dashboard")}
+                  onClick={() => handleNavigation("/dashboard")}
                 />
                 <SidebarItem 
                   icon={<ScheduleIcon />} 
                   label="My Schedule" 
                   active={currentPage === "schedule"}
                   badge="3"
-                  onClick={() => handleNavigation("schedule")}
+                  onClick={() => handleNavigation("/schedule")}
                 />
                 <SidebarItem 
                   icon={<AppointmentsIcon />} 
                   label="Appointments" 
                   active={currentPage === "appointments"}
-                  onClick={() => handleNavigation("appointments")}
+                  onClick={() => handleNavigation("/appointments")}
                 />
                 <SidebarItem 
                   icon={<PatientsIcon />} 
                   label="Patient Directory" 
                   active={currentPage === "patients" || currentPage === "patient-details"}
-                  onClick={() => handleNavigation("patients")}
+                  onClick={() => handleNavigation("/patients")}
                 />
                 <SidebarItem 
                   icon={<Mail className="h-4 w-4" />} 
                   label="Messages" 
                   active={currentPage === "messages"}
                   badge="5"
-                  onClick={() => handleNavigation("messages")}
+                  onClick={() => handleNavigation("/messages")}
                 />
                 <SidebarItem 
                   icon={<FileText className="h-4 w-4" />} 
                   label="Report Requests" 
                   active={currentPage === "report-requests"}
-                  onClick={() => handleNavigation("report-requests")}
+                  onClick={() => handleNavigation("/report-requests")}
                 />
               </div>
 
@@ -205,19 +205,19 @@ export function DashboardLayout({ children, onNavigate, currentPage = "dashboard
                   icon={<ProfileIcon />} 
                   label="My Profile" 
                   active={currentPage === "profile"}
-                  onClick={() => handleNavigation("profile")}
+                  onClick={() => handleNavigation("/profile")}
                 />
                 <SidebarItem 
                   icon={<Settings className="h-4 w-4" />} 
                   label="Notification Settings" 
                   active={currentPage === "notifications"}
-                  onClick={() => handleNavigation("notifications")}
+                  onClick={() => handleNavigation("/notifications")}
                 />
                 <SidebarItem 
                   icon={<HelpIcon />} 
                   label="Help & Support" 
                   active={currentPage === "help"}
-                  onClick={() => handleNavigation("help")}
+                  onClick={() => handleNavigation("/help")}
                 />
               </div>
 
@@ -254,10 +254,10 @@ export function DashboardLayout({ children, onNavigate, currentPage = "dashboard
 
 interface SidebarItemProps {
   icon: ReactNode;
-  label: string;
-  active?: boolean;
-  badge?: string;
-  onClick?: () => void;
+ label: string;
+ active?: boolean;
+ badge?: string;
+ onClick?: () => void;
 }
 
 function SidebarItem({ icon, label, active, badge, onClick }: SidebarItemProps) {

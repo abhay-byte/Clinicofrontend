@@ -6,13 +6,13 @@ import { AppointmentDialog } from "./AppointmentDialog";
 import { Button } from "../ui/button";
 import { Plus, Calendar, Clock, CheckCircle } from "lucide-react";
 import { addDays, addMinutes, setHours, setMinutes, startOfDay, eachDayOfInterval } from "date-fns";
-import { toast } from "sonner@2.0.3";
+import { toast } from "sonner";
 import { Toaster } from "../ui/sonner";
 import imgMascot from "figma:asset/94d7ed97816124a20809c9809845a675f7f2459a.png";
 import svgPaths from "../../imports/svg-30312lo6h9";
 
 interface SchedulePageProps {
-  onNavigate: (page: string, patientId?: string) => void;
+  onNavigate: (path: string, id?: string) => void;
 }
 
 export function SchedulePage({ onNavigate }: SchedulePageProps) {
@@ -259,8 +259,8 @@ export function SchedulePage({ onNavigate }: SchedulePageProps) {
       <AppointmentDialog
         open={dialogOpen}
         onOpenChange={setDialogOpen}
-        appointment={selectedEvent}
-        onCancel={handleCancelAppointment}
+        event={selectedEvent}
+        onDeleteSlot={handleCancelAppointment}
       />
 
       <Toaster />
