@@ -253,7 +253,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 80px;
+  padding: 80px 80px 40px 80px; /* Reduced bottom padding from 80px to 40px */
   gap: 60px;
   background-color: #FFFFFF; /* bg1 (Consistent with Navbar) */
   overflow: visible; /* Allows the blob/shadows to show without scrolling */
@@ -830,7 +830,7 @@ nav.navbar-container {
 /* Our Mission Section */
 .mission-section {
   display: flex;
-  padding: 80px;
+  padding: 40px 80px 80px; /* Reduced top padding from 80px to 40px */
   align-items: center;
   gap: 80px;
   align-self: stretch;
@@ -1067,11 +1067,57 @@ nav.navbar-container {
 
 .features-headline {
   font-size: 2.5rem;
-  font-weight: 800;
+ font-weight: 800;
   line-height: 1.2;
-  color: #00224A; /* b5 - Deep Navy Blue */
   margin: 0;
   position: relative;
+  white-space: pre-wrap;
+  
+  /* Fallback color if gradient fails */
+  color: #00224A;
+  
+  /* The Shimmer Gradient */
+  background: linear-gradient(
+    110deg,
+    #00224A 40%,
+    #5DB4E0 50%,
+    #00224A 60%
+  );
+  background-size: 200% auto;
+  
+  /* Clip background to text */
+  -webkit-background-clip: text;
+  background-clip: text;
+  
+  /* Make text fill transparent */
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  
+  /* Run Animation */
+  animation: shimmer 3s linear infinite;
+}
+
+/* Ensure the word 'Re-imagined' (in the span) inherits the shimmer but keeps the underline */
+.features-headline .features-highlight {
+  display: inline-block;
+  position: relative;
+  z-index: 1;
+  /* Override the shimmer for the highlighted word to keep it stable */
+  -webkit-text-fill-color: #00224A !important;
+  color: #00224A !important;
+ background: none; /* Override the gradient for the highlighted word */
+}
+
+.features-headline .features-highlight::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 5px;
+  width: 100%;
+  height: 12px;
+  background-color: #84B54C; /* g1 - Leaf Green */
+  z-index: -1;
+  border-radius: 4px;
 }
 
 .features-highlight {
@@ -1233,39 +1279,53 @@ nav.navbar-container {
 }
 
 .patients-headline {
-  font-size: 2.5rem; /* Adjust based on design */
-  font-weight: 800;
- line-height: 1.2;
-  color: #00224A; /* b5 - Deep Navy Blue */
-  text-align: center;
+  font-size: 3.5rem;
+ font-weight: 800;
+ text-align: center;
   margin: 0;
-  position: relative;
   white-space: pre-wrap;
+  position: relative;
   
-  /* BASE COLOR (Visible by default) */
+  /* Fallback color if gradient fails */
   color: #00224A;
+  
+  /* The Shimmer Gradient */
+  background: linear-gradient(
+    110deg,
+    #00224A 40%,
+    #5DB4E0 50%,
+    #00224A 60%
+  );
+ background-size: 200% auto;
+  
+  /* Clip background to text */
+  -webkit-background-clip: text;
+  background-clip: text;
+  
+  /* Make text fill transparent */
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  
+  /* Run Animation */
+  animation: shimmer 3s linear infinite;
 }
 
-/* The stripe image highlight is static, no animation needed */
+/* Ensure the word 'Health' (in the span) inherits the shimmer but keeps the underline */
 .patients-headline .highlight {
-  position: relative;
   display: inline-block;
-  /* Start with the Navy color to prevent flash of unstyled text */
-  color: #00224A;
-  -webkit-text-fill-color: #00224A; /* Override transparency for the "Health" word */
-  background: none; /* Override the gradient for the highlighted word */
-  z-index: 1; /* Ensure text is above the stripe */
+  position: relative;
+  z-index: 1;
 }
 
 .patients-headline .highlight::after {
-  content: "";
+ content: "";
   position: absolute;
-  left: 0;
-  bottom: -5px; /* Tucks it further under the text */
+ left: 0;
+  bottom: -5px; /* Tucks it under the text */
   width: 100%; /* Expands to cover the word 'Health' */
   height: 20px; /* Height of the stripe image */
   
-  /* ASSET UPDATE */
+  /* ASSET UPDATE - Use the same stripe image as the hero section */
   background-image: url('/src/assets/landing/hero/stripe.png');
   background-size: 100% 100%;
   background-repeat: no-repeat;
