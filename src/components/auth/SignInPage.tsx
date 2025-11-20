@@ -33,11 +33,13 @@ const SignInPage = () => {
         {/* Left Panel - Brand & Vision */}
         <div className="signin-left-panel">
           <div className="signin-brand-content">
-            <img
-              src="/src/assets/logo.png"
-              alt="Clinico Logo"
-              className="signin-logo"
-            />
+            <a href="/" className="signin-logo-link">
+              <img
+                src="/src/assets/logo.png"
+                alt="Clinico Logo"
+                className="signin-logo"
+              />
+            </a>
             <h2 className="signin-brand-name">CLINICO</h2>
             <p className="signin-initiative-name">The Healing Hand Initiative</p>
             <img
