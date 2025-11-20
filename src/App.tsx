@@ -15,6 +15,7 @@ import { TermsConditionsPage } from "./components/legal/TermsConditionsPage";
 import { PrivacyPolicyPage } from "./components/legal/PrivacyPolicyPage";
 import LandingPage from "./components/landing/LandingPage";
 import SignInPage from "./components/auth/SignInPage";
+import LogInPage from "./components/auth/LogInPage";
 
 export default function App() {
   const [currentPage, setCurrentPage] = useState<"dashboard" | "schedule" | "appointments" | "consultation" | "patients" | "patient-details" | "report-requests" | "messages" | "profile" | "help" | "notifications" | "terms" | "privacy" | "landing" | "signup">("landing");
@@ -65,6 +66,10 @@ export default function App() {
     <Router>
       <Routes>
         <Route path="/signup" element={<SignInPage />} />
+        <Route path="/login" element={<LogInPage />} />
+        <Route path="/dashboard" element={
+          <DashboardPage onNavigate={handleNavigate} />
+        } />
         <Route path="*" element={
           currentPage === 'landing' ?
           <LandingPage /> :

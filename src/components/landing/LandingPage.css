@@ -1,23 +1,237 @@
-.landing-page {
- min-height: 100vh;
- display: flex;
- flex-direction: column;
+/* Base Styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-/* Hero Section */
+.landing-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+}
+
+/* ========================================
+   PAGE LOAD ANIMATIONS
+======================================== */
+
+/* Fade in from bottom animation */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Fade in from left */
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Fade in from right */
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Scale in animation */
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Apply load animations */
+.navbar-container {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.hero-text {
+  animation: fadeInLeft 0.8s ease-out 0.2s both;
+}
+
+.hero-visual {
+  animation: fadeInRight 0.8s ease-out 0.4s both;
+}
+
+.prof-text {
+  animation: fadeInLeft 0.8s ease-out 0.3s both;
+}
+
+.prof-visuals {
+  animation: fadeInRight 0.8s ease-out 0.5s both;
+}
+
+.mission-visuals {
+  animation: scaleIn 0.8s ease-out 0.3s both;
+}
+
+.mission-content {
+  animation: fadeInUp 0.8s ease-out 0.5s both;
+}
+
+.features-text {
+  animation: fadeInLeft 0.8s ease-out 0.3s both;
+}
+
+.features-visual-wrapper {
+  animation: fadeInRight 0.8s ease-out 0.5s both;
+}
+
+#patients-content {
+  animation: fadeInUp 0.8s ease-out 0.3s both;
+}
+
+.footer-container {
+  animation: fadeInUp 0.6s ease-out 0.4s both;
+}
+
+/* ========================================
+   NAVBAR STYLES
+======================================== */
+
+.navbar-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 80px;
+  background-color: #FFFFFF;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  width: 100%;
+  z-index: 1000;
+  position: sticky;
+  top: 0;
+  left: 0;
+  box-sizing: border-box;
+}
+
+.navbar-content {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.logo-section {
+  display: flex;
+  align-items: center;
+  margin-right: auto;
+}
+
+.logo {
+  height: 50px;
+  width: auto;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: #00224A;
+  font-weight: 600;
+  position: relative;
+  font-size: 1rem;
+}
+
+.nav-link:hover {
+  color: #174880;
+}
+
+.nav-dropdown {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.dropdown-arrow {
+  margin-left: 4px;
+}
+
+.auth-section {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  margin-left: auto;
+}
+
+.login-link {
+  text-decoration: none;
+  color: #00224A;
+  font-weight: 700;
+}
+
+.signup-button {
+  background-color: transparent;
+  color: #00224A;
+  border: 2px solid #00224A;
+  padding: 10px 24px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.signup-button:hover {
+  background-color: #00224A;
+  color: white;
+}
+
+/* Mobile Menu Toggle */
+.mobile-menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #00224A;
+  cursor: pointer;
+}
+
+/* ========================================
+   HERO SECTION
+======================================== */
+
 .hero-section {
   display: flex;
-  padding: 100px 100px 80px; /* Increased top padding to account for fixed navbar, bottom padding for breathing room */
+  padding: 100px 80px 80px;
   align-items: center;
-  gap: 80px;
-  align-self: stretch;
-  background-color: #FFFFFF; /* bg1 (Consistent with Navbar) */
+  gap: 60px;
+  background-color: #FFFFFF;
 }
 
 .hero-content {
   display: flex;
   align-items: center;
   width: 100%;
+  gap: 60px;
 }
 
 .hero-text {
@@ -25,112 +239,79 @@
   flex-direction: column;
   align-items: flex-start;
   gap: 32px;
-  align-self: stretch;
-  width: 45%;
-  max-width: 50%;
+  flex: 1;
+  min-width: 0;
 }
 
-/* 1. Define the Animation Keyframes */
+/* Shimmer Animation */
 @keyframes shimmer {
-  0% {
-    background-position: -200% center;
-  }
-  100% {
-    background-position: 200% center;
-  }
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
 }
 
-/* 2. Apply styles to the Title */
 .hero-headline {
-  /* Typography from previous steps */
-  font-size: 4rem;
+  font-size: clamp(2rem, 5vw, 4rem);
   font-weight: 800;
   line-height: 1.6;
   margin-bottom: 24px;
-  
-  /* --- THE ANIMATION MAGIC --- */
-  
-  /* Create the gradient: Navy -> Light Blue -> Navy */
-  background: linear-gradient(
-    110deg,
-    #00224A 40%,   /* Main Text Color (b5) */
-    #5DB4E0 50%,   /* Shine Color (b2) */
-    #00224A 60%    /* Main Text Color (b5) */
-  );
-  
-  /* Size the background larger than the text so we can move it */
+  background: linear-gradient(110deg, #00224A 40%, #5DB4E0 50%, #00224A 60%);
   background-size: 200% auto;
-  
-  /* Clip the background to the text shape */
   -webkit-background-clip: text;
   background-clip: text;
-  
-  /* Make the text fill transparent so background shows */
   -webkit-text-fill-color: transparent;
   color: transparent;
-  
-  /* Run the animation */
   animation: shimmer 5s linear infinite;
-  
   position: relative;
-  white-space: pre-wrap; /* Allows text to wrap to new lines */
+  white-space: pre-wrap;
 }
 
-/* Ensure the highlight remains visible even with the shimmer animation */
 .hero-headline .highlight {
   position: relative;
-  display: inline-block; /* Ensure proper positioning context */
-  /* Start with the Navy color to prevent flash of unstyled text */
+  display: inline-block;
   color: #00224A;
-  -webkit-text-fill-color: #00224A; /* Override transparency for the "Quality" word */
-  background: none; /* Override the gradient for the highlighted word */
-  z-index: 1; /* Ensure text is above the stripe */
+  -webkit-text-fill-color: #00224A;
+  background: none;
+  z-index: 1;
 }
 
-/* Use stripe image for the "Quality" word highlight in hero headline */
 .hero-headline .highlight::after {
- content: "";
+  content: "";
   position: absolute;
- left: 0;
-  bottom: 2px; /* Adjust vertical alignment */
-  height: 30px; /* Adjust based on image aspect ratio */
-  width: 0%;    /* START WIDTH */
-  
-  /* IMAGE ASSET */
+  left: 0;
+  bottom: 2px;
+  height: 30px;
+  width: 0%;
   background-image: url('/src/assets/landing/hero/stripe.png');
-  background-size: 100% 100%; /* Stretches the image */
+  background-size: 100% 100%;
   background-repeat: no-repeat;
-  
   z-index: -1;
   transition: width 0.8s ease-out;
 }
 
-/* TRIGGER */
 .animate-active .hero-headline .highlight::after {
   width: 100%;
 }
 
-/* The separate hero-stripe class is no longer needed as the stripe is now part of the highlight pseudo-element */
-
 .hero-subtext {
-  color: #4A5568; /* Dark Grey */
-  font-size: 1.125rem; /* 18px */
+  color: #4A5568;
+  font-size: clamp(1rem, 2vw, 1.125rem);
   line-height: 1.6;
-  max-width: 90%;
+  max-width: 100%;
 }
 
 .hero-cta-group {
   display: flex;
   gap: 20px;
   align-items: center;
+  flex-wrap: wrap;
 }
 
 .primary-cta-button {
-  background-color: #174880; /* b1 - Medium Blue */
+  background-color: #174880;
   color: white;
   border: none;
-  padding: 16px 32px; /* Bigger touch target */
-  border-radius: 50px; /* Pill shape */
+  padding: 16px 32px;
+  border-radius: 50px;
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
@@ -138,21 +319,21 @@
 }
 
 .primary-cta-button:hover {
-  background-color: #00224A; /* b5 - Deep Navy Blue */
+  background-color: #00224A;
 }
 
 .secondary-cta-link {
   display: flex;
   align-items: center;
   gap: 8px;
-  color: #248BEB; /* b4 - Bright Blue */
+  color: #248BEB;
   text-decoration: none;
   font-weight: 600;
   font-size: 1rem;
 }
 
 .play-icon {
- display: inline-block;
+  display: inline-block;
   width: 20px;
   height: 20px;
   background-color: #248BEB;
@@ -165,27 +346,25 @@
 
 .hero-visual {
   position: relative;
-  width: 55%;
-  height: 400px;
- display: flex;
- align-items: center;
+  flex: 1;
+  min-height: 300px;
+  display: flex;
+  align-items: center;
   justify-content: center;
 }
 
-/* Remove blob elements completely */
-
 .mascot-img {
   position: relative;
-  height: 250px; /* Made bigger */
- z-index: 2;
-  left: -80px; /* Adjusted position */
+  height: clamp(150px, 20vw, 250px);
+  z-index: 2;
+  left: -60px;
 }
 
 .patient-img {
   position: relative;
-  height: 230px; /* Made bigger */
- z-index: 2;
-  left: 80px; /* Adjusted position */
+  height: clamp(140px, 18vw, 230px);
+  z-index: 2;
+  left: 100px;
   top: 20px;
 }
 
@@ -193,7 +372,7 @@
   position: absolute;
   padding: 12px 16px;
   font-size: 0.9rem;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1); /* Needs shadow to pop off background */
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
   z-index: 3;
   max-width: 180px;
   min-width: 150px;
@@ -202,193 +381,134 @@
   animation: chatSequence 8s infinite;
 }
 
-.chat-bubble.bubble-1 { /* Robot's bubble - Dark Blue */
-  top: 30%;
-  left: 40%; /* Positioned between mascot and patient */
-  background-color: #00224A; /* Navy Blue */
-  color: #FFFFFF; /* White Text */
-  border-radius: 16px 0; /* Robot's bubble */
+.chat-bubble.bubble-1 {
+  top: 20%;
+  left: 40%;
+  background-color: #00224A;
+  color: #FFFFFF;
+  border-radius: 16px 0;
   animation-delay: 0s;
 }
 
-.chat-bubble.bubble-2 { /* Patient's bubble - White */
+.chat-bubble.bubble-2 {
   top: 45%;
-  left: 48%; /* Positioned between mascot and patient - moved slightly to the right */
-  background-color: #FFFFFF; /* White Background */
-  color: #00224A; /* Navy Text */
-  border-radius: 16px 0 16px; /* Patient's bubble */
+  left: 48%;
+  background-color: #FFFFFF;
+  color: #00224A;
+  border-radius: 16px 0 16px;
   animation-delay: 2s;
 }
 
-.chat-bubble.bubble-3 { /* Third bubble - Robot's bubble */
-  top: 60%;
-  left: 38%; /* Positioned between mascot and patient */
-  background-color: #00224A; /* Navy Blue */
-  color: #FFFFFF; /* White Text */
-  border-radius: 16px 0 16px; /* Robot's bubble */
+.chat-bubble.bubble-3 {
+  top: 70%;
+  left: 38%;
+  background-color: #00224A;
+  color: #FFFFFF;
+  border-radius: 16px 0 16px;
   animation-delay: 4s;
 }
 
 @keyframes chatSequence {
-  0% {
-    opacity: 0;
-    transform: scale(0.8);
-  }
-  10% {
-    opacity: 1;
-    transform: scale(1);
-  }
-  70% {
-    opacity: 1;
-    transform: scale(1);
-  }
-  80% {
-    opacity: 0;
-    transform: scale(0.8);
-  }
-  100% {
-    opacity: 0;
-    transform: scale(0.8);
-  }
+  0%, 80%, 100% { opacity: 0; transform: scale(0.8); }
+  10%, 70% { opacity: 1; transform: scale(1); }
 }
 
-/* For Professionals Section */
+/* ========================================
+   FOR PROFESSIONALS SECTION
+======================================== */
+
 #for-professionals {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 80px 80px 40px 80px; /* Reduced bottom padding from 80px to 40px */
+  padding: 80px 80px 40px;
   gap: 60px;
-  background-color: #FFFFFF; /* bg1 (Consistent with Navbar) */
-  overflow: visible; /* Allows the blob/shadows to show without scrolling */
+  background-color: #FFFFFF;
 }
 
 .prof-content {
   display: flex;
   align-items: center;
   width: 100%;
+  gap: 60px;
 }
 
 .prof-text {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
   gap: 32px;
-  align-self: stretch;
-  width: 45%;
-  max-width: 50%;
+  flex: 1;
+  min-width: 0;
 }
 
-/* --- 2. Apply styles to the Title with safety fallback */
 .prof-headline {
-  font-size: 3rem; /* Made smaller */
+  font-size: clamp(2rem, 4vw, 3rem);
   font-weight: 800;
- line-height: 1.6;
+  line-height: 1.6;
   margin-bottom: 24px;
- white-space: pre-wrap;
+  color: #00224A;
+  white-space: pre-wrap;
   position: relative;
-  
-  /* BASE COLOR (Visible by default) */
- color: #00224A;
 }
 
-/* Only apply the fancy effect if the browser supports it */
 @supports (background-clip: text) or (-webkit-background-clip: text) {
   .prof-headline {
-    /* The Gradient */
-    background: linear-gradient(
-      110deg,
-      #00224A 45%,   /* Navy */
-      #5DB4E0 50%,   /* Light Blue Shine */
-      #00224A 5%    /* Navy */
-    );
+    background: linear-gradient(110deg, #00224A 45%, #5DB4E0 50%, #00224A 55%);
     background-size: 200% auto;
-    
-    /* Clip background to text */
     -webkit-background-clip: text;
     background-clip: text;
-    
-    /* Make text transparent ONLY here */
     -webkit-text-fill-color: transparent;
     color: transparent;
-    
-    /* Animate */
-    animation: shimmer 3s linear infinite; /* Sped up slightly for visibility */
+    animation: shimmer 3s linear infinite;
   }
 }
 
-/* 3. Add the stripe image underline to the highlight class */
 .prof-headline .highlight {
   position: relative;
   display: inline-block;
-  /* Override the shimmer for the "Difference" word to keep it stable */
   -webkit-text-fill-color: #00224A !important;
   color: #00224A !important;
- background: none; /* Override the gradient for the highlighted word */
-  z-index: 1; /* Ensure text is above the stripe */
+  background: none;
+  z-index: 1;
 }
 
 .prof-headline .highlight::after {
- content: "";
+  content: "";
   position: absolute;
- left: 0;
-  bottom: 2px; /* Adjust vertical alignment */
-  height: 25px; /* Adjust based on image aspect ratio */
-  width: 0%;    /* START WIDTH */
-  
-  /* IMAGE ASSET */
+  left: 0;
+  bottom: 2px;
+  height: 25px;
+  width: 0%;
   background-image: url('/src/assets/landing/hero/stripe.png');
-  background-size: 100% 100%; /* Stretches the image */
+  background-size: 100% 100%;
   background-repeat: no-repeat;
-  
   z-index: -1;
   transition: width 0.8s ease-out;
 }
 
-/* TRIGGER */
 .animate-active .prof-headline .highlight::after {
   width: 100%;
 }
 
-/* --- 1. Define the Keyframes (The Movement) --- */
 @keyframes float {
-  0% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-12px); /* Moves up 12px */
-  }
- 100% {
-    transform: translateY(0px);
-  }
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-12px); }
 }
 
 .feature-card {
   background: white;
   border-radius: 12px;
   padding: 16px;
-  width: 150px;
+  width: clamp(80px, 15vw, 120px);
   box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-  
-  /* The Animation Rule */
   animation: float 6s ease-in-out infinite;
-  
-  /* Hardware acceleration for smoother movement */
   will-change: transform;
 }
 
-/* --- 3. Stagger the movement (So they don't move like robots) --- */
-.feature-card:nth-child(1) {
-  animation-delay: 0s;
-}
-.feature-card:nth-child(2) {
-  animation-delay: 2s; /* Starts 2 seconds later */
-}
-.feature-card:nth-child(3) {
-  animation-delay: 4s; /* Starts 4 seconds later */
-}
+.feature-card:nth-child(1) { animation-delay: 0s; }
+.feature-card:nth-child(2) { animation-delay: 2s; }
+.feature-card:nth-child(3) { animation-delay: 4s; }
 
-/* Additional styling for badges */
 .badge {
   display: inline-block;
   padding: 4px 8px;
@@ -398,96 +518,43 @@
   margin-bottom: 8px;
 }
 
-.badge-purple {
-  background-color: #E0B0FF; /* Light Purple */
-}
-
-.badge-blue {
-  background-color: #ADD8E6; /* Light Blue */
-}
-
-.badge-green {
-  background-color: #90EE90; /* Light Green */
-}
+.badge-purple { background-color: #E0B0FF; }
+.badge-blue { background-color: #ADD8E6; }
+.badge-green { background-color: #90EE90; }
 
 .feature-card h3 {
-  color: #00224A; /* b5 - Deep Navy Blue */
-  font-size: 1rem;
+  color: #00224A;
+  font-size: clamp(0.85rem, 1.5vw, 1rem);
   font-weight: 600;
   margin: 0 0 8px 0;
 }
 
 .feature-card p {
-  color: #4A5568; /* Dark Grey */
-  font-size: 0.85rem;
+  color: #4A5568;
+  font-size: clamp(0.75rem, 1.2vw, 0.85rem);
   line-height: 1.4;
   margin: 0;
 }
 
-/* 2. The "Arrow Slide" on CTA Hover */
 .cta-link {
-  display: inline-flex; /* Ensures icon aligns with text */
+  display: inline-flex;
   align-items: center;
   gap: 8px;
-  color: #248BEB; /* b4 - Bright Blue */
+  color: #248BEB;
   text-decoration: none;
   font-weight: 600;
   font-size: 1.1rem;
-  transition: gap 0.3s ease; /* Smooth transition */
+  transition: gap 0.3s ease;
 }
 
-/* Target the arrow specifically - assuming the arrow is part of the text */
 .cta-link .arrow-icon {
   transition: transform 0.3s ease;
 }
 
-/* On Hover: Move the arrow right */
 .cta-link:hover .arrow-icon {
   transform: translateX(5px);
 }
 
-/* 3. The "Sequential Pop" for Checkmarks */
-/* Initial State: Hidden and small */
-.check-icon {
-  /* opacity: 0;
-  transform: scale(0);
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); */ /* Bouncy effect */
-}
-
-/* Active State (Add this class via JS/React when scrolled into view) */
-.check-icon.visible {
-  /* opacity: 1;
-  transform: scale(1); */
-}
-
-/* CSS Delays for specific items if you can target them */
-.benefit-list li:nth-child(1) .check-icon { /* transition-delay: 0.1s; */ }
-.benefit-list li:nth-child(2) .check-icon { /* transition-delay: 0.2s; */ }
-.benefit-list li:nth-child(3) .check-icon { /* transition-delay: 0.3s; */ }
-
-/* 4. The "Parallax Entrance" (Whole Section) */
-/* Left Text Container */
-.prof-text {
-  /* opacity: 0;
-  transform: translateY(30px); */ /* Starts slightly lower */
-  /* transition: all 0.8s ease-out; */
-}
-
-/* Right Visual Container */
-.prof-visuals {
-  /* opacity: 0;
-  transform: translateY(30px);
-  transition: all 0.8s ease-out;
-  transition-delay: 0.2s; */ /* The image appears slightly after the text */
-}
-
-/* The class added when in view */
-.section-visible .prof-text,
-.section-visible .prof-visuals {
-  /* opacity: 1;
-  transform: translateY(0); */
-}
-
 .benefit-list {
   list-style: none;
   padding: 0;
@@ -504,351 +571,66 @@
 }
 
 .check-icon {
-  color: #84B54C; /* g1 - Leaf Green */
+  color: #84B54C;
   font-weight: bold;
   margin-top: 4px;
 }
 
 .benefit-item p {
   margin: 0;
-  color: #00224A; /* b5 - Deep Navy Blue */
+  color: #00224A;
   font-size: 1rem;
   line-height: 1.5;
 }
 
-.cta-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  color: #248BEB; /* b4 - Bright Blue */
-  text-decoration: none;
-  font-weight: 600;
-  font-size: 1.1rem;
-}
-
 .prof-visuals {
   position: relative;
-  width: 55%;
-  min-height: 400px; /* Ensure adequate height */
+  flex: 1;
+  min-height: 400px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
-
-/* The Blue Blob Background */
-/* .blob-bg {
-  position: absolute;
-  top: -40px;
-  right: -40px;
-  width: 120%; / Limit size relative to container /
-  height: 120%;
-  background-color: #5DB4E0; / b2 - Sky Blue /
-  border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; / CSS Blob shape /
-  z-index: 0; / Lowest layer /
-} */
-
-.image-wrapper {
-  position: relative;
-  z-index: 1; /* Above blob */
-  /* border: 10px solid white; / The white frame */
-  /* border-radius: 24px; */
-  overflow: hidden;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-}
-
-.feature-cards-row {
-  position: absolute;
-  bottom: -40px; /* Pulls them down to overlap the bottom edge */
-  left: 20px; /* Adjust horizontal alignment */
-  right: 20px;
-  display: flex;
-  gap: 16px;
-  z-index: 2; /* Top layer */
-}
-
-.benefit-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-}
-
-.benefit-item {
-  display: flex;
-  gap: 12px;
-  align-items: flex-start;
-}
-
-.check-icon {
-  color: #84B54C; /* g1 - Leaf Green */
-  font-weight: bold;
-  margin-top: 4px;
-}
-
-.benefit-item p {
-  margin: 0;
-  color: #00224A; /* b5 - Deep Navy Blue */
-  font-size: 1rem;
-  line-height: 1.5;
-}
-
-.cta-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  color: #248BEB; /* b4 - Bright Blue */
-  text-decoration: none;
-  font-weight: 600;
-  font-size: 1.1rem;
-}
-
-.prof-visuals {
-  position: relative;
-  width: 55%;
-  min-height: 400px; /* Adjusted to fit feature image */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* Remove blob background completely */
 
 .image-wrapper {
   position: relative;
   z-index: 2;
-  /* Remove border and border-radius */
-  /* box-shadow: 0 8px 24px rgba(0,0,0,0.1); */ /* Keep soft drop shadow */
   overflow: hidden;
 }
 
-.prof-image {
+.prof-image, .image-wrapper img {
   display: block;
-  max-width: 80%; /* Make the image smaller */
+  max-width: 80%;
   height: auto;
-  /* box-shadow: 0 8px 24px rgba(0,0,0,0.1); */ /* Keep soft drop shadow */
-}
-
-.image-wrapper img {
- display: block;
-  max-width: 80%; /* Make the image smaller */
-  height: auto;
-  /* Remove the white border by removing the wrapper */
 }
 
 .feature-cards-row {
   position: absolute;
-  bottom: 20px; /* Adjusted position */
-  left: 50%;
-  transform: translateX(-50%); /* Center the cards */
+  bottom: -50px;
+  left: 10%;
+  transform: translateX(-10%);
   display: flex;
   gap: 16px;
   justify-content: center;
   z-index: 3;
+  flex-wrap: wrap;
 }
 
-.feature-card {
-  background: white;
-  border-radius: 12px;
-  padding: 16px;
-  width: 150px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15); /* Strong drop shadow */
+@media (max-width: 768px) {
+  .feature-cards-row {
+    display: none !important;
+  }
 }
 
-.badge {
-  display: inline-block;
-  padding: 4px 8px;
-  border-radius: 20px;
-  font-size: 0.75rem;
-  font-weight: bold;
-  margin-bottom: 8px;
-}
+/* ========================================
+   MISSION SECTION
+======================================== */
 
-.badge-purple {
-  background-color: #E0B0FF; /* Light Purple */
-}
-
-.badge-blue {
-  background-color: #ADD8E6; /* Light Blue */
-}
-
-.badge-green {
-  background-color: #90EE90; /* Light Green */
-}
-
-.feature-card h3 {
-  color: #00224A; /* b5 - Deep Navy Blue */
-  font-size: 1rem;
-  font-weight: 600;
-  margin: 0 0 8px 0;
-}
-
-.feature-card p {
-  color: #4A5568; /* Dark Grey */
-  font-size: 0.85rem;
-  line-height: 1.4;
-  margin: 0;
-}
-
-.main-content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-  text-align: center;
-}
-
-.main-content h1 {
-  font-size: 2.5rem;
- margin-bottom: 1rem;
-  color: #333;
-}
-
-.main-content p {
-  font-size: 1.2rem;
-  color: #666;
-}
-
-.navbar-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 24px 80px;
-  background-color: #FFFFFF; /* bg1 - Light Blue-Grey */
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  width: 100%;
-  z-index: 1000;
-  position: sticky;
-  top: 0;
-  left: 0;
-  box-sizing: border-box;
-}
-
-/* More specific selector to ensure styling is applied */
-.landing-page .navbar-container {
-  background-color: #FFFFFF !important;
-}
-
-nav.navbar-container {
-  background-color: #FFFFFF !important;
-}
-
-/* Additional override to ensure navbar color */
-.landing-page > .navbar-container,
-.landing-page .navbar-container,
-.landing-page nav {
-  background-color: #FFFFFF !important;
-  background: #FFFFFF !important;
-}
-
-/* Make Navbar Persistent (Fixed at Top) - Add to existing navbar styles */
-
-.navbar-content {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  justify-content: space-between;
-}
-
-.logo-section {
-  display: flex;
-  align-items: center;
-  margin-right: auto; /* Push other elements to the right */
-}
-
-.logo {
-  height: 50px; /* Reduced from 60px to 50px as requested */
-  width: auto;
-}
-
-.nav-links {
-  display: flex;
-  align-items: center;
-  gap: 40px; /* Increased from 32px to 40px */
-}
-
-.nav-link {
-  text-decoration: none;
-  color: #00224A; /* b5 - Deep Navy Blue */
-  font-weight: 600; /* Increased from 500 to 600 */
-  position: relative;
-}
-
-.nav-link:hover {
-  color: #174880; /* b1 - Medium Blue on hover */
-}
-
-.nav-dropdown {
-  position: relative;
-  display: flex;
- align-items: center;
- gap: 4px; /* Added gap for chevron */
-}
-
-.dropdown-arrow {
-  margin-left: 4px;
-}
-
-.auth-section {
-  display: flex;
-  align-items: center;
-  gap: 24px; /* Spacing between login and signup */
-  margin-left: auto; /* Pushes auth section to the far right */
-}
-
-.login-link {
-  text-decoration: none;
-  color: #00224A; /* b5 - Deep Navy Blue */
-  font-weight: 700; /* Bold weight */
-}
-
-.signup-button {
-  background-color: transparent; /* Transparent fill */
-  color: #00224A; /* b5 - Deep Navy Blue */
-  border: 2px solid #00224A; /* Thick outline - 2px */
-  padding: 10px 24px; /* Updated padding to match requirements */
-  border-radius: 8px; /* Rounded corners */
-  cursor: pointer;
-  font-weight: 700; /* Updated font weight to 700 */
-  font-size: 14px;
-}
-
-.signup-button:hover {
-  background-color: #00224A; /* b5 - Deep Navy Blue background on hover */
-  color: white; /* White text on hover */
-}
-
-.main-content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-  text-align: center;
-}
-
-.main-content h1 {
-  font-size: 2.5rem;
-  margin-bottom: 1rem;
-  color: #333;
-}
-
-.main-content p {
-  font-size: 1.2rem;
-  color: #666;
-}
-
-/* Our Mission Section */
 .mission-section {
   display: flex;
-  padding: 40px 80px 80px; /* Reduced top padding from 80px to 40px */
+  padding: 40px 80px 80px;
   align-items: center;
-  gap: 80px;
-  align-self: stretch;
+  gap: 60px;
   background: #FFFFFF;
 }
 
@@ -856,43 +638,42 @@ nav.navbar-container {
   display: flex;
   align-items: center;
   width: 100%;
-  gap: 80px;
+  gap: 60px;
 }
 
 .mission-visuals {
-  width: 50%;
+  flex: 1;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #FFFFFF; /* Pure white background for the left side */
+  background-color: #FFFFFF;
   position: relative;
+  animation: heartbeat 4s ease-in-out infinite;
+  will-change: transform;
 }
 
-.mission-visuals::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #FFFFFF; /* Ensure the background is definitely white */
-  z-index: -1;
+@keyframes heartbeat {
+  0%, 60%, 100% { transform: scale(1); }
+  15%, 45% { transform: scale(1.015); }
 }
 
-/* White background to match the left side of the split has been moved to the earlier definition */
+@keyframes popIn {
+  0% { opacity: 0; transform: scale(0.5); }
+  70% { transform: scale(1.05); }
+  100% { opacity: 1; transform: scale(1); }
+}
 
 .heart-collage {
   max-width: 100%;
   height: auto;
   border-radius: 8px;
-  background: transparent; /* Ensure no background is added to the image */
-  display: block; /* Remove any inline spacing */
-  margin: 0; /* Remove any default margins */
-  padding: 0; /* Remove any default padding */
+  opacity: 0;
+  animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+  animation-delay: 0.3s;
 }
 
 .mission-content {
-  width: 50%;
+  flex: 1;
   display: flex;
   flex-direction: column;
   gap: 32px;
@@ -903,11 +684,54 @@ nav.navbar-container {
   height: 48px;
 }
 
-/* Old mission headline styles have been replaced with animated versions above */
+.mission-headline {
+  font-size: clamp(1.8rem, 3.5vw, 2.5rem);
+  font-weight: 800;
+  line-height: 1.5;
+  color: #00224A;
+  position: relative;
+  margin: 0;
+  background: linear-gradient(110deg, #00224A 45%, #5DB4E0 50%, #00224A 55%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+.mission-headline.animate-active {
+  animation: shimmer 3s linear infinite;
+}
+
+.mission-headline .highlight {
+  position: relative;
+  display: inline-block;
+  z-index: 1;
+  -webkit-text-fill-color: #00224A;
+  color: #00224A;
+}
+
+.mission-headline .highlight::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 2px;
+  height: 20px;
+  width: 0%;
+  background-image: url('/src/assets/landing/hero/stripe.png');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  z-index: -1;
+  transition: width 0.8s ease-out;
+}
+
+.mission-headline.animate-active .highlight::after {
+  width: 100%;
+}
 
 .mission-text {
   color: #4A5568;
-  font-size: 1.1rem;
+  font-size: clamp(1rem, 2vw, 1.1rem);
   line-height: 1.6;
   margin: 0;
   max-width: 100%;
@@ -917,7 +741,7 @@ nav.navbar-container {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  color: #248BEB; /* b4 - Bright Blue */
+  color: #248BEB;
   text-decoration: none;
   font-weight: 600;
   font-size: 1.1rem;
@@ -928,161 +752,15 @@ nav.navbar-container {
   gap: 12px;
 }
 
-/* Animation for Our Mission Section */
+/* ========================================
+   FEATURES SECTION
+======================================== */
 
-/* 1. Define the Entrance Keyframes (Community Assembly) */
-@keyframes popIn {
-  0% {
-    opacity: 0;
-    transform: scale(0.5); /* Start small */
-  }
-  70% {
-    transform: scale(1.05); /* Slight bounce/overshoot */
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-/* Apply to the heart collage image */
-.heart-collage {
-  opacity: 0;
-  animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-  animation-delay: 0.3s; /* Slight delay for the whole image */
-}
-
-/* 2. The "Living Heartbeat" (Subtle Loop) */
-@keyframes heartbeat {
- 0% { transform: scale(1); }
-  15% { transform: scale(1.015); } /* Small expansion */
-  30% { transform: scale(1); }
- 45% { transform: scale(1.015); } /* Second small beat */
-  60% { transform: scale(1); }     /* Rest */
-  100% { transform: scale(1); }
-}
-
-.mission-visuals {
-  animation: heartbeat 4s ease-in-out infinite;
-  will-change: transform;
-}
-
-/* 3. The "Drawing" Highlight (Text Focus) - this was duplicated, so we'll keep the later version */
-
-/* --- 1. The Headline Shimmer Animation --- */
-.mission-headline {
-          font-size: 2.5rem;
-          font-weight: 800;
-          line-height: 1.5;
-          color: #00224A;
-          position: relative;
-          margin: 0;
-          
-          /* Gradient Setup for Shimmer */
-          background: linear-gradient(110deg, #00224A 45%, #5DB4E0 50%, #00224A 55%);
-          background-size: 200% auto;
-          -webkit-background-clip: text;
-          background-clip: text;
-          -webkit-text-fill-color: transparent;
-          color: transparent;
-        }
-
-        .mission-headline.animate-active {
-          animation: shimmer 3s linear infinite;
-        }
-
-        .mission-headline .highlight {
-          position: relative;
-          display: inline-block;
-          z-index: 1;
-          /* Ensure text remains visible */
-          -webkit-text-fill-color: #00224A;
-          color: #00224A;
-        }
-
-        .mission-headline .highlight::after {
-          content: "";
-          position: absolute;
-          left: 0;
-          bottom: 2px;
-          height: 20px;
-          width: 0%; /* Start hidden */
-          
-          /* Image Asset */
-          background-image: url('${ASSETS.stripe}');
-          background-size: 100% 100%;
-          background-repeat: no-repeat;
-          
-          z-index: -1;
-          transition: width 0.8s ease-out;
-        }
-
-        /* Trigger the stripe expansion */
-        .mission-headline.animate-active .highlight::after {
-          width: 100%;
-        }
-
-@keyframes shimmer {
-  0% { background-position: -200% center; }
-  100% { background-position: 200% center; }
-}
-
-.healthcare-highlight {
-  position: relative;
-  display: inline-block;
-  /* Ensure the word itself stays visible/colored properly */
-  -webkit-text-fill-color: #00224A;
-  color: #00224A;
-  z-index: 1;
-}
-
-/* The healthcare-highlight class is already defined above */
-
-.healthcare-highlight::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: 2px; /* Adjust vertical alignment */
-  height: 15px; /* Adjust based on image aspect ratio */
-  width: 0%;    /* START WIDTH */
-  
-  /* IMAGE ASSET */
-  background-image: url('/src/assets/landing/hero/stripe.png');
-  background-size: 100% 100%; /* Stretches the image */
-  background-repeat: no-repeat;
-  
-  z-index: -1;
-  transition: width 0.8s ease-out;
-}
-
-/* TRIGGER */
-.mission-headline.animate-active .healthcare-highlight::after {
-  width: 100%;
-}
-
-/* Old trigger has been replaced with the new animation approach */
-
-/* Animation for the mission text entrance */
-.mission-content {
-  opacity: 0;
-  transform: translateY(20px);
-  animation: slideUp 0.8s ease-out 0.3s forwards;
-}
-
-@keyframes slideUp {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Features Section */
 .features-section {
   display: flex;
-  padding: 80px 100px;
+  padding: 80px 80px;
   align-items: center;
-  gap: 80px;
-  align-self: stretch;
+  gap: 60px;
   background: #FFFFFF;
 }
 
@@ -1090,63 +768,42 @@ nav.navbar-container {
   display: flex;
   align-items: center;
   width: 100%;
+  gap: 60px;
 }
 
 .features-text {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
- gap: 32px;
-  align-self: stretch;
-  width: 45%;
-  max-width: 50%;
+  gap: 32px;
+  flex: 1;
+  min-width: 0;
 }
 
 .features-headline {
-  font-size: 2.5rem;
- font-weight: 800;
+  font-size: clamp(1.8rem, 3.5vw, 2.5rem);
+  font-weight: 800;
   line-height: 1.8;
   margin: 0;
   position: relative;
   white-space: pre-wrap;
-  
-  /* Fallback color if gradient fails */
   color: #00224A;
-  
-  /* The Shimmer Gradient */
-  background: linear-gradient(
-    110deg,
-    #00224A 40%,
-    #5DB4E0 50%,
-    #00224A 60%
-  );
+  background: linear-gradient(110deg, #00224A 40%, #5DB4E0 50%, #00224A 60%);
   background-size: 200% auto;
-  
-  /* Clip background to text */
   -webkit-background-clip: text;
   background-clip: text;
-  
-  /* Make text fill transparent */
   -webkit-text-fill-color: transparent;
   color: transparent;
-  
-  /* Run Animation */
   animation: shimmer 3s linear infinite;
 }
 
-/* Ensure the word 'Re-imagined' (in the span) inherits the shimmer but keeps the underline */
 .features-headline .highlight {
   display: inline-block;
   position: relative;
-  /* Override the shimmer for the highlighted word to keep it stable */
   -webkit-text-fill-color: #00224A !important;
   color: #00224A !important;
- background: none; /* Override the gradient for the highlighted word */
+  background: none;
 }
 
-
-/* Animation for the green stripe underline */
 .highlight {
   position: relative;
   display: inline-block;
@@ -1154,32 +811,28 @@ nav.navbar-container {
 }
 
 .highlight::after {
- content: "";
+  content: "";
   position: absolute;
- left: 0;
-  bottom: 2px; /* Adjust vertical alignment */
-  height: 25px; /* Adjust based on image aspect ratio */
-  width: 0%;    /* START WIDTH */
-  
-  /* IMAGE ASSET */
+  left: 0;
+  bottom: 2px;
+  height: 25px;
+  width: 0%;
   background-image: url('/src/assets/landing/hero/stripe.png');
-  background-size: 100% 100%; /* Stretches the image */
+  background-size: 100% 100%;
   background-repeat: no-repeat;
-  
   z-index: -1;
   transition: width 0.8s ease-out;
 }
 
-/* TRIGGER */
 .animate-active .highlight::after {
   width: 100%;
 }
 
 .features-body {
-  color: #4A5568; /* Dark Grey */
-  font-size: 1.1rem;
+  color: #4A5568;
+  font-size: clamp(1rem, 2vw, 1.1rem);
   line-height: 1.6;
-  max-width: 90%;
+  max-width: 100%;
   margin: 0;
 }
 
@@ -1187,7 +840,7 @@ nav.navbar-container {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  color: #248BEB; /* b4 - Bright Blue */
+  color: #248BEB;
   text-decoration: none;
   font-weight: 600;
   font-size: 1.1rem;
@@ -1195,8 +848,8 @@ nav.navbar-container {
 
 .features-visual-wrapper {
   position: relative;
-  width: 55%;
-  height: 600px;
+  flex: 1;
+  min-height: 400px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -1207,7 +860,7 @@ nav.navbar-container {
   top: 0%;
   left: 25%;
   transform: translate(-50%, -50%);
-  width: 60%; /* Made smaller to fit better inside the features visual wrapper */
+  width: 60%;
   max-height: 100%;
   object-fit: contain;
   z-index: 0;
@@ -1216,8 +869,8 @@ nav.navbar-container {
 .feature-info-card {
   position: absolute;
   top: 40px;
-  left: 10;
-  width: 280px;
+  left: 10px;
+  width: clamp(100px, 25vw, 200px);
   background: white;
   padding: 24px;
   border-radius: 16px;
@@ -1226,33 +879,27 @@ nav.navbar-container {
 }
 
 .feature-info-card .badge {
-  display: inline-block;
-  padding: 4px 8px;
-  border-radius: 20px;
-  font-size: 0.75rem;
-  font-weight: bold;
-  margin-bottom: 8px;
-  background-color: #ADD8E6; /* Light Blue */
+  background-color: #ADD8E6;
 }
 
 .feature-info-card h3 {
-  color: #00224A; /* b5 - Deep Navy Blue */
-  font-size: 1.25rem;
+  color: #00224A;
+  font-size: clamp(1rem, 2vw, 1.25rem);
   font-weight: 600;
   margin: 0 0 8px 0;
 }
 
 .feature-info-card p {
-  color: #4A5568; /* Dark Grey */
-  font-size: 0.9rem;
+  color: #4A5568;
+  font-size: clamp(0.85rem, 1.5vw, 0.9rem);
   line-height: 1.4;
   margin: 0 0 16px 0;
 }
 
 .ai-chat-button {
   background-color: white;
-  color: #248BEB; /* b4 - Bright Blue */
-  border: 2px solid #248BEB; /* b4 - Bright Blue */
+  color: #248BEB;
+  border: 2px solid #248BEB;
   padding: 8px 16px;
   border-radius: 8px;
   cursor: pointer;
@@ -1261,7 +908,7 @@ nav.navbar-container {
 }
 
 .ai-chat-button:hover {
-  background-color: #248BEB; /* b4 - Bright Blue */
+  background-color: #248BEB;
   color: white;
 }
 
@@ -1269,41 +916,44 @@ nav.navbar-container {
   position: absolute;
   border: none;
   border-radius: 16px;
- box-shadow: none;
+  box-shadow: none;
+  max-width: 90%;
 }
 
-.feat-img-1 { /* Top Right - AI */
+.feat-img-1 {
   top: 60px;
   right: 0;
-  width: 260px;
+  width: clamp(180px, 22vw, 260px);
   z-index: 1;
 }
 
-.feat-img-2 { /* Bottom Left - Tablet */
+.feat-img-2 {
   bottom: 0;
   left: 150px;
-  width: 300px;
+  width: clamp(220px, 28vw, 300px);
   z-index: 3;
 }
 
-.feat-img-3 { /* Bottom Right - Map */
+.feat-img-3 {
   bottom: 40px;
   right: 150px;
-  width: 200px;
+  width: clamp(150px, 18vw, 200px);
   z-index: 2;
 }
 
-/* For Patients Section */
+/* ========================================
+   FOR PATIENTS SECTION
+======================================== */
+
 #for-patients {
   display: flex;
-  padding: 80px;
+  padding: 80px 80px;
   flex-direction: column;
   align-items: center;
-  gap: 80px; /* High spacing between text, buttons, and images */
-  align-self: stretch;
-  background-color: #EBF1FA; /* Updated background color */
- position: relative;
-  overflow: hidden; /* To contain the background decorative blobs */
+  gap: 60px;
+  background-color: #EBF1FA;
+  position: relative;
+  overflow: hidden;
 }
 
 #patients-content {
@@ -1315,82 +965,61 @@ nav.navbar-container {
 }
 
 .patients-headline {
-  font-size: 3.5rem;
- font-weight: 800;
-   line-height: 1.8;
- text-align: center;
+  font-size: clamp(2rem, 4.5vw, 3.5rem);
+  font-weight: 800;
+  line-height: 1.8;
+  text-align: center;
   margin: 0;
   white-space: pre-wrap;
   position: relative;
-  
-  /* Fallback color if gradient fails */
   color: #00224A;
-  
-  /* The Shimmer Gradient */
-  background: linear-gradient(
-    110deg,
-    #00224A 40%,
-    #5DB4E0 50%,
-    #00224A 60%
-  );
- background-size: 200% auto;
-  
-  /* Clip background to text */
+  background: linear-gradient(110deg, #00224A 40%, #5DB4E0 50%, #00224A 60%);
+  background-size: 200% auto;
   -webkit-background-clip: text;
   background-clip: text;
-  
-  /* Make text fill transparent */
   -webkit-text-fill-color: transparent;
   color: transparent;
-  
-  /* Run Animation */
   animation: shimmer 3s linear infinite;
 }
 
-/* Ensure the word 'Health' (in the span) inherits the shimmer but keeps the underline */
 .patients-headline .highlight {
   display: inline-block;
   position: relative;
   z-index: 1;
 }
 
-/* The highlight class is already defined above */
-
 .patients-headline .highlight::after {
- content: "";
+  content: "";
   position: absolute;
- left: 0;
-  bottom: 2px; /* Adjust vertical alignment */
-  height: 25px; /* Adjust based on image aspect ratio */
-  width: 0%;    /* START WIDTH */
-  
-  /* IMAGE ASSET */
+  left: 0;
+  bottom: 2px;
+  height: 25px;
+  width: 0%;
   background-image: url('/src/assets/landing/hero/stripe.png');
-  background-size: 100% 100%; /* Stretches the image */
+  background-size: 100% 100%;
   background-repeat: no-repeat;
-  
- z-index: -1;
+  z-index: -1;
   transition: width 0.8s ease-out;
 }
 
-/* TRIGGER */
 .patients-headline.animate-active .highlight::after {
   width: 100%;
 }
 
 .patients-subtext {
-  color: #4A5568; /* Dark Grey */
-  font-size: 1.125rem; /* 18px */
+  color: #4A5568;
+  font-size: clamp(1rem, 2vw, 1.125rem);
   line-height: 1.6;
-  max-width: 800px; /* Max-width ~800px for readability */
+  max-width: 800px;
   text-align: center;
   margin: 0;
 }
 
 .app-store-buttons {
- display: flex;
- gap: 20px;
+  display: flex;
+  gap: 20px;
   justify-content: center;
+  flex-wrap: wrap;
 }
 
 .app-store-btn, .play-store-btn {
@@ -1398,14 +1027,8 @@ nav.navbar-container {
   box-shadow: none;
   cursor: pointer;
   transition: transform 0.3s ease;
-}
-
-.app-store-btn, .play-store-btn {
-  border: none;
-  box-shadow: none;
-  cursor: pointer;
-  transition: transform 0.3s ease;
-  max-width: 150px; /* Limit button size */
+  max-width: clamp(120px, 15vw, 150px);
+  height: auto;
 }
 
 .app-store-btn:hover, .play-store-btn:hover {
@@ -1415,9 +1038,9 @@ nav.navbar-container {
 .main-visual-stack {
   position: relative;
   width: 100%;
-  height: 400px;
- display: flex;
- justify-content: center;
+  min-height: 400px;
+  display: flex;
+  justify-content: center;
   align-items: center;
 }
 
@@ -1436,13 +1059,13 @@ nav.navbar-container {
   z-index: 2;
   max-width: 70%;
   height: auto;
- box-shadow: none !important;
+  box-shadow: none !important;
   border: none !important;
-  margin-top: 200px; /* Increased top spacing to ensure download buttons are clearly visible */
+  margin-top: 100px;
 }
 
 .feature-icons-row {
- width: 100%;
+  width: 100%;
   max-width: 1200px;
   margin-top: 125px;
   z-index: 1;
@@ -1454,45 +1077,34 @@ nav.navbar-container {
   box-shadow: none !important;
   border: none !important;
 }
-/* Responsive Design for Navbar */
-@media screen and (max-width: 768px) {
-  .nav-links {
-    display: none; /* Hide navigation links on small screens */
-  }
-  
-  .navbar-container {
-    padding: 16px 24px; /* Reduced padding on mobile */
-  }
-  
-  .logo {
-    height: 40px; /* Smaller logo on mobile */
-  }
-}
 
-/* Footer Styles */
+/* ========================================
+   FOOTER STYLES
+======================================== */
+
 .footer-container {
-  background-color: #174880; /* Deep Brand Blue */
+  background-color: #174880;
   color: #FFFFFF;
-  padding: 64px 80px; /* Increased padding to match page's main content width */
+  padding: 64px 80px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  align-self: stretch;
 }
 
 .footer-top {
-  display: flex; /* Use flex for top section */
-  align-items: flex-start; /* Align items to the top, not center */
-  gap: 40px; /* Consistent gap between columns */
-  align-self: stretch;
+  display: flex;
+  align-items: flex-start;
+  gap: 40px;
+  width: 100%;
+  flex-wrap: wrap;
 }
 
 .footer-brand {
-  width: 250px; /* Width for logo column */
+  width: 250px;
   display: flex;
   flex-direction: column;
-  align-items: center; /* Center align content */
-  text-align: center; /* Center align text */
+  align-items: center;
+  text-align: center;
   gap: 16px;
 }
 
@@ -1509,25 +1121,27 @@ nav.navbar-container {
 
 .footer-brand-subtitle {
   font-size: 0.9rem;
- opacity: 0.7;
+  opacity: 0.7;
 }
 
 .footer-links {
-  display: flex; /* Use flex for link columns */
-  flex: 1; /* Take remaining space */
-  gap: 40px; /* Consistent gap between columns */
+  display: flex;
+  flex: 1;
+  gap: 40px;
+  flex-wrap: wrap;
 }
 
 .footer-links-column {
   display: flex;
   flex-direction: column;
   gap: 16px;
+  min-width: 150px;
 }
 
 .footer-link-header {
   font-size: 1rem;
-  font-weight: 700; /* Bold weight */
-  margin-bottom: 24px; /* Increased margin */
+  font-weight: 700;
+  margin-bottom: 24px;
 }
 
 .footer-link-items {
@@ -1542,15 +1156,15 @@ nav.navbar-container {
 .footer-link-items a {
   color: #FFFFFF;
   text-decoration: none;
-  font-weight: 400; /* Regular weight */
-  opacity: 0.8; /* Opacity 0.8 */
+  font-weight: 400;
+  opacity: 0.8;
   transition: opacity 0.3s ease;
-  display: block; /* Display as block */
+  display: block;
 }
 
 .footer-link-items a:hover {
-  opacity: 1; /* Opacity 1 on hover */
-  text-decoration: underline; /* Underline on hover */
+  opacity: 1;
+  text-decoration: underline;
 }
 
 .arrow-icon {
@@ -1560,28 +1174,30 @@ nav.navbar-container {
 }
 
 .footer-divider {
-  margin: 48px 0; /* Vertical spacing */
+  margin: 48px 0;
   width: 100%;
   border: none;
-  border-top: 1px solid rgba(255, 255, 255, 0.2); /* Divider line color */
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .footer-bottom {
   display: flex;
-  justify-content: space-between; /* Space between elements */
-  align-items: center; /* Center items vertically */
-  align-self: stretch;
+  justify-content: space-between;
+  align-items: center;
   width: 100%;
+  flex-wrap: wrap;
+  gap: 24px;
 }
 
 .copyright {
-  opacity: 0.7; /* Left-aligned by default, opacity 0.7 */
+  opacity: 0.7;
 }
 
 .legal-links {
   display: flex;
-  gap: 24px; /* Gap between links */
-  justify-content: center; /* Center the group */
+  gap: 24px;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
 .legal-links a {
@@ -1598,13 +1214,14 @@ nav.navbar-container {
 
 .social-apps {
   display: flex;
-  gap: 16px; /* Gap between social icons */
-  align-items: center; /* Align items center */
+  gap: 16px;
+  align-items: center;
+  flex-wrap: wrap;
 }
 
 .social-icons {
   display: flex;
-  gap: 16px; /* Gap between icons */
+  gap: 16px;
 }
 
 .social-icons a {
@@ -1619,11 +1236,475 @@ nav.navbar-container {
 
 .app-buttons {
   display: flex;
-  gap: 12px; /* Gap between buttons */
+  gap: 12px;
 }
 
 .app-store-button, .play-store-button {
-  width: 120px; /* Fixed width as requested */
+  width: 120px;
   height: auto;
   cursor: pointer;
+}
+
+/* ========================================
+   RESPONSIVE DESIGN - TABLET
+======================================== */
+
+@media screen and (max-width: 1024px) {
+  .navbar-container {
+    padding: 20px 40px;
+  }
+
+  .hero-section,
+  #for-professionals,
+  .mission-section,
+  .features-section,
+  #for-patients {
+    padding: 60px 40px;
+  }
+
+  .hero-content,
+  .prof-content,
+  .mission-container,
+  .features-container {
+    gap: 40px;
+  }
+
+  .nav-links {
+    gap: 24px;
+  }
+
+  .feature-cards-row {
+    gap: 12px;
+  }
+
+  .feat-img-2 {
+    left: 100px;
+  }
+
+  .feat-img-3 {
+    right: 100px;
+  }
+
+  .footer-container {
+    padding: 48px 40px;
+  }
+}
+
+/* ========================================
+   RESPONSIVE DESIGN - MOBILE
+======================================== */
+
+@media screen and (max-width: 768px) {
+  /* Navbar Mobile */
+  .navbar-container {
+    padding: 16px 24px;
+  }
+
+  .logo {
+    height: 40px;
+  }
+
+  .nav-links {
+    display: none;
+  }
+
+  .mobile-menu-toggle {
+    display: block;
+  }
+
+  .auth-section {
+    gap: 16px;
+  }
+
+  .signup-button {
+    padding: 8px 16px;
+    font-size: 12px;
+  }
+
+  /* Hero Section Mobile */
+  .hero-section {
+    flex-direction: column;
+    padding: 60px 24px 40px;
+    gap: 40px;
+  }
+
+  .hero-content {
+    flex-direction: column;
+    gap: 40px;
+  }
+
+  .hero-text {
+    width: 100%;
+    max-width: 100%;
+    align-items: center;
+    text-align: center;
+  }
+
+  .hero-headline {
+    font-size: 2rem;
+  }
+
+  .hero-subtext {
+    max-width: 100%;
+    text-align: center;
+  }
+
+  .hero-cta-group {
+    justify-content: center;
+    width: 100%;
+  }
+
+  .hero-visual {
+    width: 100%;
+    height: 300px;
+  }
+
+  .mascot-img {
+    height: 150px;
+    left: -20px;
+  }
+
+  .patient-img {
+    height: 140px;
+    left: 20px;
+  }
+
+  .chat-bubble {
+    max-width: 140px;
+    min-width: 120px;
+    font-size: 0.8rem;
+    padding: 10px 12px;
+  }
+
+  /* For Professionals Mobile */
+  #for-professionals {
+    flex-direction: column;
+    padding: 60px 24px 40px;
+  }
+
+  .prof-content {
+    flex-direction: column;
+    gap: 40px;
+  }
+
+  .prof-text {
+    width: 100%;
+    max-width: 100%;
+    align-items: center;
+    text-align: center;
+  }
+
+  .prof-headline {
+    font-size: 2rem;
+  }
+
+  .benefit-list {
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .prof-visuals {
+    width: 100%;
+    min-height: 300px;
+  }
+
+  .prof-image,
+  .image-wrapper img {
+    max-width: 100%;
+  }
+
+  .feature-cards-row {
+    position: static;
+    transform: none;
+    margin-top: 20px;
+    justify-content: center;
+  }
+
+  .feature-card {
+    width: 140px;
+  }
+
+  /* Mission Section Mobile */
+  .mission-section {
+    flex-direction: column;
+    padding: 40px 24px 60px;
+  }
+
+  .mission-container {
+    flex-direction: column-reverse;
+    gap: 40px;
+  }
+
+  .mission-visuals {
+    width: 100%;
+  }
+
+  .mission-content {
+    width: 100%;
+    align-items: center;
+    text-align: center;
+  }
+
+  .mission-headline {
+    font-size: 1.8rem;
+  }
+
+  /* Features Section Mobile */
+  .features-section {
+    flex-direction: column;
+    padding: 60px 24px;
+  }
+
+  .features-container {
+    flex-direction: column;
+    gap: 40px;
+  }
+
+  .features-text {
+    width: 100%;
+    max-width: 100%;
+    align-items: center;
+    text-align: center;
+  }
+
+  .features-headline {
+    font-size: 1.8rem;
+  }
+
+  .features-visual-wrapper {
+    width: 100%;
+    min-height: 500px;
+  }
+
+  .feature-info-card {
+    position: static;
+    width: 100%;
+    margin-bottom: 20px;
+  }
+
+  .feat-img {
+    position: static;
+    width: 100% !important;
+    margin-bottom: 20px;
+  }
+
+  .feat-img-1,
+  .feat-img-2,
+  .feat-img-3 {
+    position: static;
+    display: block;
+    margin: 0 auto 20px;
+  }
+
+  /* For Patients Mobile */
+  #for-patients {
+    padding: 60px 24px;
+    gap: 40px;
+  }
+
+  .patients-headline {
+    font-size: 2rem;
+  }
+
+  .patients-subtext {
+    max-width: 100%;
+  }
+
+  .phone-robot {
+    max-width: 90%;
+    margin-top: 60px;
+  }
+
+  /* Footer Mobile */
+  .footer-container {
+    padding: 40px 24px;
+  }
+
+  .footer-top {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .footer-brand {
+    width: 100%;
+  }
+
+  .footer-links {
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+  }
+
+  .footer-links-column {
+    align-items: center;
+    text-align: center;
+    width: 100%;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 16px;
+  }
+
+  .legal-links {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .social-apps {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+/* ========================================
+   RESPONSIVE DESIGN - SMALL MOBILE
+======================================== */
+
+@media screen and (max-width: 480px) {
+  .hero-headline {
+    font-size: 1.75rem;
+  }
+
+  .prof-headline,
+  .mission-headline,
+  .features-headline,
+  .patients-headline {
+    font-size: 1.5rem;
+  }
+
+  .primary-cta-button {
+    padding: 12px 24px;
+    font-size: 0.9rem;
+  }
+
+  .hero-cta-group {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .primary-cta-button,
+  .secondary-cta-link {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .feature-cards-row {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .feature-card {
+    width: 100%;
+    max-width: 250px;
+  }
+
+  .app-store-buttons {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .app-store-btn,
+  .play-store-btn {
+    max-width: 200px;
+    width: 100%;
+  }
+
+  .phone-robot {
+    max-width: 100%;
+  }
+}
+
+/* ========================================
+   ASPECT RATIO ADJUSTMENTS
+======================================== */
+
+/* Wide screens (21:9, ultrawide) */
+@media screen and (min-aspect-ratio: 21/9) {
+  .hero-visual,
+  .prof-visuals,
+  .mission-visuals,
+  .features-visual-wrapper {
+    max-width: 50%;
+  }
+}
+
+/* Square-ish screens */
+@media screen and (max-aspect-ratio: 4/3) {
+  .hero-content,
+  .prof-content,
+  .mission-container,
+  .features-container {
+    flex-direction: column;
+  }
+
+  .hero-text,
+  .prof-text,
+  .mission-content,
+  .features-text {
+    width: 100%;
+    max-width: 100%;
+    align-items: center;
+    text-align: center;
+  }
+
+  .hero-visual,
+  .prof-visuals,
+  .mission-visuals,
+  .features-visual-wrapper {
+    width: 100%;
+  }
+}
+
+/* ========================================
+   ACCESSIBILITY & PERFORMANCE
+======================================== */
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .hero-headline,
+  .prof-headline,
+  .mission-headline,
+  .features-headline,
+  .patients-headline {
+    -webkit-text-fill-color: #00224A;
+    color: #00224A;
+  }
+}
+
+/* Print styles */
+@media print {
+  .navbar-container,
+  .footer-container,
+  .hero-cta-group,
+  .app-store-buttons,
+  .primary-cta-button,
+  .secondary-cta-link,
+  .cta-link,
+  .mission-cta,
+  .features-cta {
+    display: none;
+  }
+
+  .hero-section,
+  #for-professionals,
+  .mission-section,
+  .features-section,
+  #for-patients {
+    page-break-inside: avoid;
+  }
 }

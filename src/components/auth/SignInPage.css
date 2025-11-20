@@ -314,6 +314,24 @@
   text-decoration: underline;
 }
 
+.signin-forgot-password {
+  text-align: center;
+  margin: 15px 0;
+  color: #666;
+  font-size: clamp(13px, 1vw, 14px);
+}
+
+.signin-forgot-password a {
+  color: #174880;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.signin-forgot-password a:hover {
+  color: #0e3d73;
+  text-decoration: underline;
+}
+
 /* Tablet Responsive */
 @media (max-width: 1024px) {
   .signin-content-wrapper {

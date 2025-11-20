@@ -222,7 +222,7 @@ const LandingPage: React.FC = () => {
           
           {/* Authentication & Action */}
           <div className="auth-section">
-            <a href="#login" className="login-link">Log In</a>
+            <Link to="/dashboard" className="login-link">Log In</Link>
             <Link to="/signup" className="signup-button">Sign Up Now</Link>
           </div>
         </div>
