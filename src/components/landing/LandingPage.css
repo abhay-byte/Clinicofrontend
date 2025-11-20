@@ -1,0 +1,105 @@
+.landing-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.navbar-container {
+  display: flex;
+  align-items: center;
+  padding: 24px 80px;
+  background-color: #EBF1FA; /* bg1 - Light Blue-Grey */
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.navbar-content {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.logo-section {
+  display: flex;
+  align-items: center;
+  margin-right: 60px; /* Gap between logo and navigation links */
+}
+
+.logo {
+  height: 40px;
+  width: auto;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: #00224A; /* b5 - Deep Navy Blue */
+  font-weight: 500; /* Medium weight */
+  position: relative;
+}
+
+.nav-link:hover {
+  color: #174880; /* b1 - Medium Blue on hover */
+}
+
+.nav-dropdown {
+  position: relative;
+}
+
+.dropdown-arrow {
+  margin-left: 4px;
+}
+
+.auth-section {
+  display: flex;
+  align-items: center;
+  gap: 24px; /* Spacing between login and signup */
+  margin-left: auto; /* Pushes auth section to the far right */
+}
+
+.login-link {
+  text-decoration: none;
+  color: #00224A; /* b5 - Deep Navy Blue */
+  font-weight: 700; /* Bold weight */
+}
+
+.signup-button {
+  background-color: transparent; /* Transparent fill */
+  color: #00224A; /* b5 - Deep Navy Blue */
+  border: 2px solid #00224A; /* Thick outline - 2px */
+  padding: 12px 24px; /* Increased padding */
+  border-radius: 8px; /* Rounded corners */
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.signup-button:hover {
+  background-color: #00224A; /* b5 - Deep Navy Blue background on hover */
+  color: #FEFEFF; /* bg2 - White text on hover */
+}
+
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  text-align: center;
+}
+
+.main-content h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.main-content p {
+  font-size: 1.2rem;
+  color: #666;
+}

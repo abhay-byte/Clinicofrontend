@@ -13,9 +13,10 @@ import { NotificationSettingsPage } from "./components/settings/NotificationSett
 import { TermsConditionsPage } from "./components/legal/TermsConditionsPage";
 import { PrivacyPolicyPage } from "./components/legal/PrivacyPolicyPage";
 import { ChatWidget } from "./components/chat/ChatWidget";
+import LandingPage from "./components/landing/LandingPage";
 
 export default function App() {
-  const [currentPage, setCurrentPage] = useState<"dashboard" | "schedule" | "appointments" | "consultation" | "patients" | "patient-details" | "report-requests" | "messages" | "profile" | "help" | "notifications" | "terms" | "privacy">("dashboard");
+  const [currentPage, setCurrentPage] = useState<"dashboard" | "schedule" | "appointments" | "consultation" | "patients" | "patient-details" | "report-requests" | "messages" | "profile" | "help" | "notifications" | "terms" | "privacy" | "landing">("landing");
   const [selectedPatientId, setSelectedPatientId] = useState<string | undefined>(undefined);
 
   const handleNavigate = (page: string, patientId?: string) => {
@@ -27,7 +28,9 @@ export default function App() {
 
   return (
     <>
-      {currentPage === "dashboard" ? (
+      {currentPage === "landing" ? (
+        <LandingPage />
+      ) : currentPage === "dashboard" ? (
         <DashboardPage onNavigate={handleNavigate} />
       ) : currentPage === "schedule" ? (
         <SchedulePage onNavigate={handleNavigate} />
