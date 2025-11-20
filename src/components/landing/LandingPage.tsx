@@ -41,7 +41,7 @@ const LandingPage: React.FC = () => {
        <div className="hero-content">
          <div className="hero-text">
            <h1 className="hero-headline">
-             <span className="quality-highlight">Quality</span> Healthcare For Everyone
+             <span className="highlight">Quality</span> Healthcare For Everyone
            </h1>
            <p className="hero-subtext">
              Get immediate health guidance from our AI, connect with volunteer doctors, and access hyperlocal healthcare services tailored to your community's needs.
@@ -54,7 +54,8 @@ const LandingPage: React.FC = () => {
            </div>
          </div>
          <div className="hero-visual">
-           <div className="blob-bg"></div>
+           <div className="blob-1"></div>
+           <div className="blob-2"></div>
            <img
              src="/src/assets/landing/hero/mascot.png"
              alt="Clinico AI Assistant"
