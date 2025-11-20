@@ -346,48 +346,19 @@
 .prof-visuals {
   position: relative;
   width: 55%;
-  height: 500px;
+  min-height: 400px; /* Adjusted to fit feature image */
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.blob-bg {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background-color: #5DB4E0; /* b2 - Sky Blue */
-  border-radius: 50% 30% 50% 30%;
-  z-index: 0;
-}
-
-/* Add decorative stars/crosses */
-.blob-bg::before {
-  content: "+";
-  position: absolute;
-  top: 20%;
-  left: 30%;
-  color: #84B54C; /* g1 - Leaf Green */
-  font-size: 24px;
-  z-index: 1;
-}
-
-.blob-bg::after {
-  content: "×";
-  position: absolute;
-  top: 60%;
-  left: 70%;
-  color: #84B54C; /* g1 - Leaf Green */
-  font-size: 24px;
-  z-index: 1;
-}
+/* Remove blob background completely */
 
 .image-wrapper {
   position: relative;
   z-index: 2;
-  border: 8px solid white; /* Thick white border */
-  border-radius: 24px; /* Rounded corners */
-  box-shadow: 0 8px 24px rgba(0,0,0,0.1); /* Soft drop shadow */
+  /* Remove border and border-radius */
+  box-shadow: 0 8px 24px rgba(0,0,0,0.1); /* Keep soft drop shadow */
   overflow: hidden;
 }
 
@@ -399,13 +370,12 @@
 
 .feature-cards-row {
   position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
+  bottom: 20px; /* Adjusted position */
+  left: 50%;
+  transform: translateX(-50%); /* Center the cards */
   display: flex;
   gap: 16px;
   justify-content: center;
-  padding: 0 40px 40px;
   z-index: 3;
 }
 
