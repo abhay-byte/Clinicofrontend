@@ -156,10 +156,10 @@
 
 .chat-bubble.bubble-1 { /* Robot's bubble - Dark Blue */
   top: 20%;
-  left: 25%;
+  left: 45%;
   background-color: #00224A; /* Navy Blue */
   color: #FFFFFF; /* White Text */
-  border-radius: 16px 16px 0; /* Robot's bubble */
+  border-radius: 16px 0; /* Robot's bubble */
 }
 
 .chat-bubble.bubble-2 { /* Patient's bubble - White */
@@ -167,12 +167,12 @@
   left: 45%;
   background-color: #FFFFFF; /* White Background */
   color: #00224A; /* Navy Text */
-  border-radius: 16px 16px 0 16px; /* Patient's bubble */
+  border-radius: 16px 0 16px; /* Patient's bubble */
 }
 
 .chat-bubble.bubble-3 { /* Third bubble - Robot's bubble */
   top: 60%;
-  left: 65%;
+  left: 45%;
   background-color: #00224A; /* Navy Blue */
   color: #FFFFFF; /* White Text */
   border-radius: 16px 16px 0; /* Robot's bubble */
