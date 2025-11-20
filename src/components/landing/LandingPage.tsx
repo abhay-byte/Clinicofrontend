@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import './LandingPage.css';
+import Footer from './Footer';
 
 const LandingPage: React.FC = () => {
   // Create refs for the elements we want to watch
@@ -7,6 +8,7 @@ const LandingPage: React.FC = () => {
   const heroHeadlineRef = useRef<HTMLHeadingElement>(null);
   const profHeadlineRef = useRef<HTMLHeadingElement>(null);
   const featuresSectionRef = useRef<HTMLDivElement>(null);
+  const featuresHeadlineRef = useRef<HTMLHeadingElement>(null);
   
   // State to toggle the animation class
   const [isMissionHeadlineVisible, setIsMissionHeadlineVisible] = useState(false);
@@ -14,6 +16,7 @@ const LandingPage: React.FC = () => {
   const [isProfHeadlineVisible, setIsProfHeadlineVisible] = useState(false);
   const [isFeaturesSectionVisible, setIsFeaturesSectionVisible] = useState(false);
   const [isPatientsSectionVisible, setIsPatientsSectionVisible] = useState(false);
+  const [isFeaturesHeadlineVisible, setIsFeaturesHeadlineVisible] = useState(false);
   const patientsHeadlineRef = useRef<HTMLHeadingElement>(null);
 
   useEffect(() => {
@@ -122,6 +125,32 @@ const LandingPage: React.FC = () => {
     return () => {
       if (patientsHeadlineRef.current) {
         observer.unobserve(patientsHeadlineRef.current);
+      }
+    };
+  }, []);
+
+  // Add observer for features headline to trigger animation
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.target === featuresHeadlineRef.current) {
+            setIsFeaturesHeadlineVisible(entry.isIntersecting);
+          }
+        });
+      },
+      {
+        threshold: 0.2, /* Trigger when 20% of the item is visible */
+      }
+    );
+    
+    if (featuresHeadlineRef.current) {
+      observer.observe(featuresHeadlineRef.current);
+    }
+    
+    return () => {
+      if (featuresHeadlineRef.current) {
+        observer.unobserve(featuresHeadlineRef.current);
       }
     };
   }, []);
@@ -314,7 +343,7 @@ const LandingPage: React.FC = () => {
               ref={missionHeadlineRef}
               className={`mission-headline ${isMissionHeadlineVisible ? 'animate-active' : ''}`}
             >
-              Bridging the Gap to <span className="healthcare-highlight">Quality Healthcare</span>
+              Bridging the Gap to <span className="highlight">Quality</span> Healthcare
             </h2>
             <p className="mission-text">
               We believe that quality healthcare is a fundamental human right, not a privilege.
@@ -341,8 +370,11 @@ const LandingPage: React.FC = () => {
         <div className="features-container">
           {/* Left Column: Text Content */}
           <div className="features-text">
-            <h2 className="features-headline">
-              Healthcare, <span className="features-highlight">Re-imagined</span> for You
+            <h2
+              ref={featuresHeadlineRef}
+              className={`features-headline ${isFeaturesHeadlineVisible ? 'animate-active' : ''}`}
+            >
+              Healthcare, <span className="highlight">Re-imagined</span> for You
             </h2>
             <p className="features-body">
               Clinico is more than just an app. It's your comprehensive healthcare companion,
@@ -455,6 +487,8 @@ const LandingPage: React.FC = () => {
         </div>
       </section>
       
+      {/* Footer Section */}
+      <Footer />
     </div>
   );
 };
