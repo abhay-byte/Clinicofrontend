@@ -9,9 +9,10 @@
   align-items: center;
   padding: 24px 80px;
   background-color: #EBF1FA !important; /* bg1 - Light Blue-Grey */
-  box-shadow: 0 2px 4px rgba(0,0,0.1);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   width: 100%;
   z-index: 100;
+  position: relative;
 }
 
 /* More specific selector to ensure styling is applied */
@@ -21,6 +22,14 @@
 
 nav.navbar-container {
   background-color: #EBF1FA !important;
+}
+
+/* Additional override to ensure navbar color */
+.landing-page > .navbar-container,
+.landing-page .navbar-container,
+.landing-page nav {
+  background-color: #EBF1FA !important;
+  background: #EBF1FA !important;
 }
 
 .navbar-content {
