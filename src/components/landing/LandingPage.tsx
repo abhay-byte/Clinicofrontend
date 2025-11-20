@@ -10,7 +10,7 @@ const LandingPage: React.FC = () => {
           {/* Logo */}
          <div className="logo-section">
            <img
-             src="../assets/landing/navbar/logo.png"
+             src="/src/assets/landing/navbar/logo.png"
              alt="Clinico Logo"
              className="logo"
            />
