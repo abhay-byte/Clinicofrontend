@@ -8,8 +8,9 @@
   display: flex;
   align-items: center;
   padding: 24px 80px;
-  background-color: #EBF1FA; /* bg1 - Light Blue-Grey */
+  background-color: #EBF1FA !important; /* bg1 - Light Blue-Grey */
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  width: 100%;
 }
 
 .navbar-content {
