@@ -231,9 +231,9 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 80px; /* RESTORE THIS: Gives the 80px whitespace around the box */
+  padding: 80px;
   gap: 60px;
-  background-color: #EBF1FA; /* bg1 */
+  background-color: #EBF1FA; /* bg1 (Consistent with Navbar) */
   overflow: visible; /* Allows the blob/shadows to show without scrolling */
 }
 
@@ -253,7 +253,7 @@
   max-width: 50%;
 }
 
-/* 1. Define the Shimmer Animation Keyframes */
+/* 1. Define the Animation Keyframes */
 @keyframes shimmer {
   0% {
     background-position: -200% center;
@@ -265,10 +265,10 @@
 
 /* 2. Apply styles to the Title */
 .prof-headline {
-  font-size: 2.5rem;
+  font-size: 4rem;
   font-weight: 800;
-  line-height: 1.2;
-  margin: 0;
+  line-height: 1.1;
+  margin-bottom: 24px;
   
   /* --- THE SHIMMER ANIMATION MAGIC --- */
   
@@ -295,7 +295,7 @@
   animation: shimmer 5s linear infinite;
   
   position: relative;
-  white-space: pre-line; /* Allows text to wrap to new lines */
+  white-space: pre-wrap; /* Allows text to wrap to new lines */
 }
 
 /* 3. Add the green brush stroke underline to the highlight class */

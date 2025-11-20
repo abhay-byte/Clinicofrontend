@@ -72,7 +72,7 @@ const LandingPage: React.FC = () => {
      </section>
      
      {/* For Professionals Section */}
-     <section id="for-professionals" className="prof-section">
+     <section id="for-professionals" className="for-professionals-section">
        <div className="prof-content">
          <div className="prof-text">
            <h2 className="prof-headline">
