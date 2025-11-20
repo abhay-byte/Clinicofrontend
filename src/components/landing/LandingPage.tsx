@@ -101,10 +101,7 @@ const LandingPage: React.FC = () => {
          </div>
 
          <div className="prof-visuals">
-           <div className="blob-bg"></div>
-           <div className="image-wrapper">
-             <img src="/src/assets/doctor/features.png" alt="Doctor Consulting" />
-           </div>
+           <img src="/src/assets/doctor/features.png" alt="Doctor Consulting" className="prof-image" />
            <div className="feature-cards-row">
              <div className="feature-card">
                <span className="badge badge-purple">Feature</span>

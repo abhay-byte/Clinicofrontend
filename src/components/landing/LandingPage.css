@@ -253,36 +253,42 @@
   max-width: 50%;
 }
 
-/* 2. Apply styles to the Title with safety fallback */
+/* --- 2. Apply styles to the Title with safety fallback */
 .prof-headline {
   font-size: 4rem;
   font-weight: 800;
-  line-height: 1.1;
+ line-height: 1.1;
   margin-bottom: 24px;
-  position: relative;
   white-space: pre-wrap;
+  position: relative;
   
-  /* Safety Fallback - ensure text is visible even if animation fails */
+  /* BASE COLOR (Visible by default) */
   color: #00224A;
-  
-  /* Define the Gradient */
-  background: linear-gradient(
-    110deg,
-    #00224A 40%,   /* Main Text Color (b5) */
-    #5DB4E0 50%,   /* Shine Color (b2) */
-    #00224A 60%    /* Main Text Color (b5) */
-  );
-  background-size: 200% auto;
-  
-  /* Clip the background to the text shape */
-  -webkit-background-clip: text;
-  background-clip: text;
-  
-  /* Make the text fill transparent so the background shows */
-  -webkit-text-fill-color: transparent;
-  
-  /* Run the animation */
-  animation: shimmer 5s linear infinite;
+}
+
+/* Only apply the fancy effect if the browser supports it */
+@supports (background-clip: text) or (-webkit-background-clip: text) {
+  .prof-headline {
+    /* The Gradient */
+    background: linear-gradient(
+      110deg,
+      #00224A 45%,   /* Navy */
+      #5DB4E0 50%,   /* Light Blue Shine */
+      #00224A 5%    /* Navy */
+    );
+    background-size: 200% auto;
+    
+    /* Clip background to text */
+    -webkit-background-clip: text;
+    background-clip: text;
+    
+    /* Make text transparent ONLY here */
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    
+    /* Animate */
+    animation: shimmer 3s linear infinite; /* Sped up slightly for visibility */
+  }
 }
 
 /* 3. Add the green brush stroke underline to the highlight class */
@@ -306,15 +312,15 @@
   border-radius: 4px; /* Softens the edges */
 }
 
-/* 1. Define the Floating Keyframes */
+/* --- 1. Define the Keyframes (The Movement) --- */
 @keyframes float {
   0% {
     transform: translateY(0px);
   }
   50% {
-    transform: translateY(-10px); /* Moves up slightly */
+    transform: translateY(-12px); /* Moves up 12px */
   }
-  100% {
+ 100% {
     transform: translateY(0px);
   }
 }
@@ -324,20 +330,24 @@
   border-radius: 12px;
   padding: 16px;
   width: 150px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15); /* Strong drop shadow */
-  /* Apply the floating animation */
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  
+  /* The Animation Rule */
   animation: float 6s ease-in-out infinite;
+  
+  /* Hardware acceleration for smoother movement */
+  will-change: transform;
 }
 
-/* Stagger the animation so they wave independently */
+/* --- 3. Stagger the movement (So they don't move like robots) --- */
 .feature-card:nth-child(1) {
   animation-delay: 0s;
 }
 .feature-card:nth-child(2) {
-  animation-delay: 2s; /* Starts later */
+  animation-delay: 2s; /* Starts 2 seconds later */
 }
 .feature-card:nth-child(3) {
-  animation-delay: 4s; /* Starts even later */
+  animation-delay: 4s; /* Starts 4 seconds later */
 }
 
 /* Additional styling for badges */
@@ -401,43 +411,43 @@
 /* 3. The "Sequential Pop" for Checkmarks */
 /* Initial State: Hidden and small */
 .check-icon {
-  opacity: 0;
+  /* opacity: 0;
   transform: scale(0);
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Bouncy effect */
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); */ /* Bouncy effect */
 }
 
 /* Active State (Add this class via JS/React when scrolled into view) */
 .check-icon.visible {
-  opacity: 1;
-  transform: scale(1);
+  /* opacity: 1;
+  transform: scale(1); */
 }
 
 /* CSS Delays for specific items if you can target them */
-.benefit-list li:nth-child(1) .check-icon { transition-delay: 0.1s; }
-.benefit-list li:nth-child(2) .check-icon { transition-delay: 0.2s; }
-.benefit-list li:nth-child(3) .check-icon { transition-delay: 0.3s; }
+.benefit-list li:nth-child(1) .check-icon { /* transition-delay: 0.1s; */ }
+.benefit-list li:nth-child(2) .check-icon { /* transition-delay: 0.2s; */ }
+.benefit-list li:nth-child(3) .check-icon { /* transition-delay: 0.3s; */ }
 
 /* 4. The "Parallax Entrance" (Whole Section) */
 /* Left Text Container */
 .prof-text {
-  opacity: 0;
-  transform: translateY(30px); /* Starts slightly lower */
-  transition: all 0.8s ease-out;
+  /* opacity: 0;
+  transform: translateY(30px); */ /* Starts slightly lower */
+  /* transition: all 0.8s ease-out; */
 }
 
 /* Right Visual Container */
 .prof-visuals {
-  opacity: 0;
+  /* opacity: 0;
   transform: translateY(30px);
   transition: all 0.8s ease-out;
-  transition-delay: 0.2s; /* The image appears slightly after the text */
+  transition-delay: 0.2s; */ /* The image appears slightly after the text */
 }
 
 /* The class added when in view */
 .section-visible .prof-text,
 .section-visible .prof-visuals {
-  opacity: 1;
-  transform: translateY(0);
+  /* opacity: 1;
+  transform: translateY(0); */
 }
 
 .benefit-list {
@@ -488,22 +498,22 @@
 }
 
 /* The Blue Blob Background */
-.blob-bg {
+/* .blob-bg {
   position: absolute;
   top: -40px;
   right: -40px;
-  width: 120%; /* Limit size relative to container */
+  width: 120%; / Limit size relative to container /
   height: 120%;
-  background-color: #5DB4E0; /* b2 - Sky Blue */
-  border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; /* CSS Blob shape */
-  z-index: 0; /* Lowest layer */
-}
+  background-color: #5DB4E0; / b2 - Sky Blue /
+  border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; / CSS Blob shape /
+  z-index: 0; / Lowest layer /
+} */
 
 .image-wrapper {
   position: relative;
   z-index: 1; /* Above blob */
-  border: 10px solid white; /* The white frame */
-  border-radius: 24px;
+  /* border: 10px solid white; / The white frame */
+  /* border-radius: 24px; */
   overflow: hidden;
   box-shadow: 0 20px 40px rgba(0,0,0,0.1);
 }
@@ -571,14 +581,22 @@
   position: relative;
   z-index: 2;
   /* Remove border and border-radius */
-  box-shadow: 0 8px 24px rgba(0,0,0,0.1); /* Keep soft drop shadow */
+  /* box-shadow: 0 8px 24px rgba(0,0,0,0.1); */ /* Keep soft drop shadow */
   overflow: hidden;
 }
 
-.image-wrapper img {
+.prof-image {
   display: block;
-  max-width: 100%;
+  max-width: 80%; /* Make the image smaller */
   height: auto;
+  /* box-shadow: 0 8px 24px rgba(0,0,0,0.1); */ /* Keep soft drop shadow */
+}
+
+.image-wrapper img {
+ display: block;
+  max-width: 80%; /* Make the image smaller */
+  height: auto;
+  /* Remove the white border by removing the wrapper */
 }
 
 .feature-cards-row {
