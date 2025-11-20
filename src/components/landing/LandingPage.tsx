@@ -1,20 +1,49 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import './LandingPage.css';
 
-
 const LandingPage: React.FC = () => {
+  // 1. Create a Ref for the element we want to watch
+ const headlineRef = useRef<HTMLHeadingElement>(null);
+  
+  // 2. State to toggle the animation class
+  const [isHeadlineVisible, setIsHeadlineVisible] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        // 3. Toggle state based on visibility
+        // If entry.isIntersecting is true, animation plays.
+        // If false, it removes the class, resetting the green line to 0 width.
+        setIsHeadlineVisible(entry.isIntersecting);
+      },
+      {
+        threshold: 0.2, /* Trigger when 20% of the item is visible */
+      }
+    );
+
+    if (headlineRef.current) {
+      observer.observe(headlineRef.current);
+    }
+
+    return () => {
+      if (headlineRef.current) {
+        observer.unobserve(headlineRef.current);
+      }
+    };
+  }, []);
+
   return (
     <div className="landing-page">
       {/* Navigation Bar */}
       <nav className="navbar-container">
         <div className="navbar-content">
           {/* Logo */}
-         <div className="logo-section">
-           <img
-             src="/src/assets/landing/navbar/logo.png"
-             alt="Clinico Logo"
-             className="logo"
-           />
+          <div className="logo-section">
+            <img
+              src="/src/assets/landing/navbar/logo.png"
+              alt="Clinico Logo"
+              className="logo"
+            />
           </div>
           
           {/* Navigation Links */}
@@ -27,7 +56,7 @@ const LandingPage: React.FC = () => {
                 Features <span className="dropdown-arrow">⌄</span>
               </a>
             </div>
-          </div>
+          </div> {/* Close nav-links */}
           
           {/* Authentication & Action */}
           <div className="auth-section">
@@ -38,98 +67,138 @@ const LandingPage: React.FC = () => {
       </nav>
       
       {/* Hero Section */}
-     <section className="hero-section">
-       <div className="hero-content">
-         <div className="hero-text">
-           <h1 className="hero-headline">
-             <span className="highlight">Quality</span> Healthcare For Everyone
-           </h1>
-           <p className="hero-subtext">
-             Get immediate health guidance from our AI, connect with volunteer doctors, and access hyperlocal healthcare services tailored to your community's needs.
-           </p>
-           <div className="hero-cta-group">
-             <button className="primary-cta-button">Find Doctors</button>
-             <a href="#how-it-works" className="secondary-cta-link">
-               <span className="play-icon">▶</span> How It Works
-             </a>
-           </div>
-         </div>
-         <div className="hero-visual">
-           <img
-             src="/src/assets/landing/hero/mascot.png"
-             alt="Clinico AI Assistant"
-             className="mascot-img"
-           />
-           <img
-             src="/src/assets/landing/hero/patient.png"
-             alt="Patient"
-             className="patient-img"
-           />
-           <div className="chat-bubble bubble-1">Hi, how can I help you today?</div>
-           <div className="chat-bubble bubble-2">I've been feeling anxious lately.</div>
-           <div className="chat-bubble bubble-3">I understand. Let's find a doctor.</div>
-         </div>
-       </div>
-     </section>
-     
-     {/* For Professionals Section */}
-     <section id="for-professionals" className="for-professionals-section">
-       <div className="prof-content">
-         <div className="prof-text">
-           <h2 className="prof-headline">
-             Make a <span className="highlight">Difference</span><br />On Your Schedule
-           </h2>
-           
-           <ul className="benefit-list">
-             <li className="benefit-item">
-               <span className="check-icon">✓</span>
-               <p><strong>Flexible Volunteering:</strong> Set your own availability and work at your convenience.</p>
-             </li>
-             <li className="benefit-item">
-               <span className="check-icon">✓</span>
-               <p><strong>Impactful Work:</strong> Provide essential healthcare support to underserved communities.</p>
-             </li>
-             <li className="benefit-item">
-               <span className="check-icon">✓</span>
-               <p><strong>Professional Growth:</strong> Expand your skills while making a meaningful difference.</p>
-             </li>
-           </ul>
+      <section className="hero-section">
+        <div className="hero-content">
+          <div className="hero-text">
+            <h1 className="hero-headline">
+              <span className="highlight">Quality</span> Healthcare For Everyone
+            </h1>
+            <p className="hero-subtext">
+              Get immediate health guidance from our AI, connect with volunteer doctors, and access hyperlocal healthcare services tailored to your community's needs.
+            </p>
+            <div className="hero-cta-group">
+              <button className="primary-cta-button">Find Doctors</button>
+              <a href="#how-it-works" className="secondary-cta-link">
+                <span className="play-icon">▶</span> How It Works
+              </a>
+            </div>
+          </div> {/* Close hero-text */}
+          <div className="hero-visual">
+            <img
+              src="/src/assets/landing/hero/mascot.png"
+              alt="Clinico AI Assistant"
+              className="mascot-img"
+            />
+            <img
+              src="/src/assets/landing/hero/patient.png"
+              alt="Patient"
+              className="patient-img"
+            />
+            <div className="chat-bubble bubble-1">Hi, how can I help you today?</div>
+            <div className="chat-bubble bubble-2">I've been feeling anxious lately.</div>
+            <div className="chat-bubble bubble-3">I understand. Let's find a doctor.</div>
+          </div>
+        </div> {/* Close hero-content */}
+      </section>
+      
+      {/* For Professionals Section */}
+      <section id="for-professionals" className="for-professionals-section">
+        <div className="prof-content">
+          <div className="prof-text">
+            <h2 className="prof-headline">
+              Make a <span className="highlight">Difference</span><br />On Your Schedule
+            </h2>
+            
+            <ul className="benefit-list">
+              <li className="benefit-item">
+                <span className="check-icon">✓</span>
+                <p><strong>Flexible Volunteering:</strong> Set your own availability and work at your convenience.</p>
+              </li>
+              <li className="benefit-item">
+                <span className="check-icon">✓</span>
+                <p><strong>Impactful Work:</strong> Provide essential healthcare support to underserved communities.</p>
+              </li>
+              <li className="benefit-item">
+                <span className="check-icon">✓</span>
+                <p><strong>Professional Growth:</strong> Expand your skills while making a meaningful difference.</p>
+              </li>
+            </ul>
 
-           <a href="/signup-professional" className="cta-link">
-             Join Our Volunteer Network <span className="arrow-icon">→</span>
-           </a>
-         </div>
+            <a href="/signup-professional" className="cta-link">
+              Join Our Volunteer Network <span className="arrow-icon">→</span>
+            </a>
+          </div> {/* Close prof-text */}
 
-         <div className="prof-visuals">
-           <img src="/src/assets/doctor/features.png" alt="Doctor Consulting" className="prof-image" />
-           <div className="feature-cards-row">
-             <div className="feature-card">
-               <span className="badge badge-purple">Feature</span>
-               <h3>Smart Calendar</h3>
-               <p>Easily set and manage your availability with our intelligent scheduling system.</p>
-             </div>
-             <div className="feature-card">
-               <span className="badge badge-blue">Feature</span>
-               <h3>AI Briefings</h3>
-               <p>Receive automated patient summaries and care recommendations powered by AI.</p>
-             </div>
-             <div className="feature-card">
-               <span className="badge badge-green">Feature</span>
-               <h3>Workspace</h3>
-               <p>Access a streamlined dashboard with all your patient interactions and records.</p>
-             </div>
-           </div>
-         </div>
-       </div>
-     </section>
-     
-     {/* Main Content - Placeholder for now */}
-     <main className="main-content">
-       <h1>Welcome to Clinico</h1>
-       <p>Your healthcare companion for better health outcomes</p>
-     </main>
-   </div>
- );
+          <div className="prof-visuals">
+            <img src="/src/assets/doctor/features.png" alt="Doctor Consulting" className="prof-image" />
+            <div className="feature-cards-row">
+              <div className="feature-card">
+                <span className="badge badge-purple">Feature</span>
+                <h3>Smart Calendar</h3>
+                <p>Easily set and manage your availability with our intelligent scheduling system.</p>
+              </div>
+              <div className="feature-card">
+                <span className="badge badge-blue">Feature</span>
+                <h3>AI Briefings</h3>
+                <p>Receive automated patient summaries and care recommendations powered by AI.</p>
+              </div>
+              <div className="feature-card">
+                <span className="badge badge-green">Feature</span>
+                <h3>Workspace</h3>
+                <p>Access a streamlined dashboard with all your patient interactions and records.</p>
+              </div>
+            </div>
+          </div> {/* Close prof-visuals */}
+        </div> {/* Close prof-content */}
+      </section>
+      
+      {/* Our Mission Section */}
+      <section id="mission" className="mission-section">
+        <div className="mission-container">
+          {/* Left Section: Heart Image Collage */}
+          <div className="mission-visuals">
+            <img 
+              src="/src/assets/mission/heart-image.png" 
+              alt="Heart of Care - representing our mission to connect communities with healthcare" 
+              className="heart-collage"
+            />
+          </div>
+          
+          {/* Right Section: Mission Content */}
+          <div className="mission-content">
+            <div className="mission-icon">
+              <img 
+                src="/src/assets/mission/heart-icon.png" 
+                alt="Heart with Plus Sign Icon" 
+              />
+            </div>
+            <h2
+              ref={headlineRef}
+              className={`mission-headline ${isHeadlineVisible ? 'animate-active' : ''}`}
+            >
+              Bridging the Gap to <span className="healthcare-highlight">Quality Healthcare</span>
+            </h2>
+            <p className="mission-text">
+              We believe that quality healthcare is a fundamental human right, not a privilege. 
+              Our mission is to bridge the gap between underserved communities and essential 
+              medical services through innovative technology, volunteer healthcare professionals, 
+              and community-driven solutions. We're committed to making healthcare accessible, 
+              affordable, and effective for everyone, regardless of their location or economic status.
+            </p>
+            <a href="#learn-more" className="mission-cta">
+              Learn More About Our Impact <span className="arrow-icon">→</span>
+            </a>
+          </div> {/* Close mission-content */}
+        </div> {/* Close mission-container */}
+      </section>
+      
+      {/* Main Content - Placeholder for now */}
+      <main className="main-content">
+        <h1>Welcome to Clinico</h1>
+        <p>Your healthcare companion for better health outcomes</p>
+      </main>
+    </div>
+  );
 };
 
 export default LandingPage;

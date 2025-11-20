@@ -793,3 +793,212 @@ nav.navbar-container {
   font-size: 1.2rem;
   color: #666;
 }
+
+/* Our Mission Section */
+.mission-section {
+  display: flex;
+  padding: 80px;
+  align-items: center;
+  gap: 80px;
+  align-self: stretch;
+  background: linear-gradient(to right, #FFFFFF 50%, #EBF1FA 50%);
+}
+
+.mission-container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 80px;
+}
+
+.mission-visuals {
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #FFFFFF; /* Pure white background for the left side */
+  position: relative;
+}
+
+.mission-visuals::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #FFFFFF; /* Ensure the background is definitely white */
+  z-index: -1;
+}
+
+/* White background to match the left side of the split has been moved to the earlier definition */
+
+.heart-collage {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  background: transparent; /* Ensure no background is added to the image */
+  display: block; /* Remove any inline spacing */
+  margin: 0; /* Remove any default margins */
+  padding: 0; /* Remove any default padding */
+}
+
+.mission-content {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.mission-icon img {
+  width: 48px;
+  height: 48px;
+}
+
+/* Old mission headline styles have been replaced with animated versions above */
+
+.mission-text {
+  color: #4A5568;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin: 0;
+  max-width: 100%;
+}
+
+.mission-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #248BEB; /* b4 - Bright Blue */
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1.1rem;
+  transition: gap 0.3s ease;
+}
+
+.mission-cta:hover {
+  gap: 12px;
+}
+
+/* Animation for Our Mission Section */
+
+/* 1. Define the Entrance Keyframes (Community Assembly) */
+@keyframes popIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.5); /* Start small */
+  }
+  70% {
+    transform: scale(1.05); /* Slight bounce/overshoot */
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Apply to the heart collage image */
+.heart-collage {
+  opacity: 0;
+  animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+  animation-delay: 0.3s; /* Slight delay for the whole image */
+}
+
+/* 2. The "Living Heartbeat" (Subtle Loop) */
+@keyframes heartbeat {
+ 0% { transform: scale(1); }
+  15% { transform: scale(1.015); } /* Small expansion */
+  30% { transform: scale(1); }
+ 45% { transform: scale(1.015); } /* Second small beat */
+  60% { transform: scale(1); }     /* Rest */
+  100% { transform: scale(1); }
+}
+
+.mission-visuals {
+  animation: heartbeat 4s ease-in-out infinite;
+  will-change: transform;
+}
+
+/* 3. The "Drawing" Highlight (Text Focus) - this was duplicated, so we'll keep the later version */
+
+/* --- 1. The Headline Shimmer Animation --- */
+.mission-headline {
+  font-size: 2.5rem; /* Adjust based on design */
+  font-weight: 800;
+  line-height: 1.2;
+  color: #00224A; /* Fallback color */
+  position: relative;
+  margin: 0;
+  
+  /* Gradient Setup */
+  background: linear-gradient(
+    110deg,
+    #00224A 45%,
+    #5DB4E0 50%,   /* The shine color */
+    #00224A 55%
+  );
+  background-size: 200% auto;
+  
+  /* Clip background to text */
+  -webkit-background-clip: text;
+  background-clip: text;
+  
+  /* Make text transparent */
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+/* Only animate when the 'animate-active' class is present */
+.mission-headline.animate-active {
+  animation: shimmer 3s linear infinite;
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+.healthcare-highlight {
+  position: relative;
+  display: inline-block;
+  /* Ensure the word itself stays visible/colored properly */
+  -webkit-text-fill-color: #00224A;
+  color: #00224A;
+  z-index: 1;
+}
+
+.healthcare-highlight::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 2px; /* Adjust vertical position */
+  height: 12px; /* Thickness of stroke */
+  background-color: #84B54C; /* Green Color */
+  z-index: -1;
+  border-radius: 4px;
+  
+  /* ANIMATION SETUP: Start with 0 width */
+  width: 0%;
+  transition: width 2s cubic-bezier(0.22, 1, 0.36, 1); /* Smooth ease-out - made slower */
+}
+
+/* When the class is added, expand to full width */
+.mission-headline.animate-active .healthcare-highlight::after {
+  width: 100%;
+}
+
+/* Old trigger has been replaced with the new animation approach */
+
+/* Animation for the mission text entrance */
+.mission-content {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: slideUp 0.8s ease-out 0.3s forwards;
+}
+
+@keyframes slideUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
