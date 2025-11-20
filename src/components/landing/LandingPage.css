@@ -227,13 +227,14 @@
 }
 
 /* For Professionals Section */
-#professional-section {
+#for-professionals {
   display: flex;
-  padding: 80px;
   align-items: center;
-  gap: 80px;
-  align-self: stretch;
-  background-color: #EBF1FA; /* bg1 (Continues from Hero section) */
+  justify-content: space-between;
+  padding: 80px; /* RESTORE THIS: Gives the 80px whitespace around the box */
+  gap: 60px;
+  background-color: #EBF1FA; /* bg1 */
+  overflow: visible; /* Allows the blob/shadows to show without scrolling */
 }
 
 .prof-content {
@@ -252,7 +253,7 @@
   max-width: 50%;
 }
 
-/* 1. Define the Animation Keyframes */
+/* 1. Define the Shimmer Animation Keyframes */
 @keyframes shimmer {
   0% {
     background-position: -200% center;
@@ -262,15 +263,14 @@
   }
 }
 
-/* 2. Apply styles to the Professional Section Title */
+/* 2. Apply styles to the Title */
 .prof-headline {
-  font-size: 2.5rem; /* H2 size */
+  font-size: 2.5rem;
   font-weight: 800;
   line-height: 1.2;
   margin: 0;
-  position: relative;
   
-  /* --- THE ANIMATION MAGIC --- */
+  /* --- THE SHIMMER ANIMATION MAGIC --- */
   
   /* Create the gradient: Navy -> Light Blue -> Navy */
   background: linear-gradient(
@@ -294,15 +294,241 @@
   /* Run the animation */
   animation: shimmer 5s linear infinite;
   
+  position: relative;
   white-space: pre-line; /* Allows text to wrap to new lines */
 }
 
-/* Optional: Ensure the highlight span maintains its green underline */
+/* 3. Add the green brush stroke underline to the highlight class */
 .prof-headline .highlight {
   position: relative;
   display: inline-block;
-  color: #00224A; /* b5 - This will be overridden by the animation */
-  -webkit-text-fill-color: #00224A; /* Override transparency for the "Quality" word if desired, OR let it shimmer too */
+  /* Override the shimmer for the "Quality" word to keep it stable */
+  -webkit-text-fill-color: #00224A;
+  color: #00224A;
+}
+
+.prof-headline .highlight::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 2px; /* Adjust to align with text baseline */
+  width: 100%;
+  height: 10px; /* Thickness of the brush stroke */
+  background-color: #84B54C; /* g1 - Leaf Green */
+  z-index: -1; /* Puts it behind the text */
+  border-radius: 4px; /* Softens the edges */
+}
+
+/* 1. Define the Floating Keyframes */
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px); /* Moves up slightly */
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+.feature-card {
+  background: white;
+  border-radius: 12px;
+  padding: 16px;
+  width: 150px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15); /* Strong drop shadow */
+  /* Apply the floating animation */
+  animation: float 6s ease-in-out infinite;
+}
+
+/* Stagger the animation so they wave independently */
+.feature-card:nth-child(1) {
+  animation-delay: 0s;
+}
+.feature-card:nth-child(2) {
+  animation-delay: 2s; /* Starts later */
+}
+.feature-card:nth-child(3) {
+  animation-delay: 4s; /* Starts even later */
+}
+
+/* Additional styling for badges */
+.badge {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.badge-purple {
+  background-color: #E0B0FF; /* Light Purple */
+}
+
+.badge-blue {
+  background-color: #ADD8E6; /* Light Blue */
+}
+
+.badge-green {
+  background-color: #90EE90; /* Light Green */
+}
+
+.feature-card h3 {
+  color: #00224A; /* b5 - Deep Navy Blue */
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0 0 8px 0;
+}
+
+.feature-card p {
+  color: #4A5568; /* Dark Grey */
+  font-size: 0.85rem;
+  line-height: 1.4;
+  margin: 0;
+}
+
+/* 2. The "Arrow Slide" on CTA Hover */
+.cta-link {
+  display: inline-flex; /* Ensures icon aligns with text */
+  align-items: center;
+  gap: 8px;
+  color: #248BEB; /* b4 - Bright Blue */
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1.1rem;
+  transition: gap 0.3s ease; /* Smooth transition */
+}
+
+/* Target the arrow specifically - assuming the arrow is part of the text */
+.cta-link .arrow-icon {
+  transition: transform 0.3s ease;
+}
+
+/* On Hover: Move the arrow right */
+.cta-link:hover .arrow-icon {
+  transform: translateX(5px);
+}
+
+/* 3. The "Sequential Pop" for Checkmarks */
+/* Initial State: Hidden and small */
+.check-icon {
+  opacity: 0;
+  transform: scale(0);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Bouncy effect */
+}
+
+/* Active State (Add this class via JS/React when scrolled into view) */
+.check-icon.visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* CSS Delays for specific items if you can target them */
+.benefit-list li:nth-child(1) .check-icon { transition-delay: 0.1s; }
+.benefit-list li:nth-child(2) .check-icon { transition-delay: 0.2s; }
+.benefit-list li:nth-child(3) .check-icon { transition-delay: 0.3s; }
+
+/* 4. The "Parallax Entrance" (Whole Section) */
+/* Left Text Container */
+.prof-text {
+  opacity: 0;
+  transform: translateY(30px); /* Starts slightly lower */
+  transition: all 0.8s ease-out;
+}
+
+/* Right Visual Container */
+.prof-visuals {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s ease-out;
+  transition-delay: 0.2s; /* The image appears slightly after the text */
+}
+
+/* The class added when in view */
+.section-visible .prof-text,
+.section-visible .prof-visuals {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.benefit-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.benefit-item {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.check-icon {
+  color: #84B54C; /* g1 - Leaf Green */
+  font-weight: bold;
+  margin-top: 4px;
+}
+
+.benefit-item p {
+  margin: 0;
+  color: #00224A; /* b5 - Deep Navy Blue */
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.cta-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #248BEB; /* b4 - Bright Blue */
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.prof-visuals {
+  position: relative;
+  width: 55%;
+  min-height: 400px; /* Ensure adequate height */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* The Blue Blob Background */
+.blob-bg {
+  position: absolute;
+  top: -40px;
+  right: -40px;
+  width: 120%; /* Limit size relative to container */
+  height: 120%;
+  background-color: #5DB4E0; /* b2 - Sky Blue */
+  border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; /* CSS Blob shape */
+  z-index: 0; /* Lowest layer */
+}
+
+.image-wrapper {
+  position: relative;
+  z-index: 1; /* Above blob */
+  border: 10px solid white; /* The white frame */
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+}
+
+.feature-cards-row {
+  position: absolute;
+  bottom: -40px; /* Pulls them down to overlap the bottom edge */
+  left: 20px; /* Adjust horizontal alignment */
+  right: 20px;
+  display: flex;
+  gap: 16px;
+  z-index: 2; /* Top layer */
 }
 
 .benefit-list {

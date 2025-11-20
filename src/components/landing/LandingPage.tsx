@@ -95,7 +95,7 @@ const LandingPage: React.FC = () => {
            </ul>
 
            <a href="/signup-professional" className="cta-link">
-             Join Our Volunteer Network →
+             Join Our Volunteer Network <span className="arrow-icon">→</span>
            </a>
          </div>
 
