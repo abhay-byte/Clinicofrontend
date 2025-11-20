@@ -41,7 +41,7 @@ const LandingPage: React.FC = () => {
        <div className="hero-content">
          <div className="hero-text">
            <h1 className="hero-headline">
-             <span className="highlight">Quality</span> Healthcare For Everyone
+             <span className="highlight">Quality</span> Healthcare<br />For Everyone
            </h1>
            <p className="hero-subtext">
              Get immediate health guidance from our AI, connect with volunteer doctors, and access hyperlocal healthcare services tailored to your community's needs.

@@ -37,10 +37,12 @@
   line-height: 1.1;
   margin-bottom: 24px;
   position: relative;
+  white-space: pre-line; /* Allows for line breaks */
   overflow: hidden; /* Ensures the typing effect works properly */
-  white-space: nowrap; /* Keeps the text on one line */
   border-right: 3px solid #00224A; /* Cursor effect */
-  animation: typing 3.5s steps(20, end), blink-caret 0.75s step-end infinite;
+  width: 0; /* Initial width for typing effect */
+  animation: typing 4s steps(40, end), blink-caret 0.75s step-end infinite;
+  white-space: pre-wrap; /* Allows text to wrap to new lines */
 }
 
 @keyframes typing {
@@ -59,6 +61,14 @@
   50% {
     border-color: #00224A;
   }
+}
+
+/* Specific styling for the highlight span to maintain animation */
+.hero-headline .highlight {
+  position: relative;
+  display: inline-block;
+  color: #00224A; /* b5 */
+  white-space: pre-wrap;
 }
 
 .highlight {
