@@ -714,13 +714,14 @@
 
 .navbar-container {
   display: flex;
+  justify-content: space-between;
   align-items: center;
   padding: 24px 80px;
-  background-color: #FFFFFF !important; /* bg1 - Light Blue-Grey */
+  background-color: #FFFFFF; /* bg1 - Light Blue-Grey */
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   width: 100%;
   z-index: 1000;
- position: fixed;
+  position: sticky;
   top: 0;
   left: 0;
   box-sizing: border-box;
@@ -749,29 +750,30 @@ nav.navbar-container {
   display: flex;
   align-items: center;
   width: 100%;
+  justify-content: space-between;
 }
 
 .logo-section {
   display: flex;
   align-items: center;
-  margin-right: 60px; /* Gap between logo and navigation links */
+  margin-right: auto; /* Push other elements to the right */
 }
 
 .logo {
-  height: 60px;
+  height: 50px; /* Reduced from 60px to 50px as requested */
   width: auto;
 }
 
 .nav-links {
   display: flex;
   align-items: center;
-  gap: 32px;
+  gap: 40px; /* Increased from 32px to 40px */
 }
 
 .nav-link {
   text-decoration: none;
   color: #00224A; /* b5 - Deep Navy Blue */
-  font-weight: 500; /* Medium weight */
+  font-weight: 600; /* Increased from 500 to 600 */
   position: relative;
 }
 
@@ -781,6 +783,9 @@ nav.navbar-container {
 
 .nav-dropdown {
   position: relative;
+  display: flex;
+ align-items: center;
+ gap: 4px; /* Added gap for chevron */
 }
 
 .dropdown-arrow {
@@ -804,16 +809,16 @@ nav.navbar-container {
   background-color: transparent; /* Transparent fill */
   color: #00224A; /* b5 - Deep Navy Blue */
   border: 2px solid #00224A; /* Thick outline - 2px */
-  padding: 12px 24px; /* Increased padding */
+  padding: 10px 24px; /* Updated padding to match requirements */
   border-radius: 8px; /* Rounded corners */
   cursor: pointer;
-  font-weight: bold;
+  font-weight: 700; /* Updated font weight to 700 */
   font-size: 14px;
 }
 
 .signup-button:hover {
   background-color: #00224A; /* b5 - Deep Navy Blue background on hover */
-  color: #FEFEFF; /* bg2 - White text on hover */
+  color: white; /* White text on hover */
 }
 
 .main-content {
@@ -1449,6 +1454,21 @@ nav.navbar-container {
   box-shadow: none !important;
   border: none !important;
 }
+/* Responsive Design for Navbar */
+@media screen and (max-width: 768px) {
+  .nav-links {
+    display: none; /* Hide navigation links on small screens */
+  }
+  
+  .navbar-container {
+    padding: 16px 24px; /* Reduced padding on mobile */
+  }
+  
+  .logo {
+    height: 40px; /* Smaller logo on mobile */
+  }
+}
+
 /* Footer Styles */
 .footer-container {
   background-color: #174880; /* Deep Brand Blue */
