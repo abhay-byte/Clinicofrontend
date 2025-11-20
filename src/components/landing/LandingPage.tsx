@@ -36,13 +36,49 @@ const LandingPage: React.FC = () => {
         </div>
       </nav>
       
-      {/* Main Content - Placeholder for now */}
-      <main className="main-content">
-        <h1>Welcome to Clinico</h1>
-        <p>Your healthcare companion for better health outcomes</p>
-      </main>
-    </div>
-  );
+      {/* Hero Section */}
+     <section className="hero-section">
+       <div className="hero-content">
+         <div className="hero-text">
+           <h1 className="hero-headline">
+             <span className="quality-highlight">Quality</span> Healthcare For Everyone
+           </h1>
+           <p className="hero-subtext">
+             Get immediate health guidance from our AI, connect with volunteer doctors, and access hyperlocal healthcare services tailored to your community's needs.
+           </p>
+           <div className="hero-cta-group">
+             <button className="primary-cta-button">Find Doctors</button>
+             <a href="#how-it-works" className="secondary-cta-link">
+               <span className="play-icon">▶</span> How It Works
+             </a>
+           </div>
+         </div>
+         <div className="hero-visual">
+           <div className="blob-bg"></div>
+           <img
+             src="/src/assets/landing/hero/mascot.png"
+             alt="Clinico AI Assistant"
+             className="mascot-img"
+           />
+           <img
+             src="/src/assets/landing/hero/patient.png"
+             alt="Patient"
+             className="patient-img"
+           />
+           <div className="chat-bubble bubble-1">Hi, how can I help you today?</div>
+           <div className="chat-bubble bubble-2">I've been feeling anxious lately.</div>
+           <div className="chat-bubble bubble-3">I understand. Let's find a doctor.</div>
+         </div>
+       </div>
+     </section>
+     
+     {/* Main Content - Placeholder for now */}
+     <main className="main-content">
+       <h1>Welcome to Clinico</h1>
+       <p>Your healthcare companion for better health outcomes</p>
+     </main>
+   </div>
+ );
 };
 
 export default LandingPage;

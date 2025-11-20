@@ -1,7 +1,190 @@
 .landing-page {
-  min-height: 100vh;
+ min-height: 100vh;
   display: flex;
   flex-direction: column;
+}
+
+/* Hero Section */
+.hero-section {
+  display: flex;
+  padding: 80px;
+  align-items: center;
+  gap: 80px;
+  align-self: stretch;
+  background-color: #EBF1FA; /* bg1 (Consistent with Navbar) */
+}
+
+.hero-content {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.hero-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 32px;
+  align-self: stretch;
+  width: 50%;
+}
+
+.hero-headline {
+  color: #00224A; /* b5 - Deep Navy Blue */
+  font-size: 2.5rem;
+  font-weight: 700;
+  line-height: 1.2;
+  position: relative;
+}
+
+.quality-highlight {
+  position: relative;
+}
+
+.quality-highlight::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 80px;
+  height: 12px;
+  background-color: #84B54C; /* g1 - Leaf Green */
+  z-index: -1;
+  border-radius: 2px;
+}
+
+.hero-subtext {
+  color: #00224A; /* b5 - Deep Navy Blue */
+  font-size: 1.1rem;
+  line-height: 1.6;
+  max-width: 500px;
+}
+
+.hero-cta-group {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.primary-cta-button {
+  background-color: #174880; /* b1 - Medium Blue */
+  color: white;
+  border: none;
+  padding: 14px 32px;
+  border-radius: 50px; /* Pill shape */
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.primary-cta-button:hover {
+  background-color: #00224A; /* b5 - Deep Navy Blue */
+}
+
+.secondary-cta-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #248BEB; /* b4 - Bright Blue */
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.play-icon {
+ display: inline-block;
+  width: 20px;
+  height: 20px;
+  background-color: #248BEB;
+  color: white;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 20px;
+  font-size: 10px;
+}
+
+.hero-visual {
+  position: relative;
+  width: 50%;
+  height: 400px;
+ display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.blob-bg {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at center, #E1FFBF 0%, transparent 70%),
+              radial-gradient(circle at 70% 30%, #5DB4E0 0%, transparent 70%);
+  border-radius: 20px;
+  z-index: 0;
+}
+
+.mascot-img {
+  position: relative;
+  height: 200px;
+  z-index: 2;
+  left: -50px;
+}
+
+.patient-img {
+ position: relative;
+  height: 180px;
+  z-index: 2;
+  left: 50px;
+  top: 20px;
+}
+
+.chat-bubble {
+  position: absolute;
+  background-color: white;
+  padding: 12px 16px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  z-index: 3;
+  max-width: 180px;
+}
+
+.chat-bubble.bubble-1 {
+  top: 30%;
+  left: 15%;
+}
+
+.chat-bubble.bubble-2 {
+  top: 50%;
+  left: 60%;
+}
+
+.chat-bubble.bubble-3 {
+  top: 25%;
+  left: 45%;
+  background-color: #00224A;
+  color: white;
+}
+
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  text-align: center;
+}
+
+.main-content h1 {
+  font-size: 2.5rem;
+ margin-bottom: 1rem;
+  color: #333;
+}
+
+.main-content p {
+  font-size: 1.2rem;
+  color: #666;
 }
 
 .navbar-container {
