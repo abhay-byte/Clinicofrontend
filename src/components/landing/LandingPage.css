@@ -1,17 +1,17 @@
 .landing-page {
  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
+ display: flex;
+ flex-direction: column;
 }
 
 /* Hero Section */
 .hero-section {
   display: flex;
-  padding: 80px;
+  padding: 180px 100px 80px; /* Increased top padding to account for fixed navbar, bottom padding for breathing room */
   align-items: center;
   gap: 80px;
   align-self: stretch;
-  background-color: #EBF1FA; /* bg1 (Consistent with Navbar) */
+  background-color: #FFFFFF; /* bg1 (Consistent with Navbar) */
 }
 
 .hero-content {
@@ -76,15 +76,37 @@
   white-space: pre-wrap; /* Allows text to wrap to new lines */
 }
 
-/* 3. Ensure the Green Underline stays visible (Optional fix) */
-/* Since the text is transparent, the ::after underline might behave oddly
-   if not positioned absolutely correctly. Ensure this exists: */
+/* Ensure the highlight remains visible even with the shimmer animation */
 .hero-headline .highlight {
   position: relative;
+  display: inline-block; /* Ensure proper positioning context */
   /* Start with the Navy color to prevent flash of unstyled text */
   color: #00224A;
-  -webkit-text-fill-color: #00224A; /* Override transparency for the "Quality" word if desired, OR let it shimmer too */
+  -webkit-text-fill-color: #00224A; /* Override transparency for the "Quality" word */
+  background: none; /* Override the gradient for the highlighted word */
+  z-index: 1; /* Ensure text is above the stripe */
 }
+
+/* Use stripe image for the "Quality" word highlight in hero headline */
+.hero-headline .highlight::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -5px; /* Tucks it further under the text */
+  width: 100%; /* Expands to cover the word 'Quality' */
+  height: 20px; /* Height of the stripe image */
+  
+  /* ASSET UPDATE */
+  background-image: url('/src/assets/landing/hero/stripe.png');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  
+  z-index: -1; /* Puts it behind the text */
+}
+
+/* The stripe image highlight is static, no animation needed */
+
+/* The separate hero-stripe class is no longer needed as the stripe is now part of the highlight pseudo-element */
 
 .hero-subtext {
   color: #4A5568; /* Dark Grey */
@@ -233,7 +255,7 @@
   justify-content: space-between;
   padding: 80px;
   gap: 60px;
-  background-color: #EBF1FA; /* bg1 (Consistent with Navbar) */
+  background-color: #FFFFFF; /* bg1 (Consistent with Navbar) */
   overflow: visible; /* Allows the blob/shadows to show without scrolling */
 }
 
@@ -291,25 +313,31 @@
   }
 }
 
-/* 3. Add the green brush stroke underline to the highlight class */
+/* 3. Add the stripe image underline to the highlight class */
 .prof-headline .highlight {
   position: relative;
   display: inline-block;
-  /* Override the shimmer for the "Quality" word to keep it stable */
+  /* Override the shimmer for the "Difference" word to keep it stable */
   -webkit-text-fill-color: #00224A !important;
   color: #00224A !important;
+ background: none; /* Override the gradient for the highlighted word */
+  z-index: 1; /* Ensure text is above the stripe */
 }
 
 .prof-headline .highlight::after {
   content: "";
   position: absolute;
   left: 0;
-  bottom: 2px; /* Adjust to align with text baseline */
-  width: 100%;
-  height: 10px; /* Thickness of the brush stroke */
-  background-color: #84B54C; /* g1 - Leaf Green */
+  bottom: -5px; /* Tucks it under the text */
+  width: 100%; /* Expands to cover the word 'Difference' */
+  height: 20px; /* Height of the stripe image */
+  
+  /* ASSET UPDATE - Use the same stripe image as the hero section */
+  background-image: url('/src/assets/landing/hero/stripe.png');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  
   z-index: -1; /* Puts it behind the text */
-  border-radius: 4px; /* Softens the edges */
 }
 
 /* --- 1. Define the Keyframes (The Movement) --- */
@@ -678,29 +706,34 @@
   display: flex;
   align-items: center;
   padding: 24px 80px;
-  background-color: #EBF1FA !important; /* bg1 - Light Blue-Grey */
+  background-color: #FFFFFF !important; /* bg1 - Light Blue-Grey */
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   width: 100%;
-  z-index: 100;
-  position: relative;
+  z-index: 1000;
+ position: fixed;
+  top: 0;
+  left: 0;
+  box-sizing: border-box;
 }
 
 /* More specific selector to ensure styling is applied */
 .landing-page .navbar-container {
-  background-color: #EBF1FA !important;
+  background-color: #FFFFFF !important;
 }
 
 nav.navbar-container {
-  background-color: #EBF1FA !important;
+  background-color: #FFFFFF !important;
 }
 
 /* Additional override to ensure navbar color */
 .landing-page > .navbar-container,
 .landing-page .navbar-container,
 .landing-page nav {
-  background-color: #EBF1FA !important;
-  background: #EBF1FA !important;
+  background-color: #FFFFFF !important;
+  background: #FFFFFF !important;
 }
+
+/* Make Navbar Persistent (Fixed at Top) - Add to existing navbar styles */
 
 .navbar-content {
   display: flex;
@@ -801,7 +834,7 @@ nav.navbar-container {
   align-items: center;
   gap: 80px;
   align-self: stretch;
-  background: linear-gradient(to right, #FFFFFF 50%, #EBF1FA 50%);
+  background: #FFFFFF;
 }
 
 .mission-container {
@@ -987,6 +1020,8 @@ nav.navbar-container {
   width: 100%;
 }
 
+/* The stripe image highlight is static, no animation needed for hero or prof sections */
+
 /* Old trigger has been replaced with the new animation approach */
 
 /* Animation for the mission text entrance */
@@ -1001,4 +1036,176 @@ nav.navbar-container {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+/* Features Section */
+.features-section {
+  display: flex;
+  padding: 80px 100px;
+  align-items: center;
+  gap: 80px;
+  align-self: stretch;
+  background: #FFFFFF;
+}
+
+.features-container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.features-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 32px;
+  align-self: stretch;
+  width: 45%;
+  max-width: 50%;
+}
+
+.features-headline {
+  font-size: 2.5rem;
+  font-weight: 800;
+  line-height: 1.2;
+  color: #00224A; /* b5 - Deep Navy Blue */
+  margin: 0;
+  position: relative;
+}
+
+.features-highlight {
+  position: relative;
+  display: inline-block;
+  color: #00224A; /* b5 - Deep Navy Blue */
+  z-index: 1;
+}
+
+.features-highlight::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 5px;
+  width: 100%;
+  height: 12px;
+  background-color: #84B54C; /* g1 - Leaf Green */
+  z-index: -1;
+  border-radius: 4px;
+}
+
+.features-body {
+  color: #4A5568; /* Dark Grey */
+  font-size: 1.1rem;
+  line-height: 1.6;
+  max-width: 90%;
+  margin: 0;
+}
+
+.features-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #248BEB; /* b4 - Bright Blue */
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.features-visual-wrapper {
+  position: relative;
+  width: 55%;
+  height: 600px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.bg-blob {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60%; /* Made smaller to fit better inside the features visual wrapper */
+  max-height: 100%;
+  object-fit: contain;
+  z-index: 0;
+}
+
+.feature-info-card {
+  position: absolute;
+  top: 40px;
+  left: 10;
+  width: 280px;
+  background: white;
+  padding: 24px;
+  border-radius: 16px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+  z-index: 2;
+}
+
+.feature-info-card .badge {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: bold;
+  margin-bottom: 8px;
+  background-color: #ADD8E6; /* Light Blue */
+}
+
+.feature-info-card h3 {
+  color: #00224A; /* b5 - Deep Navy Blue */
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0 0 8px 0;
+}
+
+.feature-info-card p {
+  color: #4A5568; /* Dark Grey */
+  font-size: 0.9rem;
+  line-height: 1.4;
+  margin: 0 0 16px 0;
+}
+
+.ai-chat-button {
+  background-color: white;
+  color: #248BEB; /* b4 - Bright Blue */
+  border: 2px solid #248BEB; /* b4 - Bright Blue */
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.ai-chat-button:hover {
+  background-color: #248BEB; /* b4 - Bright Blue */
+  color: white;
+}
+
+.feat-img {
+  position: absolute;
+  border: none;
+  border-radius: 16px;
+ box-shadow: none;
+}
+
+.feat-img-1 { /* Top Right - AI */
+  top: 60px;
+  right: 0;
+  width: 260px;
+  z-index: 1;
+}
+
+.feat-img-2 { /* Bottom Left - Tablet */
+  bottom: 0;
+  left: 20px;
+  width: 300px;
+  z-index: 3;
+}
+
+.feat-img-3 { /* Bottom Right - Map */
+  bottom: 40px;
+  right: -20px;
+  width: 200px;
+  z-index: 2;
 }
