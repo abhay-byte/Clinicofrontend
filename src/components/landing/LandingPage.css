@@ -122,26 +122,17 @@
 
 .mascot-img {
   position: relative;
-  height: 200px;
-  z-index: 2;
-  left: -50px;
+  height: 250px; /* Made bigger */
+ z-index: 2;
+  left: -80px; /* Adjusted position */
 }
 
 .patient-img {
- position: relative;
-  height: 180px;
-  z-index: 2;
-  left: 50px;
+  position: relative;
+  height: 230px; /* Made bigger */
+ z-index: 2;
+  left: 80px; /* Adjusted position */
   top: 20px;
-}
-
-.chat-bubble {
-  position: absolute;
-  padding: 12px 16px;
-  font-size: 0.9rem;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1); /* Needs shadow to pop off background */
-  z-index: 3;
-  max-width: 180px;
 }
 
 .chat-bubble {
@@ -155,16 +146,16 @@
 }
 
 .chat-bubble.bubble-1 { /* Robot's bubble - Dark Blue */
-  top: 20%;
-  left: 45%;
+  top: 30%;
+  left: 40%; /* Positioned between mascot and patient */
   background-color: #00224A; /* Navy Blue */
   color: #FFFFFF; /* White Text */
   border-radius: 16px 0; /* Robot's bubble */
 }
 
 .chat-bubble.bubble-2 { /* Patient's bubble - White */
-  top: 40%;
-  left: 45%;
+  top: 45%;
+  left: 50%; /* Positioned between mascot and patient */
   background-color: #FFFFFF; /* White Background */
   color: #00224A; /* Navy Text */
   border-radius: 16px 0 16px; /* Patient's bubble */
@@ -172,10 +163,10 @@
 
 .chat-bubble.bubble-3 { /* Third bubble - Robot's bubble */
   top: 60%;
-  left: 45%;
+  left: 45%; /* Positioned between mascot and patient */
   background-color: #00224A; /* Navy Blue */
   color: #FFFFFF; /* White Text */
-  border-radius: 16px 16px 0; /* Robot's bubble */
+  border-radius: 16px 0 16px; /* Robot's bubble */
 }
 
 .main-content {
