@@ -61,11 +61,17 @@ export function DashboardLayout({ children, onNavigate, currentPage = "dashboard
               <>
                 <div className="flex items-center gap-3">
                   <div className="relative">
-                    <div className="w-14 h-14 rounded-full bg-white flex items-center justify-center">
+                    <div
+                      className="w-14 h-14 rounded-full bg-white flex items-center justify-center cursor-pointer"
+                      onClick={() => onNavigate("/")}
+                    >
                       <img src={imgLogo} alt="Clinico Logo" className="w-12 h-12 object-contain" />
                     </div>
                   </div>
-                  <div className="text-white">
+                  <div
+                    className="text-white cursor-pointer"
+                    onClick={() => onNavigate("/")}
+                  >
                     <div className="text-xl" style={{ fontWeight: 600, letterSpacing: "0.5px" }}>CLINICO</div>
                     <div className="text-xs opacity-90">The Healing Hand Initiative</div>
                   </div>
