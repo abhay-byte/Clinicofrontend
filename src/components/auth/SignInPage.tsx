@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import './SignInPage.css';
 
 const SignInPage = () => {
@@ -186,7 +187,7 @@ const SignInPage = () => {
             </form>
 
             <div className="signin-login-link">
-              Already have an account? <strong>Log In</strong>
+              Already have an account? <Link to="/login"><strong>Log In</strong></Link>
             </div>
           </div>
         </div>
