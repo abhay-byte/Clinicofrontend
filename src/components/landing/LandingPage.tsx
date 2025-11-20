@@ -71,6 +71,60 @@ const LandingPage: React.FC = () => {
        </div>
      </section>
      
+     {/* For Professionals Section */}
+     <section id="for-professionals" className="prof-section">
+       <div className="prof-content">
+         <div className="prof-text">
+           <h2 className="prof-headline">
+             Make a <span className="highlight">Difference</span>, On Your Schedule
+           </h2>
+           
+           <ul className="benefit-list">
+             <li className="benefit-item">
+               <span className="check-icon">✓</span>
+               <p><strong>Flexible Volunteering:</strong> Set your own availability and work at your convenience.</p>
+             </li>
+             <li className="benefit-item">
+               <span className="check-icon">✓</span>
+               <p><strong>Impactful Work:</strong> Provide essential healthcare support to underserved communities.</p>
+             </li>
+             <li className="benefit-item">
+               <span className="check-icon">✓</span>
+               <p><strong>Professional Growth:</strong> Expand your skills while making a meaningful difference.</p>
+             </li>
+           </ul>
+
+           <a href="/signup-professional" className="cta-link">
+             Join Our Volunteer Network →
+           </a>
+         </div>
+
+         <div className="prof-visuals">
+           <div className="blob-bg"></div>
+           <div className="image-wrapper">
+             <img src="/src/assets/doctor/features.png" alt="Doctor Consulting" />
+           </div>
+           <div className="feature-cards-row">
+             <div className="feature-card">
+               <span className="badge badge-purple">Feature</span>
+               <h3>Smart Calendar</h3>
+               <p>Easily set and manage your availability with our intelligent scheduling system.</p>
+             </div>
+             <div className="feature-card">
+               <span className="badge badge-blue">Feature</span>
+               <h3>AI Briefings</h3>
+               <p>Receive automated patient summaries and care recommendations powered by AI.</p>
+             </div>
+             <div className="feature-card">
+               <span className="badge badge-green">Feature</span>
+               <h3>Workspace</h3>
+               <p>Access a streamlined dashboard with all your patient interactions and records.</p>
+             </div>
+           </div>
+         </div>
+       </div>
+     </section>
+     
      {/* Main Content - Placeholder for now */}
      <main className="main-content">
        <h1>Welcome to Clinico</h1>

@@ -187,7 +187,7 @@
 
 .chat-bubble.bubble-2 { /* Patient's bubble - White */
   top: 45%;
-  left: 55%; /* Positioned between mascot and patient - moved slightly to the right */
+  left: 48%; /* Positioned between mascot and patient - moved slightly to the right */
   background-color: #FFFFFF; /* White Background */
   color: #00224A; /* Navy Text */
   border-radius: 16px 0 16px; /* Patient's bubble */
@@ -196,7 +196,7 @@
 
 .chat-bubble.bubble-3 { /* Third bubble - Robot's bubble */
   top: 60%;
-  left: 45%; /* Positioned between mascot and patient */
+  left: 38%; /* Positioned between mascot and patient */
   background-color: #00224A; /* Navy Blue */
   color: #FFFFFF; /* White Text */
   border-radius: 16px 0 16px; /* Robot's bubble */
@@ -224,6 +224,232 @@
     opacity: 0;
     transform: scale(0.8);
   }
+}
+
+/* For Professionals Section */
+#professional-section {
+  display: flex;
+  padding: 80px;
+  align-items: center;
+  gap: 80px;
+  align-self: stretch;
+  background-color: #EBF1FA; /* bg1 (Continues from Hero section) */
+}
+
+.prof-content {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.prof-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 32px;
+  align-self: stretch;
+  width: 45%;
+  max-width: 50%;
+}
+
+/* 1. Define the Animation Keyframes */
+@keyframes shimmer {
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+/* 2. Apply styles to the Professional Section Title */
+.prof-headline {
+  font-size: 2.5rem; /* H2 size */
+  font-weight: 800;
+  line-height: 1.2;
+  margin: 0;
+  position: relative;
+  
+  /* --- THE ANIMATION MAGIC --- */
+  
+  /* Create the gradient: Navy -> Light Blue -> Navy */
+  background: linear-gradient(
+    110deg,
+    #00224A 40%,   /* Main Text Color (b5) */
+    #5DB4E0 50%,   /* Shine Color (b2) */
+    #00224A 60%    /* Main Text Color (b5) */
+  );
+  
+  /* Size the background larger than the text so we can move it */
+  background-size: 200% auto;
+  
+  /* Clip the background to the text shape */
+  -webkit-background-clip: text;
+  background-clip: text;
+  
+  /* Make the text fill transparent so background shows */
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  
+  /* Run the animation */
+  animation: shimmer 5s linear infinite;
+  
+  white-space: pre-line; /* Allows text to wrap to new lines */
+}
+
+/* Optional: Ensure the highlight span maintains its green underline */
+.prof-headline .highlight {
+  position: relative;
+  display: inline-block;
+  color: #00224A; /* b5 - This will be overridden by the animation */
+  -webkit-text-fill-color: #00224A; /* Override transparency for the "Quality" word if desired, OR let it shimmer too */
+}
+
+.benefit-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.benefit-item {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.check-icon {
+  color: #84B54C; /* g1 - Leaf Green */
+  font-weight: bold;
+  margin-top: 4px;
+}
+
+.benefit-item p {
+  margin: 0;
+  color: #00224A; /* b5 - Deep Navy Blue */
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.cta-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #248BEB; /* b4 - Bright Blue */
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.prof-visuals {
+  position: relative;
+  width: 55%;
+  height: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.blob-bg {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: #5DB4E0; /* b2 - Sky Blue */
+  border-radius: 50% 30% 50% 30%;
+  z-index: 0;
+}
+
+/* Add decorative stars/crosses */
+.blob-bg::before {
+  content: "+";
+  position: absolute;
+  top: 20%;
+  left: 30%;
+  color: #84B54C; /* g1 - Leaf Green */
+  font-size: 24px;
+  z-index: 1;
+}
+
+.blob-bg::after {
+  content: "×";
+  position: absolute;
+  top: 60%;
+  left: 70%;
+  color: #84B54C; /* g1 - Leaf Green */
+  font-size: 24px;
+  z-index: 1;
+}
+
+.image-wrapper {
+  position: relative;
+  z-index: 2;
+  border: 8px solid white; /* Thick white border */
+  border-radius: 24px; /* Rounded corners */
+  box-shadow: 0 8px 24px rgba(0,0,0,0.1); /* Soft drop shadow */
+  overflow: hidden;
+}
+
+.image-wrapper img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+.feature-cards-row {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  padding: 0 40px 40px;
+  z-index: 3;
+}
+
+.feature-card {
+  background: white;
+  border-radius: 12px;
+  padding: 16px;
+  width: 150px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15); /* Strong drop shadow */
+}
+
+.badge {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.badge-purple {
+  background-color: #E0B0FF; /* Light Purple */
+}
+
+.badge-blue {
+  background-color: #ADD8E6; /* Light Blue */
+}
+
+.badge-green {
+  background-color: #90EE90; /* Light Green */
+}
+
+.feature-card h3 {
+  color: #00224A; /* b5 - Deep Navy Blue */
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0 0 8px 0;
+}
+
+.feature-card p {
+  color: #4A5568; /* Dark Grey */
+  font-size: 0.85rem;
+  line-height: 1.4;
+  margin: 0;
 }
 
 .main-content {
