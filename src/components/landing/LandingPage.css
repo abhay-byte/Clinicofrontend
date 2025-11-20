@@ -187,7 +187,7 @@
 
 .chat-bubble.bubble-2 { /* Patient's bubble - White */
   top: 45%;
-  left: 50%; /* Positioned between mascot and patient */
+  left: 55%; /* Positioned between mascot and patient - moved slightly to the right */
   background-color: #FFFFFF; /* White Background */
   color: #00224A; /* Navy Text */
   border-radius: 16px 0 16px; /* Patient's bubble */
