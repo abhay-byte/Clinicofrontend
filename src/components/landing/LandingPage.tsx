@@ -13,6 +13,8 @@ const LandingPage: React.FC = () => {
   const [isHeroHeadlineVisible, setIsHeroHeadlineVisible] = useState(false);
   const [isProfHeadlineVisible, setIsProfHeadlineVisible] = useState(false);
   const [isFeaturesSectionVisible, setIsFeaturesSectionVisible] = useState(false);
+  const [isPatientsSectionVisible, setIsPatientsSectionVisible] = useState(false);
+  const patientsHeadlineRef = useRef<HTMLHeadingElement>(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -98,6 +100,28 @@ const LandingPage: React.FC = () => {
     return () => {
       if (featuresSectionRef.current) {
         observer.unobserve(featuresSectionRef.current);
+      }
+    };
+  }, []);
+  
+  // Add observer for patients section to trigger animation
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsPatientsSectionVisible(entry.isIntersecting);
+      },
+      {
+        threshold: 0.2, /* Trigger when 20% of the item is visible */
+      }
+    );
+    
+    if (patientsHeadlineRef.current) {
+      observer.observe(patientsHeadlineRef.current);
+    }
+    
+    return () => {
+      if (patientsHeadlineRef.current) {
+        observer.unobserve(patientsHeadlineRef.current);
       }
     };
   }, []);
@@ -375,11 +399,62 @@ const LandingPage: React.FC = () => {
         </div>
       </section>
       
-      {/* Main Content - Placeholder for now */}
-      <main className="main-content">
-        <h1>Welcome to Clinico</h1>
-        <p>Your healthcare companion for better health outcomes</p>
-      </main>
+      {/* For Patients Section */}
+      <section id="for-patients">
+        <div id="patients-content">
+          {/* A. The Headline (H2) */}
+          <h2
+            ref={patientsHeadlineRef}
+            className={`patients-headline ${isPatientsSectionVisible ? 'animate-active' : ''}`}
+          >
+            Your Complete <span className="highlight">Health</span> Companion
+          </h2>
+          
+          {/* B. The Subtext */}
+          <p className="patients-subtext">
+            From instant AI health advice to booking appointments with trusted doctors, Clinico puts all your healthcare needs right at your fingertips. Manage your health journey with confidence and ease.
+          </p>
+          
+          {/* C. App Store Buttons */}
+          <div className="app-store-buttons">
+            <a href="#" className="app-store-btn">
+              <img
+                src="/src/assets/patient/app_store.png"
+                alt="Download on App Store"
+              />
+            </a>
+            <a href="#" className="play-store-btn">
+              <img
+                src="/src/assets/patient/play_store.png"
+                alt="Get it on Google Play"
+              />
+            </a>
+          </div>
+          
+          {/* D. The Main Visual Stack (Center) */}
+          <div className="main-visual-stack">
+            <img
+              src="/src/assets/patient/background_blobs.png"
+              alt="Background decorative blobs"
+              className="background-blobs"
+            />
+            <img
+              src="/src/assets/patient/phone_robot.png"
+              alt="Elephant Robot next to iPhone"
+              className="phone-robot"
+            />
+          </div>
+          
+          {/* E. The Feature Icons (Bottom) */}
+          <div className="feature-icons-row">
+            <img
+              src="/src/assets/patient/icons_row.png"
+              alt="Feature icons row"
+            />
+          </div>
+        </div>
+      </section>
+      
     </div>
   );
 };

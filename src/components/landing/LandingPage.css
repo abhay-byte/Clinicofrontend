@@ -1058,7 +1058,8 @@ nav.navbar-container {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 32px;
+  justify-content: center;
+ gap: 32px;
   align-self: stretch;
   width: 45%;
   max-width: 50%;
@@ -1121,8 +1122,8 @@ nav.navbar-container {
 
 .bg-blob {
   position: absolute;
-  top: 50%;
-  left: 50%;
+  top: 0%;
+  left: 25%;
   transform: translate(-50%, -50%);
   width: 60%; /* Made smaller to fit better inside the features visual wrapper */
   max-height: 100%;
@@ -1198,14 +1199,153 @@ nav.navbar-container {
 
 .feat-img-2 { /* Bottom Left - Tablet */
   bottom: 0;
-  left: 20px;
+  left: 150px;
   width: 300px;
   z-index: 3;
 }
 
 .feat-img-3 { /* Bottom Right - Map */
   bottom: 40px;
-  right: -20px;
+  right: 150px;
   width: 200px;
   z-index: 2;
+}
+
+/* For Patients Section */
+#for-patients {
+  display: flex;
+  padding: 80px;
+  flex-direction: column;
+  align-items: center;
+  gap: 80px; /* High spacing between text, buttons, and images */
+  align-self: stretch;
+  background-color: #EBF1FA; /* Updated background color */
+ position: relative;
+  overflow: hidden; /* To contain the background decorative blobs */
+}
+
+#patients-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  gap: 60px;
+}
+
+.patients-headline {
+  font-size: 2.5rem; /* Adjust based on design */
+  font-weight: 800;
+ line-height: 1.2;
+  color: #00224A; /* b5 - Deep Navy Blue */
+  text-align: center;
+  margin: 0;
+  position: relative;
+  white-space: pre-wrap;
+  
+  /* BASE COLOR (Visible by default) */
+  color: #00224A;
+}
+
+/* The stripe image highlight is static, no animation needed */
+.patients-headline .highlight {
+  position: relative;
+  display: inline-block;
+  /* Start with the Navy color to prevent flash of unstyled text */
+  color: #00224A;
+  -webkit-text-fill-color: #00224A; /* Override transparency for the "Health" word */
+  background: none; /* Override the gradient for the highlighted word */
+  z-index: 1; /* Ensure text is above the stripe */
+}
+
+.patients-headline .highlight::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -5px; /* Tucks it further under the text */
+  width: 100%; /* Expands to cover the word 'Health' */
+  height: 20px; /* Height of the stripe image */
+  
+  /* ASSET UPDATE */
+  background-image: url('/src/assets/landing/hero/stripe.png');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  
+  z-index: -1; /* Puts it behind the text */
+}
+
+.patients-subtext {
+  color: #4A5568; /* Dark Grey */
+  font-size: 1.125rem; /* 18px */
+  line-height: 1.6;
+  max-width: 800px; /* Max-width ~800px for readability */
+  text-align: center;
+  margin: 0;
+}
+
+.app-store-buttons {
+ display: flex;
+ gap: 20px;
+  justify-content: center;
+}
+
+.app-store-btn, .play-store-btn {
+  border: none;
+  box-shadow: none;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.app-store-btn, .play-store-btn {
+  border: none;
+  box-shadow: none;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  max-width: 150px; /* Limit button size */
+}
+
+.app-store-btn:hover, .play-store-btn:hover {
+  transform: scale(1.05);
+}
+
+.main-visual-stack {
+  position: relative;
+  width: 100%;
+  height: 400px;
+ display: flex;
+ justify-content: center;
+  align-items: center;
+}
+
+.background-blobs {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 200%;
+  object-fit: cover;
+  z-index: 0;
+}
+
+.phone-robot {
+  position: relative;
+  z-index: 2;
+  max-width: 70%;
+  height: auto;
+ box-shadow: none !important;
+  border: none !important;
+  margin-top: 200px; /* Increased top spacing to ensure download buttons are clearly visible */
+}
+
+.feature-icons-row {
+ width: 100%;
+  max-width: 1200px;
+  margin-top: 125px;
+  z-index: 1;
+}
+
+.feature-icons-row img {
+  width: 100%;
+  height: auto;
+  box-shadow: none !important;
+  border: none !important;
 }
