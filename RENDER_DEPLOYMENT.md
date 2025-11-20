@@ -46,3 +46,20 @@ This guide explains how to deploy this React application to Render.
 - `server.js`: Express server that serves the built React application
 - `package.json`: Contains build and start scripts
 - `render.yaml`: Render-specific configuration file
+
+## Troubleshooting
+
+### "Missing script: start" Error
+If you encounter this error during deployment:
+1. Verify that your `package.json` includes a "start" script
+2. The script should be: `"start": "node server.js"`
+3. Make sure to commit and push all changes to your repository
+
+### Large Bundle Size Warning
+You may see warnings about chunks larger than 500kB after minification. This is normal for React applications with many components. The application will still function correctly, but you can optimize bundle size by:
+- Using dynamic imports for code splitting
+- Implementing lazy loading for routes
+- Removing unused dependencies
+
+### Port Configuration
+The server is configured to use the PORT environment variable provided by Render, falling back to port 3000 if not set. This ensures compatibility with Render's deployment process.
