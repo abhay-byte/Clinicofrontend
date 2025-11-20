@@ -12,7 +12,6 @@ import { HelpSupportPage } from "./components/support/HelpSupportPage";
 import { NotificationSettingsPage } from "./components/settings/NotificationSettingsPage";
 import { TermsConditionsPage } from "./components/legal/TermsConditionsPage";
 import { PrivacyPolicyPage } from "./components/legal/PrivacyPolicyPage";
-import { ChatWidget } from "./components/chat/ChatWidget";
 import LandingPage from "./components/landing/LandingPage";
 
 export default function App() {
@@ -57,7 +56,6 @@ export default function App() {
       ) : (
         <AppointmentsPage onNavigate={handleNavigate} />
       )}
-      <ChatWidget />
     </>
   );
 }
