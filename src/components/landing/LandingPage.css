@@ -255,15 +255,15 @@
 
 /* --- 2. Apply styles to the Title with safety fallback */
 .prof-headline {
-  font-size: 4rem;
+  font-size: 3rem; /* Made smaller */
   font-weight: 800;
  line-height: 1.1;
   margin-bottom: 24px;
-  white-space: pre-wrap;
+ white-space: pre-wrap;
   position: relative;
   
   /* BASE COLOR (Visible by default) */
-  color: #00224A;
+ color: #00224A;
 }
 
 /* Only apply the fancy effect if the browser supports it */
