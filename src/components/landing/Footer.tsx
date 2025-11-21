@@ -3,27 +3,29 @@ import { FaYoutube, FaFacebook, FaTwitter, FaInstagram, FaLinkedin, FaArrowRight
 import logo from '/src/assets/logo.png';
 import appStore from '/src/assets/patient/app_store.png';
 import playStore from '/src/assets/patient/play_store.png';
+import styles from './Footer.module.css';
 
-const Footer = () => {
+const Footer: React.FC = () => {
   return (
-    <footer className='footer-container'>
-      <div className='footer-top'>
-        <div className='footer-brand'>
+    <footer className={styles.footerContainer}>
+      <div className={styles.footerTop}>
+        <div className={styles.footerBrand}>
           <img
             src={logo}
             alt="Clinico Logo"
-            className="footer-logo"
+            className={styles.footerLogo}
           />
-          <div className="footer-brand-text">
-            <div className="footer-brand-name">CLINICO</div>
-            <div className="footer-brand-subtitle">The Healing Hand Initiative</div>
+          <div className={styles.footerBrandText}>
+            <div className={styles.footerBrandName}>CLINICO</div>
+            <div className={styles.footerBrandSubtitle}>The Healing Hand Initiative</div>
           </div>
-        </div> {/* Close footer-brand */}
-        <div className='footer-links'>
+        </div>
+        
+        <div className={styles.footerLinks}>
           {/* For Patients */}
-          <div className="footer-links-column">
-            <div className="footer-link-header">For Patients</div>
-            <ul className="footer-link-items">
+          <div className={styles.footerLinksColumn}>
+            <div className={styles.footerLinkHeader}>For Patients</div>
+            <ul className={styles.footerLinkItems}>
               <li><a href="#">Find a Doctor</a></li>
               <li><a href="#">AI Health Assistant</a></li>
               <li><a href="#">Health Records</a></li>
@@ -32,9 +34,9 @@ const Footer = () => {
           </div>
 
           {/* For Professionals */}
-          <div className="footer-links-column">
-            <div className="footer-link-header">For Professionals</div>
-            <ul className="footer-link-items">
+          <div className={styles.footerLinksColumn}>
+            <div className={styles.footerLinkHeader}>For Professionals</div>
+            <ul className={styles.footerLinkItems}>
               <li><a href="#">Join as a Volunteer</a></li>
               <li><a href="#">Our Technology</a></li>
               <li><a href="#">Medical Advisory Board</a></li>
@@ -43,9 +45,9 @@ const Footer = () => {
           </div>
 
           {/* Resources */}
-          <div className="footer-links-column">
-            <div className="footer-link-header">Resources</div>
-            <ul className="footer-link-items">
+          <div className={styles.footerLinksColumn}>
+            <div className={styles.footerLinkHeader}>Resources</div>
+            <ul className={styles.footerLinkItems}>
               <li><a href="#">Health & Wellness Blog</a></li>
               <li><a href="#">Help Center</a></li>
               <li><a href="#">FAQs</a></li>
@@ -54,9 +56,9 @@ const Footer = () => {
           </div>
 
           {/* Support */}
-          <div className="footer-links-column">
-            <div className="footer-link-header">Support</div>
-            <ul className="footer-link-items">
+          <div className={styles.footerLinksColumn}>
+            <div className={styles.footerLinkHeader}>Support</div>
+            <ul className={styles.footerLinkItems}>
               <li><a href="#">Get Help</a></li>
               <li><a href="#">Give Feedback</a></li>
               <li><a href="#">Community Guidelines</a></li>
@@ -64,53 +66,64 @@ const Footer = () => {
           </div>
 
           {/* Company */}
-          <div className="footer-links-column">
-            <div className="footer-link-header">Company</div>
-            <ul className="footer-link-items">
+          <div className={styles.footerLinksColumn}>
+            <div className={styles.footerLinkHeader}>Company</div>
+            <ul className={styles.footerLinkItems}>
               <li><a href="#">About Us</a></li>
               <li><a href="#">Our Mission</a></li>
               <li><a href="#">Partnerships (NGOs)</a></li>
-              <li><a href="#">Press <span className="arrow-icon"><FaArrowRight /></span></a></li>
+              <li>
+                <a href="#">
+                  Press <span className={styles.arrowIcon}><FaArrowRight /></span>
+                </a>
+              </li>
             </ul>
           </div>
-        </div> {/* Close footer-links */}
-      </div> {/* Close footer-top */}
+        </div>
+      </div>
       
-      <div className='footer-divider'></div>
+      <div className={styles.footerDivider}></div>
       
-      <div className='footer-bottom'>
-        <div className='copyright'>
+      <div className={styles.footerBottom}>
+        <div className={styles.copyright}>
           © 2025 Clinico. All rights reserved.
         </div>
-        <div className='legal-links'>
+        
+        <div className={styles.legalLinks}>
           <a href="#">Terms of Service</a>
           <a href="#">Privacy Policy</a>
           <a href="#">Support</a>
           <a href="#">About</a>
           <a href="#">Contact</a>
         </div>
-        <div className='social-apps'>
-          <div className="social-icons">
-            <a href="#"><FaYoutube /></a>
-            <a href="#"><FaFacebook /></a>
-            <a href="#"><FaTwitter /></a>
-            <a href="#"><FaInstagram /></a>
-            <a href="#"><FaLinkedin /></a>
+        
+        <div className={styles.socialApps}>
+          <div className={styles.socialIcons}>
+            <a href="#" aria-label="YouTube"><FaYoutube /></a>
+            <a href="#" aria-label="Facebook"><FaFacebook /></a>
+            <a href="#" aria-label="Twitter"><FaTwitter /></a>
+            <a href="#" aria-label="Instagram"><FaInstagram /></a>
+            <a href="#" aria-label="LinkedIn"><FaLinkedin /></a>
           </div>
-          <div className="app-buttons">
-            <img
-              src={appStore}
-              alt="App Store"
-              className="app-store-button"
-            />
-            <img
-              src={playStore}
-              alt="Play Store"
-              className="play-store-button"
-            />
+          
+          <div className={styles.appButtons}>
+            <a href="#" aria-label="Download on App Store">
+              <img
+                src={appStore}
+                alt="Download on App Store"
+                className={styles.appStoreButton}
+              />
+            </a>
+            <a href="#" aria-label="Get it on Google Play">
+              <img
+                src={playStore}
+                alt="Get it on Google Play"
+                className={styles.playStoreButton}
+              />
+            </a>
           </div>
         </div>
-      </div> {/* Close footer-bottom */}
+      </div>
     </footer>
   );
 };

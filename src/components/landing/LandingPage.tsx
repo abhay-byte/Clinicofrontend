@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Footer from './Footer';
-import "./LandingPage.css";
+import styles from "./LandingPage.module.css";
 
 // Import all assets
 import logoNavbar from '/src/assets/landing/navbar/logo.png';
@@ -23,8 +23,6 @@ import iconsRow from '/src/assets/patient/icons_row.png';
 
 const LandingPage: React.FC = () => {
 
-
-
   // Create refs for the elements we want to watch
   const missionHeadlineRef = useRef<HTMLHeadingElement>(null);
   const heroHeadlineRef = useRef<HTMLHeadingElement>(null);
@@ -44,13 +42,10 @@ const LandingPage: React.FC = () => {
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
-        // Toggle state based on visibility
-        // If entry.isIntersecting is true, animation plays.
-        // If false, it removes the class, resetting the green line to 0 width.
         setIsMissionHeadlineVisible(entry.isIntersecting);
       },
       {
-        threshold: 0.2, /* Trigger when 20% of the item is visible */
+        threshold: 0.2,
       }
     );
 
@@ -71,7 +66,7 @@ const LandingPage: React.FC = () => {
         setIsHeroHeadlineVisible(entry.isIntersecting);
       },
       {
-        threshold: 0.2, /* Trigger when 20% of the item is visible */
+        threshold: 0.2,
       }
     );
 
@@ -92,7 +87,7 @@ const LandingPage: React.FC = () => {
         setIsProfHeadlineVisible(entry.isIntersecting);
       },
       {
-        threshold: 0.2, /* Trigger when 20% of the item is visible */
+        threshold: 0.2,
       }
     );
 
@@ -107,14 +102,13 @@ const LandingPage: React.FC = () => {
     };
   }, []);
 
-  // Add observer for features section to trigger parallax effect
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
         setIsFeaturesSectionVisible(entry.isIntersecting);
       },
       {
-        threshold: 0.2, /* Trigger when 20% of the item is visible */
+        threshold: 0.2,
       }
     );
 
@@ -129,14 +123,13 @@ const LandingPage: React.FC = () => {
     };
   }, []);
   
-  // Add observer for patients section to trigger animation
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
         setIsPatientsSectionVisible(entry.isIntersecting);
       },
       {
-        threshold: 0.2, /* Trigger when 20% of the item is visible */
+        threshold: 0.2,
       }
     );
     
@@ -151,7 +144,6 @@ const LandingPage: React.FC = () => {
     };
   }, []);
 
-  // Add observer for features headline to trigger animation
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -162,7 +154,7 @@ const LandingPage: React.FC = () => {
         });
       },
       {
-        threshold: 0.2, /* Trigger when 20% of the item is visible */
+        threshold: 0.2,
       }
     );
     
@@ -177,7 +169,6 @@ const LandingPage: React.FC = () => {
     };
   }, []);
 
- // State for mouse position to create parallax effect
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -194,21 +185,20 @@ const LandingPage: React.FC = () => {
     setMousePosition({ x: 0, y: 0 });
   };
 
-  // Calculate parallax transformation based on mouse position
   const calculateParallax = (element: 'blob' | 'card' | 'img1' | 'img2' | 'img3') => {
     if (!isFeaturesSectionVisible) return { transform: 'none' };
     
     const { x, y } = mousePosition;
     const moveFactor = {
-      blob: 0.02,   // Slowest movement (background)
-      card: 0.04,   // Medium movement
-      img1: 0.06,   // Faster movement
-      img2: 0.07,   // Fastest movement
-      img3: 0.05    // Fast movement
+      blob: 0.02,
+      card: 0.04,
+      img1: 0.06,
+      img2: 0.07,
+      img3: 0.05
     }[element];
     
-    const moveX = (x - 275) * moveFactor; // 275 is approximately center X of features container
-    const moveY = (y - 300) * moveFactor; // 300 is approximately center Y of features container
+    const moveX = (x - 275) * moveFactor;
+    const moveY = (y - 300) * moveFactor;
     
     return {
       transform: `translate(${moveX}px, ${moveY}px)`
@@ -216,146 +206,144 @@ const LandingPage: React.FC = () => {
   };
 
   return (
-    <div className="landing-page">
+    <div className={styles.landingPage}>
       {/* Navigation Bar */}
-      <nav className="navbar-container">
-        <div className="navbar-content">
+      <nav className={styles.navbarContainer}>
+        <div className={styles.navbarContent}>
           {/* Logo */}
-          <div className="logo-section">
+          <div className={styles.logoSection}>
             <img
               src={logoNavbar}
               alt="Clinico Logo"
-              className="logo"
+              className={styles.logo}
             />
           </div>
           
           {/* Navigation Links */}
-          <div className="nav-links">
-            <a href="#patients" className="nav-link">For Patients</a>
-            <a href="#professionals" className="nav-link">For Professionals</a>
-            <a href="#mission" className="nav-link">Our Mission</a>
-            <div className="nav-dropdown">
-              <a href="#features" className="nav-link">
-                Features <span className="dropdown-arrow">⌄</span>
+          <div className={styles.navLinks}>
+            <a href="#patients" className={styles.navLink}>For Patients</a>
+            <a href="#professionals" className={styles.navLink}>For Professionals</a>
+            <a href="#mission" className={styles.navLink}>Our Mission</a>
+            <div className={styles.navDropdown}>
+              <a href="#features" className={styles.navLink}>
+                Features <span className={styles.dropdownArrow}>⌄</span>
               </a>
             </div>
-          </div> {/* Close nav-links */}
+          </div>
           
           {/* Authentication & Action */}
-          <div className="auth-section">
-            <Link to="/dashboard" className="login-link">Log In</Link>
-            <Link to="/signup" className="signup-button">Sign Up Now</Link>
+          <div className={styles.authSection}>
+            <Link to="/dashboard" className={styles.loginLink}>Log In</Link>
+            <Link to="/signup" className={styles.signupButton}>Sign Up Now</Link>
           </div>
         </div>
       </nav>
       
       {/* Hero Section */}
-      <section className="hero-section">
-        <div className="hero-content">
-          <div className="hero-text">
+      <section className={styles.heroSection}>
+        <div className={styles.heroContent}>
+          <div className={styles.heroText}>
             <h1
               ref={heroHeadlineRef}
-              className={`hero-headline ${isHeroHeadlineVisible ? 'animate-active' : ''}`}
+              className={`${styles.heroHeadline} ${isHeroHeadlineVisible ? styles.animateActive : ''}`}
             >
-              <span className="highlight">Quality</span> Healthcare For Everyone
+              <span className={styles.highlight}>Quality</span> Healthcare For Everyone
             </h1>
-            <p className="hero-subtext">
+            <p className={styles.heroSubtext}>
               Get immediate health guidance from our AI, connect with volunteer doctors, and access hyperlocal healthcare services tailored to your community's needs.
             </p>
-            <div className="hero-cta-group">
-              <button className="primary-cta-button">Find Doctors</button>
-              <a href="#how-it-works" className="secondary-cta-link">
-                <span className="play-icon">▶</span> How It Works
+            <div className={styles.heroCtaGroup}>
+              <button className={styles.primaryCtaButton}>Find Doctors</button>
+              <a href="#how-it-works" className={styles.secondaryCtaLink}>
+                <span className={styles.playIcon}>▶</span> How It Works
               </a>
             </div>
-          </div> {/* Close hero-text */}
-          <div className="hero-visual">
+          </div>
+          <div className={styles.heroVisual}>
             <img
               src={mascotHero}
               alt="Clinico AI Assistant"
-              className="mascot-img"
+              className={styles.mascotImg}
             />
             <img
               src={patientHero}
               alt="Patient"
-              className="patient-img"
+              className={styles.patientImg}
             />
-            <div className="chat-bubble bubble-1">Hi, how can I help you today?</div>
-            <div className="chat-bubble bubble-2">I've been feeling anxious lately.</div>
-            <div className="chat-bubble bubble-3">I understand. Let's find a doctor.</div>
+            <div className={`${styles.chatBubble} ${styles.bubble1}`}>Hi, how can I help you today?</div>
+            <div className={`${styles.chatBubble} ${styles.bubble2}`}>I've been feeling anxious lately.</div>
+            <div className={`${styles.chatBubble} ${styles.bubble3}`}>I understand. Let's find a doctor.</div>
           </div>
-        </div> {/* Close hero-content */}
+        </div>
       </section>
       
       {/* For Professionals Section */}
-      <section id="for-professionals" className="for-professionals-section">
-        <div className="prof-content">
-          <div className="prof-text">
+      <section id="for-professionals" className={styles.forProfessionalsSection}>
+        <div className={styles.profContent}>
+          <div className={styles.profText}>
             <h2
               ref={profHeadlineRef}
-              className={`prof-headline ${isProfHeadlineVisible ? 'animate-active' : ''}`}
+              className={`${styles.profHeadline} ${isProfHeadlineVisible ? styles.animateActive : ''}`}
             >
-              Make a <span className="highlight">Difference</span><br />On Your Schedule
+              Make a <span className={styles.highlight}>Difference</span><br />On Your Schedule
             </h2>
             
-            <ul className="benefit-list">
-              <li className="benefit-item">
-                <span className="check-icon">✓</span>
+            <ul className={styles.benefitList}>
+              <li className={styles.benefitItem}>
+                <span className={styles.checkIcon}>✓</span>
                 <p><strong>Flexible Volunteering:</strong> Set your own availability and work at your convenience.</p>
               </li>
-              <li className="benefit-item">
-                <span className="check-icon">✓</span>
+              <li className={styles.benefitItem}>
+                <span className={styles.checkIcon}>✓</span>
                 <p><strong>Impactful Work:</strong> Provide essential healthcare support to underserved communities.</p>
               </li>
-              <li className="benefit-item">
-                <span className="check-icon">✓</span>
+              <li className={styles.benefitItem}>
+                <span className={styles.checkIcon}>✓</span>
                 <p><strong>Professional Growth:</strong> Expand your skills while making a meaningful difference.</p>
               </li>
             </ul>
 
-            <a href="/signup-professional" className="cta-link">
-              Join Our Volunteer Network <span className="arrow-icon">→</span>
+            <a href="/signup-professional" className={styles.ctaLink}>
+              Join Our Volunteer Network <span className={styles.arrowIcon}>→</span>
             </a>
-          </div> {/* Close prof-text */}
+          </div>
 
-          <div className="prof-visuals">
-            <img src={doctorFeatures} alt="Doctor Consulting" className="prof-image" />
-            <div className="feature-cards-row">
-              <div className="feature-card">
-                <span className="badge badge-purple">Feature</span>
+          <div className={styles.profVisuals}>
+            <img src={doctorFeatures} alt="Doctor Consulting" className={styles.profImage} />
+            <div className={styles.featureCardsRow}>
+              <div className={styles.featureCard}>
+                <span className={`${styles.badge} ${styles.badgePurple}`}>Feature</span>
                 <h3>Smart Calendar</h3>
                 <p>Easily set and manage your availability with our intelligent scheduling system.</p>
               </div>
-              <div className="feature-card">
-                <span className="badge badge-blue">Feature</span>
+              <div className={styles.featureCard}>
+                <span className={`${styles.badge} ${styles.badgeBlue}`}>Feature</span>
                 <h3>AI Briefings</h3>
                 <p>Receive automated patient summaries and care recommendations powered by AI.</p>
               </div>
-              <div className="feature-card">
-                <span className="badge badge-green">Feature</span>
+              <div className={styles.featureCard}>
+                <span className={`${styles.badge} ${styles.badgeGreen}`}>Feature</span>
                 <h3>Workspace</h3>
                 <p>Access a streamlined dashboard with all your patient interactions and records.</p>
               </div>
             </div>
-          </div> {/* Close prof-visuals */}
-        </div> {/* Close prof-content */}
+          </div>
+        </div>
       </section>
       
       {/* Our Mission Section */}
-      <section id="mission" className="mission-section">
-        <div className="mission-container">
-          {/* Left Section: Heart Image Collage */}
-          <div className="mission-visuals">
+      <section id="mission" className={styles.missionSection}>
+        <div className={styles.missionContainer}>
+          <div className={styles.missionVisuals}>
             <img
               src={heartImage}
               alt="Heart of Care - representing our mission to connect communities with healthcare"
-              className="heart-collage"
+              className={styles.heartCollage}
             />
           </div>
           
-          {/* Right Section: Mission Content */}
-          <div className="mission-content">
-            <div className="mission-icon">
+          <div className={styles.missionContent}>
+            <div className={styles.missionIcon}>
               <img
                 src={heartIcon}
                 alt="Heart with Plus Sign Icon"
@@ -363,90 +351,85 @@ const LandingPage: React.FC = () => {
             </div>
             <h2
               ref={missionHeadlineRef}
-              className={`mission-headline ${isMissionHeadlineVisible ? 'animate-active' : ''}`}
+              className={`${styles.missionHeadline} ${isMissionHeadlineVisible ? styles.animateActive : ''}`}
             >
-              Bridging the Gap to <span className="highlight">Quality</span> Healthcare
+              Bridging the Gap to <span className={styles.highlight}>Quality</span> Healthcare
             </h2>
-            <p className="mission-text">
+            <p className={styles.missionText}>
               We believe that quality healthcare is a fundamental human right, not a privilege.
               Our mission is to bridge the gap between underserved communities and essential
               medical services through innovative technology, volunteer healthcare professionals,
               and community-driven solutions. We're committed to making healthcare accessible,
               affordable, and effective for everyone, regardless of their location or economic status.
             </p>
-            <a href="#learn-more" className="mission-cta">
-              Learn More About Our Impact <span className="arrow-icon">→</span>
+            <a href="#learn-more" className={styles.missionCta}>
+              Learn More About Our Impact <span className={styles.arrowIcon}>→</span>
             </a>
-          </div> {/* Close mission-content */}
-        </div> {/* Close mission-container */}
+          </div>
+        </div>
       </section>
       
       {/* Features Section */}
       <section
         id="features"
-        className="features-section"
+        className={styles.featuresSection}
         ref={featuresSectionRef}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
       >
-        <div className="features-container">
-          {/* Left Column: Text Content */}
-          <div className="features-text">
+        <div className={styles.featuresContainer}>
+          <div className={styles.featuresText}>
             <h2
               ref={featuresHeadlineRef}
-              className={`features-headline ${isFeaturesHeadlineVisible ? 'animate-active' : ''}`}
+              className={`${styles.featuresHeadline} ${isFeaturesHeadlineVisible ? styles.animateActive : ''}`}
             >
-              Healthcare, <span className="highlight">Re-imagined</span> for You
+              Healthcare, <span className={styles.highlight}>Re-imagined</span> for You
             </h2>
-            <p className="features-body">
+            <p className={styles.featuresBody}>
               Clinico is more than just an app. It's your comprehensive healthcare companion,
               designed to make quality healthcare accessible, personalized, and effortless.
               From AI-powered assistance to seamless teleconsultations, we're revolutionizing
               how you manage your health.
             </p>
-            <a href="#all-features" className="features-cta">
-              View all the features <span className="arrow-icon">→</span>
+            <a href="#all-features" className={styles.featuresCta}>
+              View all the features <span className={styles.arrowIcon}>→</span>
             </a>
           </div>
           
-          {/* Right Column: Visual Stack */}
-          <div className="features-visual-wrapper">
-            {/* Layer 1: Background Blob */}
+          <div className={styles.featuresVisualWrapper}>
             <img
               src={designFeatures}
               alt="Background design element"
-              className="bg-blob"
+              className={styles.bgBlob}
               style={calculateParallax('blob')}
             />
             
-            {/* Layer 2: Info Card */}
             <div
-              className="feature-info-card"
+              className={styles.featureInfoCard}
               style={calculateParallax('card')}
             >
-              <span className="badge badge-blue">Chat with AI Now</span>
+              <span className={`${styles.badge} ${styles.badgeBlue}`}>Chat with AI Now</span>
               <h3>Design for how people think</h3>
               <p>Get instant, trusted answers to your health questions with our advanced AI companion.</p>
-              <button className="ai-chat-button">Chat with AI Now</button>
+              <button className={styles.aiChatButton}>Chat with AI Now</button>
             </div>
             
-            {/* Layer 3: Floating Images */}
             <img
               src={feature1}
               alt="AI Companion"
-              className="feat-img feat-img-1"
+              className={`${styles.featImg} ${styles.featImg1}`}
               style={calculateParallax('img1')}
             />
             <img
               src={feature2}
               alt="Teleconsultation"
-              className="feat-img feat-img-2"
+              className={`${styles.featImg} ${styles.featImg2}`}
               style={calculateParallax('img2')}
             />
             <img
               src={feature3}
               alt="Geolocation"
-              className="feat-img feat-img-3"
+              className={`${styles.featImg} ${styles.featImg3}`}
               style={calculateParallax('img3')}
             />
           </div>
@@ -454,30 +437,27 @@ const LandingPage: React.FC = () => {
       </section>
       
       {/* For Patients Section */}
-      <section id="for-patients">
-        <div id="patients-content">
-          {/* A. The Headline (H2) */}
+      <section id="for-patients" className={styles.forPatientsSection}>
+        <div className={styles.patientsContent}>
           <h2
             ref={patientsHeadlineRef}
-            className={`patients-headline ${isPatientsSectionVisible ? 'animate-active' : ''}`}
+            className={`${styles.patientsHeadline} ${isPatientsSectionVisible ? styles.animateActive : ''}`}
           >
-            Your Complete <span className="highlight">Health</span> Companion
+            Your Complete <span className={styles.highlight}>Health</span> Companion
           </h2>
           
-          {/* B. The Subtext */}
-          <p className="patients-subtext">
+          <p className={styles.patientsSubtext}>
             From instant AI health advice to booking appointments with trusted doctors, Clinico puts all your healthcare needs right at your fingertips. Manage your health journey with confidence and ease.
           </p>
           
-          {/* C. App Store Buttons */}
-          <div className="app-store-buttons">
-            <a href="#" className="app-store-btn">
+          <div className={styles.appStoreButtons}>
+            <a href="#" className={styles.appStoreBtn}>
               <img
                 src={appStore}
                 alt="Download on App Store"
               />
             </a>
-            <a href="#" className="play-store-btn">
+            <a href="#" className={styles.playStoreBtn}>
               <img
                 src={playStore}
                 alt="Get it on Google Play"
@@ -485,22 +465,20 @@ const LandingPage: React.FC = () => {
             </a>
           </div>
           
-          {/* D. The Main Visual Stack (Center) */}
-          <div className="main-visual-stack">
+          <div className={styles.mainVisualStack}>
             <img
               src={backgroundBlobs}
               alt="Background decorative blobs"
-              className="background-blobs"
+              className={styles.backgroundBlobs}
             />
             <img
               src={phoneRobot}
               alt="Elephant Robot next to iPhone"
-              className="phone-robot"
+              className={styles.phoneRobot}
             />
           </div>
           
-          {/* E. The Feature Icons (Bottom) */}
-          <div className="feature-icons-row">
+          <div className={styles.featureIconsRow}>
             <img
               src={iconsRow}
               alt="Feature icons row"
