@@ -8,6 +8,7 @@ import {
   useParams,
 } from "react-router-dom";
 import { ChatWidget } from "./components/chat/ChatWidget";
+import logo from "./assets/logo.png";
 
 // Lazy load all page components
 const LandingPage = lazy(() => import("./components/landing/LandingPage"));
@@ -33,13 +34,96 @@ function LoadingFallback() {
   return (
     <div style={{
       display: 'flex',
+      flexDirection: 'column',
       justifyContent: 'center',
       alignItems: 'center',
       minHeight: '100vh',
-      fontSize: '1.2rem',
+      backgroundColor: '#f8fafc',
       color: '#00224A'
     }}>
-      Loading...
+      <div style={{
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        textAlign: 'center',
+        padding: '2rem'
+      }}>
+        <img
+          src={logo}
+          alt="Clinico Logo"
+          style={{
+            width: '120px',
+            height: '120px',
+            marginBottom: '1.5rem',
+            animation: 'pulse 2s infinite'
+          }}
+        />
+        <h2 style={{
+          fontSize: '1.5rem',
+          fontWeight: '600',
+          marginBottom: '0.5rem',
+          color: '#00224A'
+        }}>
+          Clinico
+        </h2>
+        <p style={{
+          fontSize: '1rem',
+          color: '#64748b',
+          marginBottom: '1.5rem'
+        }}>
+          Loading your healthcare experience...
+        </p>
+        <div style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          gap: '0.5rem'
+        }}>
+          <div style={{
+            width: '12px',
+            height: '12px',
+            backgroundColor: '#00224A',
+            borderRadius: '50%',
+            animation: 'bounce 1.5s infinite ease-in-out'
+          }}></div>
+          <div style={{
+            width: '12px',
+            height: '12px',
+            backgroundColor: '#00224A',
+            borderRadius: '50%',
+            animation: 'bounce 1.5s infinite ease-in-out',
+            animationDelay: '0.2s'
+          }}></div>
+          <div style={{
+            width: '12px',
+            height: '12px',
+            backgroundColor: '#00224A',
+            borderRadius: '50%',
+            animation: 'bounce 1.5s infinite ease-in-out',
+            animationDelay: '0.4s'
+          }}></div>
+        </div>
+      </div>
+
+      <style>
+        {`
+          @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+          }
+          
+          @keyframes bounce {
+            0%, 80%, 10% {
+              transform: translateY(0);
+            }
+            40% {
+              transform: translateY(-10px);
+            }
+          }
+        `}
+      </style>
     </div>
   );
 }
