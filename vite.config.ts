@@ -78,6 +78,7 @@
     },
     preview: {
     host: true,
-    port: 4173, // required for render
+    port: 4173, 
+    allowedHosts: ["clinicofrontend.onrender.com"],
   },
   });
