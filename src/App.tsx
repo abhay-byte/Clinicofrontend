@@ -7,7 +7,6 @@ import {
   useNavigate,
   useParams,
 } from "react-router-dom";
-import { ChatWidget } from "./components/chat/ChatWidget";
 import logo from "./assets/logo.png";
 
 // Lazy load all page components
@@ -49,16 +48,50 @@ function LoadingFallback() {
         textAlign: 'center',
         padding: '2rem'
       }}>
-        <img
-          src={logo}
-          alt="Clinico Logo"
-          style={{
-            width: '120px',
-            height: '120px',
-            marginBottom: '1.5rem',
-            animation: 'pulse 2s infinite'
-          }}
-        />
+        {/* Container for logo with fallback placeholder */}
+        <div style={{
+          width: '120px',
+          height: '120px',
+          marginBottom: '1.5rem',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          position: 'relative'
+        }}>
+          {/* Placeholder circle while image loads */}
+          <div style={{
+            position: 'absolute',
+            width: '100%',
+            height: '100%',
+            borderRadius: '50%',
+            backgroundColor: '#e2e8f0',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            fontSize: '3rem',
+            color: '#94a3b8',
+            fontWeight: 'bold'
+          }}>
+            C
+          </div>
+          <img
+            src={logo}
+            alt="Clinico Logo"
+            style={{
+              width: '100%',
+              height: '100%',
+              objectFit: 'contain',
+              animation: 'pulse 2s infinite',
+              opacity: 0,
+              transition: 'opacity 0.5s ease-in-out'
+            }}
+            onLoad={(e) => {
+              // Fade in the image when it loads
+              (e.target as HTMLImageElement).style.opacity = '1';
+            }}
+            loading="eager"
+          />
+        </div>
         <h2 style={{
           fontSize: '1.5rem',
           fontWeight: '600',
