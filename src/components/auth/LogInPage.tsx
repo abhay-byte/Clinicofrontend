@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import logo from '/src/assets/logo.png';
+import mascotSignin from '/src/assets/signin/mascot_signin.png';
 import './SignInPage.css';
 
 const LogInPage = () => {
@@ -34,7 +36,7 @@ const LogInPage = () => {
           <div className="signin-brand-content">
             <a href="/" className="signin-logo-link">
               <img
-                src="/src/assets/logo.png"
+                src={logo}
                 alt="Clinico Logo"
                 className="signin-logo"
               />
@@ -42,7 +44,7 @@ const LogInPage = () => {
             <h2 className="signin-brand-name">CLINICO</h2>
             <p className="signin-initiative-name">The Healing Hand Initiative</p>
             <img
-              src="/src/assets/signin/mascot_signin.png"
+              src={mascotSignin}
               alt="Mascot"
               className="signin-mascot"
             />

@@ -1,19 +1,28 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Footer from './Footer';
+import "./LandingPage.css";
+
+// Import all assets
+import logoNavbar from '/src/assets/landing/navbar/logo.png';
+import mascotHero from '/src/assets/landing/hero/mascot.png';
+import patientHero from '/src/assets/landing/hero/patient.png';
+import doctorFeatures from '/src/assets/doctor/features.png';
+import heartImage from '/src/assets/mission/heart-image.png';
+import heartIcon from '/src/assets/mission/heart-icon.png';
+import designFeatures from '/src/assets/landing/features/design.png';
+import feature1 from '/src/assets/landing/features/feature_1.png';
+import feature2 from '/src/assets/landing/features/feature_2.png';
+import feature3 from '/src/assets/landing/features/feature_3.png';
+import appStore from '/src/assets/patient/app_store.png';
+import playStore from '/src/assets/patient/play_store.png';
+import backgroundBlobs from '/src/assets/patient/background_blobs.png';
+import phoneRobot from '/src/assets/patient/phone_robot.png';
+import iconsRow from '/src/assets/patient/icons_row.png';
 
 
 const LandingPage: React.FC = () => {
-useEffect(() => {
-  const link = document.createElement("link");
-  link.rel = "stylesheet";
-  link.href = "/src/components/landing/LandingPage.css";
-  document.head.appendChild(link);
 
-  return () => {
-    link.remove(); // cleans up when leaving Landing page
-  };
-}, []);
 
 
   // Create refs for the elements we want to watch
@@ -214,7 +223,7 @@ useEffect(() => {
           {/* Logo */}
           <div className="logo-section">
             <img
-              src="/src/assets/landing/navbar/logo.png"
+              src={logoNavbar}
               alt="Clinico Logo"
               className="logo"
             />
@@ -262,12 +271,12 @@ useEffect(() => {
           </div> {/* Close hero-text */}
           <div className="hero-visual">
             <img
-              src="/src/assets/landing/hero/mascot.png"
+              src={mascotHero}
               alt="Clinico AI Assistant"
               className="mascot-img"
             />
             <img
-              src="/src/assets/landing/hero/patient.png"
+              src={patientHero}
               alt="Patient"
               className="patient-img"
             />
@@ -310,7 +319,7 @@ useEffect(() => {
           </div> {/* Close prof-text */}
 
           <div className="prof-visuals">
-            <img src="/src/assets/doctor/features.png" alt="Doctor Consulting" className="prof-image" />
+            <img src={doctorFeatures} alt="Doctor Consulting" className="prof-image" />
             <div className="feature-cards-row">
               <div className="feature-card">
                 <span className="badge badge-purple">Feature</span>
@@ -338,7 +347,7 @@ useEffect(() => {
           {/* Left Section: Heart Image Collage */}
           <div className="mission-visuals">
             <img
-              src="/src/assets/mission/heart-image.png"
+              src={heartImage}
               alt="Heart of Care - representing our mission to connect communities with healthcare"
               className="heart-collage"
             />
@@ -348,7 +357,7 @@ useEffect(() => {
           <div className="mission-content">
             <div className="mission-icon">
               <img
-                src="/src/assets/mission/heart-icon.png"
+                src={heartIcon}
                 alt="Heart with Plus Sign Icon"
               />
             </div>
@@ -404,7 +413,7 @@ useEffect(() => {
           <div className="features-visual-wrapper">
             {/* Layer 1: Background Blob */}
             <img
-              src="/src/assets/landing/features/design.png"
+              src={designFeatures}
               alt="Background design element"
               className="bg-blob"
               style={calculateParallax('blob')}
@@ -423,19 +432,19 @@ useEffect(() => {
             
             {/* Layer 3: Floating Images */}
             <img
-              src="/src/assets/landing/features/feature_1.png"
+              src={feature1}
               alt="AI Companion"
               className="feat-img feat-img-1"
               style={calculateParallax('img1')}
             />
             <img
-              src="/src/assets/landing/features/feature_2.png"
+              src={feature2}
               alt="Teleconsultation"
               className="feat-img feat-img-2"
               style={calculateParallax('img2')}
             />
             <img
-              src="/src/assets/landing/features/feature_3.png"
+              src={feature3}
               alt="Geolocation"
               className="feat-img feat-img-3"
               style={calculateParallax('img3')}
@@ -464,13 +473,13 @@ useEffect(() => {
           <div className="app-store-buttons">
             <a href="#" className="app-store-btn">
               <img
-                src="/src/assets/patient/app_store.png"
+                src={appStore}
                 alt="Download on App Store"
               />
             </a>
             <a href="#" className="play-store-btn">
               <img
-                src="/src/assets/patient/play_store.png"
+                src={playStore}
                 alt="Get it on Google Play"
               />
             </a>
@@ -479,12 +488,12 @@ useEffect(() => {
           {/* D. The Main Visual Stack (Center) */}
           <div className="main-visual-stack">
             <img
-              src="/src/assets/patient/background_blobs.png"
+              src={backgroundBlobs}
               alt="Background decorative blobs"
               className="background-blobs"
             />
             <img
-              src="/src/assets/patient/phone_robot.png"
+              src={phoneRobot}
               alt="Elephant Robot next to iPhone"
               className="phone-robot"
             />
@@ -493,7 +502,7 @@ useEffect(() => {
           {/* E. The Feature Icons (Bottom) */}
           <div className="feature-icons-row">
             <img
-              src="/src/assets/patient/icons_row.png"
+              src={iconsRow}
               alt="Feature icons row"
             />
           </div>

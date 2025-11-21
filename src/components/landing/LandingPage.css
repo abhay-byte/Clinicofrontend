@@ -132,13 +132,13 @@
   display: flex;
   align-items: center;
   width: 100%;
-  justify-content: space-between;
+  justify-content: flex-start;
 }
 
 .logo-section {
   display: flex;
   align-items: center;
-  margin-right: auto;
+  margin-right: 40px;
 }
 
 .logo {
@@ -281,7 +281,7 @@
   bottom: 2px;
   height: 30px;
   width: 0%;
-  background-image: url('/src/assets/landing/hero/stripe.png');
+  background-image: url('/stripe.png');
   background-size: 100% 100%;
   background-repeat: no-repeat;
   z-index: -1;
@@ -479,7 +479,7 @@
   bottom: 2px;
   height: 25px;
   width: 0%;
-  background-image: url('/src/assets/landing/hero/stripe.png');
+  background-image: url('/stripe.png');
   background-size: 100% 100%;
   background-repeat: no-repeat;
   z-index: -1;
@@ -718,7 +718,7 @@
   bottom: 2px;
   height: 20px;
   width: 0%;
-  background-image: url('/src/assets/landing/hero/stripe.png');
+  background-image: url('/stripe.png');
   background-size: 100% 100%;
   background-repeat: no-repeat;
   z-index: -1;
@@ -817,7 +817,7 @@
   bottom: 2px;
   height: 25px;
   width: 0%;
-  background-image: url('/src/assets/landing/hero/stripe.png');
+  background-image: url('/stripe.png');
   background-size: 100% 100%;
   background-repeat: no-repeat;
   z-index: -1;
@@ -995,7 +995,7 @@
   bottom: 2px;
   height: 25px;
   width: 0%;
-  background-image: url('/src/assets/landing/hero/stripe.png');
+  background-image: url('/stripe.png');
   background-size: 100% 100%;
   background-repeat: no-repeat;
   z-index: -1;
@@ -1129,6 +1129,8 @@
   flex: 1;
   gap: 40px;
   flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
 }
 
 .footer-links-column {

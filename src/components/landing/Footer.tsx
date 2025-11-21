@@ -1,5 +1,8 @@
 import React from 'react';
 import { FaYoutube, FaFacebook, FaTwitter, FaInstagram, FaLinkedin, FaArrowRight } from 'react-icons/fa';
+import logo from '/src/assets/logo.png';
+import appStore from '/src/assets/patient/app_store.png';
+import playStore from '/src/assets/patient/play_store.png';
 
 const Footer = () => {
   return (
@@ -7,7 +10,7 @@ const Footer = () => {
       <div className='footer-top'>
         <div className='footer-brand'>
           <img
-            src="/src/assets/logo.png"
+            src={logo}
             alt="Clinico Logo"
             className="footer-logo"
           />
@@ -96,12 +99,12 @@ const Footer = () => {
           </div>
           <div className="app-buttons">
             <img
-              src="/src/assets/patient/app_store.png"
+              src={appStore}
               alt="App Store"
               className="app-store-button"
             />
             <img
-              src="/src/assets/patient/play_store.png"
+              src={playStore}
               alt="Play Store"
               className="play-store-button"
             />
