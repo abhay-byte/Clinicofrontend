@@ -416,3 +416,35 @@
     margin-bottom: clamp(18px, 3vh, 24px);
   }
 }
+
+/* Forgot Password Page Specific Styles */
+#forgot-password-page-wrapper .signin-brand-panel {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Pushes content apart */
+  align-items: center;
+  padding: clamp(20px, 4vw, 60px);
+}
+
+#forgot-password-page-wrapper .signin-brand-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  z-index: 2;
+  width: 100%;
+  max-width: 500px;
+  margin-top: 20px; /* Add spacing to top */
+}
+
+#forgot-password-page-wrapper .signin-mascot {
+  width: 120%;
+  max-width: 150%; /* Fill the left panel */
+  height: 120%;
+  min-height: 500px; /* Make it larger */
+  margin-top: auto; /* Push to bottom */
+  margin-bottom: -100px; /* Pull it down slightly if needed */
+  align-self: center; /* Center the mascot */
+  object-fit: fill; /* Make sure image fills properly */
+  object-position: bottom; /* Position image at bottom */
+}

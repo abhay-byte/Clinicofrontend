@@ -13,6 +13,7 @@ import { ChatWidget } from "./components/chat/ChatWidget";
 const LandingPage = lazy(() => import("./components/landing/LandingPage"));
 const SignInPage = lazy(() => import("./components/auth/SignInPage"));
 const LogInPage = lazy(() => import("./components/auth/LogInPage"));
+const ForgotPasswordPage = lazy(() => import("./components/auth/ForgotPasswordPage"));
 const DashboardPage = lazy(() => import("./components/dashboard/DashboardPage").then(module => ({ default: module.DashboardPage })));
 const SchedulePage = lazy(() => import("./components/schedule/SchedulePage").then(module => ({ default: module.SchedulePage })));
 const AppointmentsPage = lazy(() => import("./components/appointments/AppointmentsPage").then(module => ({ default: module.AppointmentsPage })));
@@ -68,6 +69,7 @@ export default function App() {
           <Route path="/" element={<LandingPage />} />
           <Route path="/signup" element={<SignInPage />} />
           <Route path="/login" element={<LogInPage />} />
+          <Route path="/forgot-password" element={<ForgotPasswordPage />} />
           
           {/* Internal Authenticated Pages */}
           <Route path="/dashboard" element={<PageWrapper Component={DashboardPage} />} />

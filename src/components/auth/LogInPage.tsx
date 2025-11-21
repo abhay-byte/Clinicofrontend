@@ -124,7 +124,7 @@ const LogInPage = () => {
             </form>
 
             <div className="signin-forgot-password">
-              <a href="#">Forgot Password?</a>
+              <Link to="/forgot-password">Forgot Password?</Link>
             </div>
 
             <div className="signin-login-link">
