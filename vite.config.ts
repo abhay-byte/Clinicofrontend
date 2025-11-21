@@ -76,4 +76,8 @@
       port: 3000,
       open: true,
     },
+    preview: {
+    host: true,
+    port: 4173, // required for render
+  },
   });
