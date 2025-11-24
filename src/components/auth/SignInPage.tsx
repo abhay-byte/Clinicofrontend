@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
+import { authService } from '../../services/auth.service';
+import { RegisterRequest } from '../../types/auth.types';
+import { toast } from 'sonner';
 import logo from '/src/assets/logo.png';
 import mascotSignin from '/src/assets/signin/mascot_signin.png';
 import './SignInPage.css';
 
 const SignInPage = () => {
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     username: '',
@@ -15,6 +19,7 @@ const SignInPage = () => {
     password: ''
   });
   const [agreed, setAgreed] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -24,10 +29,35 @@ const SignInPage = () => {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission
-    console.log('Form submitted:', { ...formData, agreed });
+    setLoading(true);
+
+    try {
+      // Prepare the registration data according to the API requirements
+      const registerData: RegisterRequest = {
+        email: formData.email,
+        password: formData.password,
+        full_name: formData.username,
+        phone_number: formData.phone,
+        role: 'Professional' // Since this is for volunteers/professionals
+      };
+
+      // Call the auth service to register the user
+      const response = await authService.register(registerData);
+      
+      // Show success message
+      toast.success(response.message || 'Registration successful!');
+      
+      // Redirect to dashboard after successful registration
+      navigate('/dashboard');
+    } catch (error: any) {
+      // Show error message
+      toast.error(error.message || 'Registration failed. Please try again.');
+      console.error('Registration error:', error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -185,7 +215,13 @@ const SignInPage = () => {
                 <label htmlFor="agreement">I agree to the Volunteer Agreement</label>
               </div>
 
-              <button type="submit" className="signin-submit-btn">Apply to Join</button>
+              <button
+                type="submit"
+                className="signin-submit-btn"
+                disabled={loading}
+              >
+                {loading ? 'Processing...' : 'Apply to Join'}
+              </button>
             </form>
 
             <div className="signin-login-link">

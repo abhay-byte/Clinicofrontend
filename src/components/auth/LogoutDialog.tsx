@@ -9,6 +9,9 @@ import {
   AlertDialogTitle,
 } from "../ui/alert-dialog";
 import { LogOut, AlertTriangle } from "lucide-react";
+import { authService } from "../../services/auth.service";
+import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
 
 interface LogoutDialogProps {
   open: boolean;
@@ -17,6 +20,28 @@ interface LogoutDialogProps {
 }
 
 export function LogoutDialog({ open, onOpenChange, onConfirmLogout }: LogoutDialogProps) {
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+      // Call the auth service to logout the user
+      await authService.logout();
+      
+      // Show success message
+      toast.success('Logged out successfully!');
+      
+      // Redirect to landing page after successful logout
+      navigate('/');
+    } catch (error: any) {
+      // Show error message if logout fails
+      toast.error(error.message || 'Logout failed. Please try again.');
+      console.error('Logout error:', error);
+    } finally {
+      // Close the dialog
+      onOpenChange(false);
+    }
+  };
+
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
       <AlertDialogContent className="max-w-md">
@@ -47,7 +72,7 @@ export function LogoutDialog({ open, onOpenChange, onConfirmLogout }: LogoutDial
             Cancel
           </AlertDialogCancel>
           <AlertDialogAction
-            onClick={onConfirmLogout}
+            onClick={handleLogout}
             className="bg-red-600 hover:bg-red-700 text-white"
           >
             <LogOut className="h-4 w-4 mr-2" />

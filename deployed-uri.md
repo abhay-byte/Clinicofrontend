@@ -1,0 +1,1 @@
+backendURI=https://minor-project-gtbit.onrender.com/
