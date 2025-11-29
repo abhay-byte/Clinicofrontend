@@ -21,13 +21,17 @@ export const authService = {
  },
 
   // Login user
-  login: async (credentials: LoginRequest): Promise<LoginResponse> => {
+  login: async (credentials: LoginRequest, rememberMe: boolean = true): Promise<LoginResponse> => {
     try {
       const response = await apiRequest.post('/auth/login', credentials);
       const data = response.data as LoginResponse;
-      // Store the token in localStorage if login is successful
+      // Store the token in localStorage or sessionStorage based on rememberMe setting
       if (data.token) {
-        localStorage.setItem('token', data.token);
+        if (rememberMe) {
+          localStorage.setItem('token', data.token);
+        } else {
+          sessionStorage.setItem('token', data.token);
+        }
       }
       return data;
     } catch (error: any) {
@@ -35,20 +39,21 @@ export const authService = {
       const errorMessage = error.response?.data?.message || error.message || 'Login failed';
       throw new Error(errorMessage);
     }
- },
+  },
 
-  // Logout user - clear token from localStorage
+  // Logout user - clear token from localStorage and sessionStorage
   logout: async (): Promise<{ message: string }> => {
     try {
-      // Clear the token from localStorage
+      // Clear the token from both localStorage and sessionStorage
       localStorage.removeItem('token');
+      sessionStorage.removeItem('token');
       return { message: 'Logged out successfully' };
     } catch (error: any) {
       // In case of error during logout
       const errorMessage = error.message || 'Logout failed';
       throw new Error(errorMessage);
     }
-  },
+ },
 
   // Get current user profile (if needed)
   getProfile: async () => {
@@ -63,12 +68,12 @@ export const authService = {
 
   // Check if user is authenticated
   isAuthenticated: (): boolean => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('token') || sessionStorage.getItem('token');
     return !!token;
   },
 
   // Get token
   getToken: (): string | null => {
-    return localStorage.getItem('token');
+    return localStorage.getItem('token') || sessionStorage.getItem('token');
   }
 };

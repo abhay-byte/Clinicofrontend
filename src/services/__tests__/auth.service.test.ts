@@ -1,25 +1,36 @@
 import { authService } from '../auth.service';
 
-// Mock localStorage
-const mockLocalStorage = (() => {
-  let store: { [key: string]: string } = {};
-  
-  return {
-    getItem: (key: string) => store[key] || null,
-    setItem: (key: string, value: string) => {
-      store[key] = value.toString();
-    },
-    removeItem: (key: string) => {
-      delete store[key];
-    },
-    clear: () => {
-      store = {};
-    }
-  };
-})();
+// Mock localStorage and sessionStorage
+const mockLocalStorage = {
+  getItem: jest.fn(),
+  setItem: jest.fn(),
+  removeItem: jest.fn(),
+  clear: jest.fn(),
+};
 
+const mockSessionStorage = {
+  getItem: jest.fn(),
+  setItem: jest.fn(),
+  removeItem: jest.fn(),
+  clear: jest.fn(),
+};
+
+// Mock the localStorage and sessionStorage
 Object.defineProperty(window, 'localStorage', {
   value: mockLocalStorage,
+  writable: true,
+});
+
+Object.defineProperty(window, 'sessionStorage', {
+  value: mockSessionStorage,
+  writable: true,
+});
+
+// Reset mocks before each test
+beforeEach(() => {
+  jest.clearAllMocks();
+  (mockLocalStorage.getItem as jest.Mock).mockReturnValue(null);
+  (mockSessionStorage.getItem as jest.Mock).mockReturnValue(null);
 });
 
 // Mock the api service
@@ -35,8 +46,9 @@ import { apiRequest } from '../api.service';
 describe('authService', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    mockLocalStorage.clear();
-  });
+    (mockLocalStorage.getItem as jest.Mock).mockReturnValue(null);
+    (mockSessionStorage.getItem as jest.Mock).mockReturnValue(null);
+ });
 
  describe('register', () => {
     it('should register a user successfully', async () => {
@@ -61,7 +73,7 @@ describe('authService', () => {
         email: 'test@example.com',
         password: 'password123',
         full_name: 'Test User',
-        role: 'Patient',
+        role: 'Patient' as const,
       };
 
       const result = await authService.register(registerData);
@@ -86,7 +98,7 @@ describe('authService', () => {
         email: 'test@example.com',
         password: 'password123',
         full_name: 'Test User',
-        role: 'Patient',
+        role: 'Patient' as const,
       };
 
       await expect(authService.register(registerData)).rejects.toThrow('Email already exists');
@@ -94,7 +106,7 @@ describe('authService', () => {
   });
 
   describe('login', () => {
-    it('should login a user successfully', async () => {
+    it('should login a user successfully with rememberMe=true (default)', async () => {
       const mockResponse = {
         success: true,
         message: 'Login successful',
@@ -116,10 +128,71 @@ describe('authService', () => {
         password: 'password123',
       };
 
-      const result = await authService.login(loginData);
+      const result = await authService.login(loginData); // Default rememberMe=true
 
       expect(apiRequest.post).toHaveBeenCalledWith('/auth/login', loginData);
       expect(mockLocalStorage.setItem).toHaveBeenCalledWith('token', 'mock-token');
+      expect(mockSessionStorage.setItem).not.toHaveBeenCalled();
+      expect(result).toEqual(mockResponse);
+    });
+
+    it('should login a user successfully with rememberMe=true', async () => {
+      const mockResponse = {
+        success: true,
+        message: 'Login successful',
+        token: 'mock-token',
+        user: {
+          user_id: 1,
+          email: 'test@example.com',
+          full_name: 'Test User',
+          role: 'Patient',
+        },
+      };
+
+      (apiRequest.post as jest.Mock).mockResolvedValue({
+        data: mockResponse,
+      });
+
+      const loginData = {
+        email: 'test@example.com',
+        password: 'password123',
+      };
+
+      const result = await authService.login(loginData, true);
+
+      expect(apiRequest.post).toHaveBeenCalledWith('/auth/login', loginData);
+      expect(mockLocalStorage.setItem).toHaveBeenCalledWith('token', 'mock-token');
+      expect(mockSessionStorage.setItem).not.toHaveBeenCalled();
+      expect(result).toEqual(mockResponse);
+    });
+
+    it('should login a user successfully with rememberMe=false', async () => {
+      const mockResponse = {
+        success: true,
+        message: 'Login successful',
+        token: 'mock-token',
+        user: {
+          user_id: 1,
+          email: 'test@example.com',
+          full_name: 'Test User',
+          role: 'Patient',
+        },
+      };
+
+      (apiRequest.post as jest.Mock).mockResolvedValue({
+        data: mockResponse,
+      });
+
+      const loginData = {
+        email: 'test@example.com',
+        password: 'password123',
+      };
+
+      const result = await authService.login(loginData, false);
+
+      expect(apiRequest.post).toHaveBeenCalledWith('/auth/login', loginData);
+      expect(mockSessionStorage.setItem).toHaveBeenCalledWith('token', 'mock-token');
+      expect(mockLocalStorage.setItem).not.toHaveBeenCalled();
       expect(result).toEqual(mockResponse);
     });
 
@@ -144,25 +217,55 @@ describe('authService', () => {
   });
 
   describe('logout', () => {
-    it('should logout a user successfully', async () => {
+    it('should logout a user successfully by clearing both storages', async () => {
       mockLocalStorage.setItem('token', 'mock-token');
+      mockSessionStorage.setItem('token', 'mock-session-token');
 
       const result = await authService.logout();
 
       expect(mockLocalStorage.removeItem).toHaveBeenCalledWith('token');
+      expect(mockSessionStorage.removeItem).toHaveBeenCalledWith('token');
       expect(result).toEqual({ message: 'Logged out successfully' });
     });
   });
 
   describe('isAuthenticated', () => {
-    it('should return true if token exists', () => {
-      mockLocalStorage.setItem('token', 'mock-token');
+    it('should return true if token exists in localStorage', () => {
+      (mockLocalStorage.getItem as jest.Mock).mockReturnValue('mock-token');
+      (mockSessionStorage.getItem as jest.Mock).mockReturnValue(null);
       expect(authService.isAuthenticated()).toBe(true);
     });
 
-    it('should return false if token does not exist', () => {
-      mockLocalStorage.removeItem('token');
+    it('should return true if token exists in sessionStorage', () => {
+      (mockLocalStorage.getItem as jest.Mock).mockReturnValue(null);
+      (mockSessionStorage.getItem as jest.Mock).mockReturnValue('mock-session-token');
+      expect(authService.isAuthenticated()).toBe(true);
+    });
+
+    it('should return false if token does not exist in either storage', () => {
+      (mockLocalStorage.getItem as jest.Mock).mockReturnValue(null);
+      (mockSessionStorage.getItem as jest.Mock).mockReturnValue(null);
       expect(authService.isAuthenticated()).toBe(false);
+    });
+  });
+
+  describe('getToken', () => {
+    it('should return token from localStorage when available', () => {
+      (mockLocalStorage.getItem as jest.Mock).mockReturnValue('mock-token');
+      (mockSessionStorage.getItem as jest.Mock).mockReturnValue('mock-session-token');
+      expect(authService.getToken()).toBe('mock-token');
+    });
+
+    it('should return token from sessionStorage when localStorage is empty', () => {
+      (mockLocalStorage.getItem as jest.Mock).mockReturnValue(null);
+      (mockSessionStorage.getItem as jest.Mock).mockReturnValue('mock-session-token');
+      expect(authService.getToken()).toBe('mock-session-token');
+    });
+
+    it('should return null when no token exists in either storage', () => {
+      (mockLocalStorage.getItem as jest.Mock).mockReturnValue(null);
+      (mockSessionStorage.getItem as jest.Mock).mockReturnValue(null);
+      expect(authService.getToken()).toBeNull();
     });
   });
 });

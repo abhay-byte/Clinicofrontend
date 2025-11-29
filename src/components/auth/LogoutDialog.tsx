@@ -12,6 +12,7 @@ import { LogOut, AlertTriangle } from "lucide-react";
 import { authService } from "../../services/auth.service";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../contexts/AuthContext";
 
 interface LogoutDialogProps {
   open: boolean;
@@ -21,11 +22,12 @@ interface LogoutDialogProps {
 
 export function LogoutDialog({ open, onOpenChange, onConfirmLogout }: LogoutDialogProps) {
   const navigate = useNavigate();
+ const { logout } = useAuth();
 
   const handleLogout = async () => {
     try {
-      // Call the auth service to logout the user
-      await authService.logout();
+      // Use the auth context to logout the user
+      await logout();
       
       // Show success message
       toast.success('Logged out successfully!');

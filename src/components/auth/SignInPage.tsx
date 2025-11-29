@@ -3,13 +3,15 @@ import { useNavigate, Link } from 'react-router-dom';
 import { authService } from '../../services/auth.service';
 import { RegisterRequest } from '../../types/auth.types';
 import { toast } from 'sonner';
+import { useAuth } from '../../contexts/AuthContext';
 import logo from '/src/assets/logo.png';
 import mascotSignin from '/src/assets/signin/mascot_signin.png';
 import './SignInPage.css';
 
 const SignInPage = () => {
   const navigate = useNavigate();
-  const [showPassword, setShowPassword] = useState(false);
+  const { login } = useAuth(); // We'll use login after successful registration
+ const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     username: '',
     email: '',
@@ -45,6 +47,10 @@ const SignInPage = () => {
 
       // Call the auth service to register the user
       const response = await authService.register(registerData);
+      
+      // After successful registration, log the user in automatically
+      // The token is already stored in localStorage by the register function
+      await login(formData.email, formData.password, true); // Auto-login after registration
       
       // Show success message
       toast.success(response.message || 'Registration successful!');

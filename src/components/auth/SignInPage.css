@@ -24,6 +24,18 @@
   }
 }
 
+.signin-error-message {
+  margin-top: 15px;
+  padding: 12px;
+  background-color: #fee;
+  border: 1px solid #fcc;
+  border-radius: 4px;
+  color: #c33;
+  font-size: 14px;
+  text-align: center;
+  animation: fadeIn 0.3s ease;
+}
+
 .signin-content-wrapper {
   display: flex;
   width: 100%;

@@ -9,6 +9,7 @@ import topBarSvgPaths from "../../imports/svg-iaozp19azm";
 import { ReactNode, useState } from "react";
 import { Separator } from "../ui/separator";
 import { LogoutDialog } from "../auth/LogoutDialog";
+import { useAuth } from "../../contexts/AuthContext";
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -19,24 +20,23 @@ interface DashboardLayoutProps {
 
 export function DashboardLayout({ children, onNavigate, currentPage = "dashboard", hideNavigation = false }: DashboardLayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(true);
-  const [logoutDialogOpen, setLogoutDialogOpen] = useState(false);
+ const [logoutDialogOpen, setLogoutDialogOpen] = useState(false);
+  const { logout } = useAuth();
 
   const handleNavigation = (path: string) => {
     onNavigate(path);
   };
 
-  const handleLogout = () => {
-    // Close the dialog
-    setLogoutDialogOpen(false);
-    
-    // Here you would typically:
-    // 1. Clear user session/tokens
-    // 2. Clear local storage
-    // 3. Redirect to login page
-    console.log("User logged out");
-    
-    // For now, we'll just show an alert
-    alert("Logged out successfully!");
+  const handleLogout = async () => {
+    try {
+      // Use the auth context to logout the user
+      await logout();
+      
+      // Close the dialog
+      setLogoutDialogOpen(false);
+    } catch (error) {
+      console.error('Logout error:', error);
+    }
   };
 
   if (hideNavigation) {

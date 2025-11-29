@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../../contexts/AuthContext';
 import Footer from './Footer';
 import styles from "./LandingPage.module.css";
 
@@ -22,13 +23,15 @@ import iconsRow from '/src/assets/patient/icons_row.png';
 
 
 const LandingPage: React.FC = () => {
+  const navigate = useNavigate();
+  const { isAuthenticated, loading } = useAuth();
 
   // Create refs for the elements we want to watch
   const missionHeadlineRef = useRef<HTMLHeadingElement>(null);
   const heroHeadlineRef = useRef<HTMLHeadingElement>(null);
   const profHeadlineRef = useRef<HTMLHeadingElement>(null);
   const featuresSectionRef = useRef<HTMLDivElement>(null);
-  const featuresHeadlineRef = useRef<HTMLHeadingElement>(null);
+ const featuresHeadlineRef = useRef<HTMLHeadingElement>(null);
   
   // State to toggle the animation class
   const [isMissionHeadlineVisible, setIsMissionHeadlineVisible] = useState(false);
@@ -233,8 +236,24 @@ const LandingPage: React.FC = () => {
           
           {/* Authentication & Action */}
           <div className={styles.authSection}>
-            <Link to="/dashboard" className={styles.loginLink}>Log In</Link>
-            <Link to="/signup" className={styles.signupButton}>Sign Up Now</Link>
+            {loading ? (
+              // Show loading state while checking auth status
+              <div>Loading...</div>
+            ) : isAuthenticated ? (
+              // Show Dashboard button when authenticated
+              <button
+                onClick={() => navigate('/dashboard')}
+                className={styles.signupButton}
+              >
+                Dashboard
+              </button>
+            ) : (
+              // Show Login and Signup buttons when not authenticated
+              <>
+                <Link to="/login" className={styles.loginLink}>Log In</Link>
+                <Link to="/signup" className={styles.signupButton}>Sign Up Now</Link>
+              </>
+            )}
           </div>
         </div>
       </nav>
