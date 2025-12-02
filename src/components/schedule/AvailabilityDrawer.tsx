@@ -95,8 +95,8 @@ export function AvailabilityDrawer({ open, onOpenChange, onAddSlot, onAddRecurri
               <Label className="text-sm">Select Date</Label>
               <Popover>
                 <PopoverTrigger asChild>
-                  <Button 
-                    variant="outline" 
+                  <Button
+                    variant="outline"
                     className="w-full justify-start text-left"
                   >
                     <CalendarIcon className="mr-2 h-4 w-4" />
@@ -109,7 +109,7 @@ export function AvailabilityDrawer({ open, onOpenChange, onAddSlot, onAddRecurri
                     selected={singleDate}
                     onSelect={setSingleDate}
                     initialFocus
-                    disabled={(date) => date < new Date(new Date().setHours(0, 0, 0, 0))}
+                    disabled={(date: Date) => date < new Date(new Date().setHours(0, 0, 0, 0))}
                   />
                 </PopoverContent>
               </Popover>
@@ -152,7 +152,7 @@ export function AvailabilityDrawer({ open, onOpenChange, onAddSlot, onAddRecurri
                     <Checkbox
                       id={day.value}
                       checked={selectedDays.includes(day.value)}
-                      onCheckedChange={(checked) => {
+                      onCheckedChange={(checked: boolean) => {
                         if (checked) {
                           setSelectedDays([...selectedDays, day.value]);
                         } else {
@@ -207,8 +207,8 @@ export function AvailabilityDrawer({ open, onOpenChange, onAddSlot, onAddRecurri
               <Label className="text-sm">Apply From</Label>
               <Popover>
                 <PopoverTrigger asChild>
-                  <Button 
-                    variant="outline" 
+                  <Button
+                    variant="outline"
                     className="w-full justify-start text-left"
                   >
                     <CalendarIcon className="mr-2 h-4 w-4" />
@@ -221,7 +221,7 @@ export function AvailabilityDrawer({ open, onOpenChange, onAddSlot, onAddRecurri
                     selected={applyFrom}
                     onSelect={setApplyFrom}
                     initialFocus
-                    disabled={(date) => date < new Date(new Date().setHours(0, 0, 0, 0))}
+                    disabled={(date: Date) => date < new Date(new Date().setHours(0, 0, 0, 0))}
                   />
                 </PopoverContent>
               </Popover>
@@ -231,8 +231,8 @@ export function AvailabilityDrawer({ open, onOpenChange, onAddSlot, onAddRecurri
               <Label className="text-sm">Apply Until</Label>
               <Popover>
                 <PopoverTrigger asChild>
-                  <Button 
-                    variant="outline" 
+                  <Button
+                    variant="outline"
                     className="w-full justify-start text-left"
                   >
                     <CalendarIcon className="mr-2 h-4 w-4" />
@@ -245,7 +245,7 @@ export function AvailabilityDrawer({ open, onOpenChange, onAddSlot, onAddRecurri
                     selected={applyUntil}
                     onSelect={setApplyUntil}
                     initialFocus
-                    disabled={(date) => {
+                    disabled={(date: Date) => {
                       const today = new Date(new Date().setHours(0, 0, 0, 0));
                       return date < today || (applyFrom ? date < applyFrom : false);
                     }}
