@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { DashboardLayout } from "../schedule/DashboardLayout";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
@@ -50,8 +50,13 @@ import {
   CheckCircle,
   MessageSquare,
   FileImage,
+  Upload,
+  Plus,
+  Trash2,
 } from "lucide-react";
-import { toast } from "sonner@2.0.3";
+import { toast } from "sonner";
+import { medicalRecordsService } from "../../services/medicalRecords.service";
+import { MedicalRecord } from "../../types/user.types";
 
 interface ReportRequestFile {
   id: string;
@@ -184,6 +189,17 @@ export function ReportRequestsPage({ onNavigate }: ReportRequestsPageProps) {
   const [dueDate, setDueDate] = useState("");
   const [additionalNotes, setAdditionalNotes] = useState("");
 
+  // Medical records state
+  const [medicalRecords, setMedicalRecords] = useState<MedicalRecord[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [showUploadModal, setShowUploadModal] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const [documentFile, setDocumentFile] = useState<File | null>(null);
+  const [documentName, setDocumentName] = useState("");
+  const [documentType, setDocumentType] = useState("");
+  const [commentsNotes, setCommentsNotes] = useState("");
+  const [reportDate, setReportDate] = useState("");
+
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     return new Intl.DateTimeFormat("en-IN", {
@@ -192,6 +208,24 @@ export function ReportRequestsPage({ onNavigate }: ReportRequestsPageProps) {
       day: "numeric",
     }).format(date);
   };
+
+  // Fetch medical records on component mount
+  useEffect(() => {
+    const fetchMedicalRecords = async () => {
+      try {
+        setLoading(true);
+        const records = await medicalRecordsService.getAllRecords();
+        setMedicalRecords(records);
+      } catch (error) {
+        console.error('Error fetching medical records:', error);
+        toast.error('Failed to fetch medical records');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchMedicalRecords();
+  }, []);
 
   const getFilteredRequests = () => {
     return requests.filter((req) => {
@@ -316,6 +350,81 @@ export function ReportRequestsPage({ onNavigate }: ReportRequestsPageProps) {
     setAdditionalNotes("");
   };
 
+  // Medical records functions
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setDocumentFile(e.target.files[0]);
+    }
+  };
+
+  const handleUploadRecord = async () => {
+    if (!documentFile || !documentName || !documentType) {
+      toast.error("Please fill in all required fields and select a file");
+      return;
+    }
+
+    try {
+      setUploading(true);
+      
+      const formData = new FormData();
+      formData.append('documentFile', documentFile);
+      formData.append('documentName', documentName);
+      formData.append('documentType', documentType);
+      
+      if (commentsNotes) {
+        formData.append('commentsNotes', commentsNotes);
+      }
+      
+      if (reportDate) {
+        formData.append('reportDate', reportDate);
+      }
+
+      const response = await medicalRecordsService.uploadRecord(formData);
+      toast.success(response.message);
+
+      // Refresh the records list
+      const updatedRecords = await medicalRecordsService.getAllRecords();
+      setMedicalRecords(updatedRecords);
+
+      // Reset form
+      setDocumentFile(null);
+      setDocumentName("");
+      setDocumentType("");
+      setCommentsNotes("");
+      setReportDate("");
+      setShowUploadModal(false);
+    } catch (error: any) {
+      console.error('Error uploading record:', error);
+      toast.error(error.message || 'Failed to upload medical record');
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const handleDeleteRecord = async (recordId: number) => {
+    try {
+      const response = await medicalRecordsService.deleteRecord(recordId);
+      toast.success(response.message);
+
+      // Refresh the records list
+      const updatedRecords = await medicalRecordsService.getAllRecords();
+      setMedicalRecords(updatedRecords);
+    } catch (error: any) {
+      console.error('Error deleting record:', error);
+      toast.error(error.message || 'Failed to delete medical record');
+    }
+  };
+
+  const handleDownloadRecord = (url: string, fileName: string) => {
+    // Create a temporary link to download the file
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = fileName;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   const filteredRequests = getFilteredRequests();
   const statusCounts = getStatusCounts();
 
@@ -330,9 +439,10 @@ export function ReportRequestsPage({ onNavigate }: ReportRequestsPageProps) {
         </div>
 
         <Tabs defaultValue="track" className="w-full">
-          <TabsList className="grid w-full grid-cols-2">
+          <TabsList className="grid w-full grid-cols-3">
             <TabsTrigger value="track">Track Requests</TabsTrigger>
             <TabsTrigger value="create">Create New Request</TabsTrigger>
+            <TabsTrigger value="my-records">My Medical Records</TabsTrigger>
           </TabsList>
 
           <TabsContent value="track" className="space-y-6">
@@ -597,6 +707,94 @@ export function ReportRequestsPage({ onNavigate }: ReportRequestsPageProps) {
                 </div>
               </CardContent>
             </Card>
+          </TabsContent>
+
+          {/* My Medical Records Tab */}
+          <TabsContent value="my-records" className="space-y-6">
+            <div className="flex justify-between items-center">
+              <CardTitle>My Medical Records</CardTitle>
+              <Button
+                onClick={() => setShowUploadModal(true)}
+                className="bg-[#174880]"
+              >
+                <Plus className="mr-2 h-4 w-4" />
+                Upload New Record
+              </Button>
+            </div>
+
+            {loading ? (
+              <div className="flex justify-center items-center h-64">
+                <p>Loading medical records...</p>
+              </div>
+            ) : (
+              <Card>
+                <CardContent className="pt-6">
+                  <div className="rounded-md border">
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>Document Name</TableHead>
+                          <TableHead>Type</TableHead>
+                          <TableHead>Uploaded Date</TableHead>
+                          <TableHead>Report Date</TableHead>
+                          <TableHead>File Format</TableHead>
+                          <TableHead className="text-right">Actions</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {medicalRecords.length === 0 ? (
+                          <TableRow>
+                            <TableCell colSpan={6} className="text-center text-gray-500">
+                              No medical records found.
+                            </TableCell>
+                          </TableRow>
+                        ) : (
+                          medicalRecords.map((record) => (
+                            <TableRow key={record.record_id}>
+                              <TableCell>
+                                <div className="font-medium">{record.document_name}</div>
+                                <div className="text-xs text-gray-500 truncate max-w-xs">
+                                  {record.comments_notes || "No comments"}
+                                </div>
+                              </TableCell>
+                              <TableCell>
+                                <Badge variant="secondary">{record.document_type}</Badge>
+                              </TableCell>
+                              <TableCell>{formatDate(record.uploaded_at)}</TableCell>
+                              <TableCell>
+                                {record.report_date ? formatDate(record.report_date) : "-"}
+                              </TableCell>
+                              <TableCell>{record.file_format || "-"}</TableCell>
+                              <TableCell className="text-right">
+                                <div className="flex justify-end gap-2">
+                                  <Button
+                                    variant="outline"
+                                    size="sm"
+                                    onClick={() => handleDownloadRecord(record.document_url, record.document_name)}
+                                  >
+                                    <Download className="mr-1 h-4 w-4" />
+                                    Download
+                                  </Button>
+                                  <Button
+                                    variant="outline"
+                                    size="sm"
+                                    onClick={() => handleDeleteRecord(record.record_id)}
+                                    className="text-red-600 hover:bg-red-50"
+                                  >
+                                    <Trash2 className="mr-1 h-4 w-4" />
+                                    Delete
+                                  </Button>
+                                </div>
+                              </TableCell>
+                            </TableRow>
+                          ))
+                        )}
+                      </TableBody>
+                    </Table>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
           </TabsContent>
         </Tabs>
       </div>
