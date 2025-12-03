@@ -8,6 +8,7 @@ import {
   useParams,
 } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
+import { DoctorProvider } from "./contexts/DoctorContext";
 import logo from "./assets/logo.png";
 
 // Lazy load all page components
@@ -182,33 +183,35 @@ export default function App() {
   return (
     <Router>
       <AuthProvider>
-        <Suspense fallback={<LoadingFallback />}>
-          <Routes>
-            {/* Public Pages */}
-            <Route path="/" element={<LandingPage />} />
-            <Route path="/signup" element={<SignInPage />} />
-            <Route path="/login" element={<LogInPage />} />
-            <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-            
-            {/* Internal Authenticated Pages */}
-            <Route path="/dashboard" element={<PageWrapper Component={DashboardPage} />} />
-            <Route path="/schedule" element={<PageWrapper Component={SchedulePage} />} />
-            <Route path="/appointments" element={<PageWrapper Component={AppointmentsPage} />} />
-            <Route path="/consultation" element={<PageWrapper Component={LiveConsultationPage} />} />
-            <Route path="/patients" element={<PageWrapper Component={PatientDirectoryPage} />} />
-            <Route path="/patient-details/:id" element={<PageWrapper Component={PatientDetailsPage} />} />
-            <Route path="/report-requests" element={<PageWrapper Component={ReportRequestsPage} />} />
-            <Route path="/messages" element={<PageWrapper Component={SecureMessagesPage} />} />
-            <Route path="/profile" element={<PageWrapper Component={MyProfilePage} />} />
-            <Route path="/help" element={<PageWrapper Component={HelpSupportPage} />} />
-            <Route path="/notifications" element={<PageWrapper Component={NotificationSettingsPage} />} />
-            <Route path="/terms" element={<PageWrapper Component={TermsConditionsPage} />} />
-            <Route path="/privacy" element={<PageWrapper Component={PrivacyPolicyPage} />} />
-            
-            {/* Fallback */}
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
-        </Suspense>
+        <DoctorProvider>
+          <Suspense fallback={<LoadingFallback />}>
+            <Routes>
+              {/* Public Pages */}
+              <Route path="/" element={<LandingPage />} />
+              <Route path="/signup" element={<SignInPage />} />
+              <Route path="/login" element={<LogInPage />} />
+              <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+              
+              {/* Internal Authenticated Pages */}
+              <Route path="/dashboard" element={<PageWrapper Component={DashboardPage} />} />
+              <Route path="/schedule" element={<PageWrapper Component={SchedulePage} />} />
+              <Route path="/appointments" element={<PageWrapper Component={AppointmentsPage} />} />
+              <Route path="/consultation" element={<PageWrapper Component={LiveConsultationPage} />} />
+              <Route path="/patients" element={<PageWrapper Component={PatientDirectoryPage} />} />
+              <Route path="/patient-details/:id" element={<PageWrapper Component={PatientDetailsPage} />} />
+              <Route path="/report-requests" element={<PageWrapper Component={ReportRequestsPage} />} />
+              <Route path="/messages" element={<PageWrapper Component={SecureMessagesPage} />} />
+              <Route path="/profile" element={<PageWrapper Component={MyProfilePage} />} />
+              <Route path="/help" element={<PageWrapper Component={HelpSupportPage} />} />
+              <Route path="/notifications" element={<PageWrapper Component={NotificationSettingsPage} />} />
+              <Route path="/terms" element={<PageWrapper Component={TermsConditionsPage} />} />
+              <Route path="/privacy" element={<PageWrapper Component={PrivacyPolicyPage} />} />
+              
+              {/* Fallback */}
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
+          </Suspense>
+        </DoctorProvider>
       </AuthProvider>
     </Router>
   );

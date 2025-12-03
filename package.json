@@ -72,7 +72,8 @@
             "dev": "vite",
             "build": "vite build",
             "start": "node server.js",
-            "preview": "vite preview"
+            "preview": "vite preview",
+            "test": "jest"
       },
       "engines": {
             "node": ">=18.0.0"

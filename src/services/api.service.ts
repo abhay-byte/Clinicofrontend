@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // Create base axios instance
 const apiClient = axios.create({
-  baseURL: (import.meta as any).env?.VITE_API_BASE_URL || 'https://minor-project-gtbit.onrender.com/api',
+  baseURL: (typeof process !== 'undefined' && process.env?.VITE_API_BASE_URL) || 'https://minor-project-gtbit.onrender.com/api',
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',

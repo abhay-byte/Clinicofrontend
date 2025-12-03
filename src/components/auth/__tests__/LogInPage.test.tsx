@@ -1,9 +1,22 @@
 // Mock the authService - this must be done before the component is imported
+const mockLogin = jest.fn();
+const mockIsAuthenticated = jest.fn();
+const mockGetToken = jest.fn();
+
 jest.mock('../../../services/auth.service', () => ({
   authService: {
-    login: jest.fn(),
-  },
+    login: mockLogin,
+    isAuthenticated: mockIsAuthenticated,
+    getToken: mockGetToken,
+ },
 }));
+
+// Create variables to access the mocks outside the module
+const mockedAuthService = {
+  login: mockLogin,
+  isAuthenticated: mockIsAuthenticated,
+  getToken: mockGetToken,
+};
 
 // Mock the Dialog component for testing - this must come before the component import
 jest.mock('../../../components/ui/dialog', () => ({
@@ -44,6 +57,8 @@ import { MemoryRouter } from 'react-router-dom';
 import { toast } from 'sonner';
 import LogInPage from '../LogInPage';
 import { authService } from '../../../services/auth.service';
+import { AuthProvider } from '../../../contexts/AuthContext';
+import { DoctorProvider } from '../../../contexts/DoctorContext';
 
 // Mock localStorage
 const mockLocalStorage = (() => {
@@ -72,7 +87,11 @@ describe('LogInPage', () => {
   const renderWithRouter = (initialEntries: string[] = ['/login']) => {
     return render(
       <MemoryRouter initialEntries={initialEntries}>
-        <LogInPage />
+        <AuthProvider>
+          <DoctorProvider>
+            <LogInPage />
+          </DoctorProvider>
+        </AuthProvider>
       </MemoryRouter>
     );
   };
@@ -85,7 +104,11 @@ describe('LogInPage', () => {
   test('renders login form correctly', () => {
     render(
       <MemoryRouter>
-        <LogInPage />
+        <AuthProvider>
+          <DoctorProvider>
+            <LogInPage />
+          </DoctorProvider>
+        </AuthProvider>
       </MemoryRouter>
     );
 
@@ -101,7 +124,11 @@ describe('LogInPage', () => {
  test('allows user to enter email and password', () => {
    render(
      <MemoryRouter>
-       <LogInPage />
+       <AuthProvider>
+         <DoctorProvider>
+           <LogInPage />
+         </DoctorProvider>
+       </AuthProvider>
      </MemoryRouter>
    );
 
@@ -128,11 +155,15 @@ describe('LogInPage', () => {
         },
       };
  
-      (authService.login as jest.Mock).mockResolvedValue(mockLoginResponse);
+      mockedAuthService.login.mockResolvedValue(mockLoginResponse);
  
       render(
         <MemoryRouter>
-          <LogInPage />
+          <AuthProvider>
+            <DoctorProvider>
+              <LogInPage />
+            </DoctorProvider>
+          </AuthProvider>
         </MemoryRouter>
       );
  
@@ -147,10 +178,10 @@ describe('LogInPage', () => {
  
       // Wait for the API call to happen
       await waitFor(() => {
-        expect(authService.login).toHaveBeenCalledWith({
+        expect(mockedAuthService.login).toHaveBeenCalledWith({
           email: 'test@example.com',
           password: 'password123',
-        });
+        }, true); // Second parameter is rememberMe flag
       });
     });
 
@@ -167,7 +198,13 @@ describe('LogInPage', () => {
       },
     };
 
-    (authService.login as jest.Mock).mockResolvedValue(mockLoginResponse);
+    mockedAuthService.login.mockImplementation(async (credentials, rememberMe = true) => {
+      // Simulate the actual behavior of storing the token in localStorage
+      if (mockLoginResponse.token && rememberMe) {
+        localStorage.setItem('token', mockLoginResponse.token);
+      }
+      return mockLoginResponse;
+    });
 
     renderWithRouter(['/login']);
 
@@ -190,7 +227,7 @@ describe('LogInPage', () => {
 
   test('shows error toast on login failure', async () => {
      const mockError = new Error('Invalid credentials');
-     (authService.login as jest.Mock).mockRejectedValue(mockError);
+     mockedAuthService.login.mockRejectedValue(mockError);
 
      renderWithRouter(['/login']);
 
@@ -217,11 +254,15 @@ describe('LogInPage', () => {
        },
        message: 'Login failed'
      };
-     (authService.login as jest.Mock).mockRejectedValue(mockError);
+     mockedAuthService.login.mockRejectedValue(mockError);
 
      render(
        <MemoryRouter>
-         <LogInPage />
+         <AuthProvider>
+           <DoctorProvider>
+             <LogInPage />
+           </DoctorProvider>
+         </AuthProvider>
        </MemoryRouter>
      );
 
@@ -235,7 +276,7 @@ describe('LogInPage', () => {
      fireEvent.click(submitButton);
 
      await waitFor(() => {
-       expect(screen.getByText('Invalid credentials')).toBeInTheDocument();
+       expect(screen.getByRole('alert')).toHaveTextContent('Invalid credentials');
      });
   });
 
@@ -248,11 +289,15 @@ describe('LogInPage', () => {
        },
        message: 'Login failed'
      };
-     (authService.login as jest.Mock).mockRejectedValue(mockError);
+     mockedAuthService.login.mockRejectedValue(mockError);
 
      render(
        <MemoryRouter>
-         <LogInPage />
+         <AuthProvider>
+           <DoctorProvider>
+             <LogInPage />
+           </DoctorProvider>
+         </AuthProvider>
        </MemoryRouter>
      );
 
@@ -269,7 +314,7 @@ describe('LogInPage', () => {
      await waitFor(() => {
        expect(screen.getByTestId('dialog')).toBeInTheDocument();
        expect(screen.getByTestId('dialog-title')).toHaveTextContent('Login Failed');
-       expect(screen.getByText('Invalid credentials')).toBeInTheDocument();
+       expect(screen.getByText('Invalid credentials', { selector: 'p' })).toBeInTheDocument();
      });
   });
 
@@ -282,11 +327,15 @@ describe('LogInPage', () => {
        },
        message: 'Login failed'
      };
-     (authService.login as jest.Mock).mockRejectedValue(mockError);
+     mockedAuthService.login.mockRejectedValue(mockError);
 
      render(
        <MemoryRouter>
-         <LogInPage />
+         <AuthProvider>
+           <DoctorProvider>
+             <LogInPage />
+           </DoctorProvider>
+         </AuthProvider>
        </MemoryRouter>
      );
 
@@ -329,11 +378,15 @@ describe('LogInPage', () => {
       }), 100)
     );
     
-    (authService.login as jest.Mock).mockReturnValue(mockLoginPromise);
+    mockedAuthService.login.mockReturnValue(mockLoginPromise);
 
     render(
       <MemoryRouter>
-        <LogInPage />
+        <AuthProvider>
+          <DoctorProvider>
+            <LogInPage />
+          </DoctorProvider>
+        </AuthProvider>
       </MemoryRouter>
     );
 

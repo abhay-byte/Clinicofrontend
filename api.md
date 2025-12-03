@@ -3,15 +3,54 @@
 This document provides a comprehensive overview of all available API endpoints in the Clinico backend server, including detailed information about request/response formats, authentication requirements, and usage examples.
 
 ## Table of Contents
-1. [General Endpoints](#general-endpoints)
-2. [Authentication Endpoints](#authentication-endpoints)
-3. [User Endpoints](#user-endpoints)
-4. [Professional Endpoints](#professional-endpoints)
-5. [Appointment Endpoints](#appointment-endpoints)
-6. [Clinic Endpoints](#clinic-endpoints)
-7. [Prescription Endpoints](#prescription-endpoints)
-8. [Vault Endpoints](#vault-endpoints)
-9. [Review Endpoints](#review-endpoints)
+1. [CORS Configuration](#cors-configuration)
+2. [General Endpoints](#general-endpoints)
+3. [Authentication Endpoints](#authentication-endpoints)
+4. [User Endpoints](#user-endpoints)
+5. [Professional Endpoints](#professional-endpoints)
+6. [Appointment Endpoints](#appointment-endpoints)
+7. [Consultation Endpoints](#consultation-endpoints)
+8. [Clinic Endpoints](#clinic-endpoints)
+9. [Prescription Endpoints](#prescription-endpoints)
+9. [Vault Endpoints](#vault-endpoints)
+10. [Review Endpoints](#review-endpoints)
+11. [Medical Profile Endpoints](#medical-profile-endpoints)
+12. [Upload Report Requests Endpoints](#upload-report-requests-endpoints)
+13. [Reminder Endpoints](#reminder-endpoints)
+14. [Notification Endpoints](#notification-endpoints)
+15. [Signaling Endpoints](#signaling-endpoints)
+
+## CORS Configuration
+
+The Clinico API is configured to allow cross-origin requests from frontend applications. This enables the frontend to communicate with the backend API server.
+
+**CORS Settings:**
+- **Allowed Origins**: By default, requests are allowed from `http://localhost:5173` (Vite default port). Multiple origins can be configured using the `FRONTEND_URL` environment variable.
+- **Allowed Methods**: GET, POST, PUT, DELETE, OPTIONS
+- **Allowed Headers**: Content-Type, Authorization, X-Requested-With
+- **Credentials**: Enabled (cookies and authentication headers are allowed)
+
+**Environment Configuration:**
+The CORS origin can be configured using the `FRONTEND_URL` environment variable in your `.env` file. For multiple origins, separate them with commas:
+
+```
+FRONTEND_URL="http://localhost:5173,https://clinicofrontend.onrender.com"
+```
+
+**Example Request with CORS Headers:**
+```
+Origin: http://localhost:5173
+Access-Control-Request-Method: GET
+Access-Control-Request-Headers: Content-Type, Authorization
+```
+
+**Expected Response Headers:**
+```
+Access-Control-Allow-Origin: http://localhost:5173
+Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS
+Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With
+Access-Control-Allow-Credentials: true
+```
 
 ## General Endpoints
 
@@ -756,6 +795,149 @@ Cancel an appointment and release the associated time slot.
   "error": "Appointment is already cancelled or completed"
 }
 ```
+
+## Consultation Endpoints
+
+All consultation endpoints require authentication and are restricted to professionals.
+
+**Headers:**
+```
+Authorization: Bearer {jwt_token}
+```
+
+### POST /api/consultations
+Save clinical outcome after appointment completion.
+
+**Request:**
+- Method: `POST`
+- Headers:
+  ```
+  Authorization: Bearer {jwt_token}
+  Content-Type: application/json
+  ```
+- Authentication: Required (Professional only)
+
+**Request Body:**
+```json
+{
+  "appointment_id": 102,
+  "diagnosis": "string (required) - Primary diagnosis",
+  "doctor_recommendations": "string (required) - Treatment recommendations",
+  "follow_up_instructions": "string (optional) - Follow-up care instructions",
+  "notes": "string (optional) - Clinical notes",
+  "ai_briefing": "string (optional) - AI-generated patient summary"
+}
+```
+
+**Response (201 Created):**
+```json
+{
+  "success": true,
+  "message": "Consultation record created successfully",
+  "consultation": {
+    "consultation_id": 205,
+    "consultation_id_uuid": "uuid-string",
+    "appointment_id": 102,
+    "diagnosis": "Acute Bronchitis",
+    "doctor_recommendations": "Steam inhalation, rest.",
+    "follow_up_instructions": "Visit again if fever persists > 3 days.",
+    "notes": "Patient presented with dry cough.",
+    "prescription_attached": false,
+    "created_at": "2025-11-19T10:30:00Z"
+ }
+}
+```
+
+**Response (400 Bad Request):**
+```json
+{
+  "error": "Appointment not found or not completed"
+}
+```
+
+**Response (403 Forbidden):**
+```json
+{
+  "error": "You are not authorized to create consultation for this appointment"
+}
+```
+
+**Response (409 Conflict):**
+```json
+{
+  "error": "Consultation record already exists for this appointment"
+}
+```
+
+---
+
+### POST /api/prescriptions
+Issue a new prescription during or after consultation.
+
+**Request:**
+- Method: `POST`
+- Headers:
+  ```
+  Authorization: Bearer {jwt_token}
+  Content-Type: application/json
+  ```
+- Authentication: Required (Professional only)
+
+**Request Body:**
+```json
+{
+  "consultation_id": 205,
+  "medication_name": "string (required)",
+  "dosage": "string (required)",
+  "frequency": "string (required)",
+  "duration": "string (required)",
+  "medication_category": "string (optional)",
+  "instructions": "string (required) - How to take",
+  "doctor_notes": "string (optional)",
+  "important_notes": "string (optional) - Warnings/precautions"
+}
+```
+
+**Response (201 Created):**
+```json
+{
+  "success": true,
+  "message": "Prescription created successfully",
+  "prescription": {
+    "prescription_id": 301,
+    "prescription_id_uuid": "uuid-string",
+    "consultation_id": 205,
+    "medication_name": "Azithromycin",
+    "dosage": "500mg",
+    "frequency": "Once daily",
+    "duration": "5 days",
+    "medication_category": "Antibiotic",
+    "doctor_notes": "Complete the full course",
+    "important_notes": "May cause slight drowsiness",
+    "prescribed_date": "2025-11-19",
+    "is_active": true,
+    "prescribed_by_doctor_id": 10,
+    "doctor_name": "Dr. Smith",
+    "doctor_specialty": "General Physician"
+  }
+}
+```
+
+**Response (400 Bad Request):**
+```json
+{
+  "error": "Consultation not found"
+}
+```
+
+**Response (403 Forbidden):**
+```json
+{
+  "error": "You are not authorized to prescribe for this consultation"
+}
+```
+
+---
 
 ## Clinic Endpoints
 
@@ -1587,11 +1769,763 @@ Retrieve complete medical history for consultation reference.
 
 ---
 
+## Upload Report Requests Endpoints
+
+All upload report requests endpoints require authentication via JWT token.
+
+### POST /api/upload-report-requests
+Request patient to upload specific lab test reports.
+
+**Request:**
+- Method: `POST`
+- Headers:
+  ```
+  Authorization: Bearer {jwt_token}
+  Content-Type: application/json
+  ```
+- Authentication: Required (Professional only)
+
+**Request Body:**
+```json
+{
+  "patient_id": 55,
+  "consultation_id": 205,
+  "requested_tests": "string (required) - Comma-separated test names",
+  "due_date": "date (required) - YYYY-MM-DD",
+  "additional_notes": "string (optional) - Special instructions"
+}
+```
+
+**Response (201 Created):**
+```json
+{
+  "success": true,
+  "message": "Report request sent to patient",
+  "request": {
+    "request_id": "uuid-string",
+    "request_code": "REQ-2025-889",
+    "patient_id": 55,
+    "professional_id": 10,
+    "requested_tests": "CBC, Lipid Profile, HbA1c",
+    "due_date": "2025-11-25",
+    "status": "Pending",
+    "additional_notes": "Fasting required for 12 hours before test",
+    "created_at": "2025-11-19T10:30:00Z"
+  }
+}
+```
+
+**Response (400 Bad Request):**
+```json
+{
+  "error": "Invalid patient ID or due date"
+}
+```
+
+**Response (404 Not Found):**
+```json
+{
+  "error": "Patient not found"
+}
+```
+
+---
+
+### GET /api/upload-report-requests
+Get all report requests created by the logged-in professional.
+
+**Request:**
+- Method: `GET`
+- Headers:
+  ```
+  Authorization: Bearer {jwt_token}
+  ```
+- Authentication: Required (Professional only)
+
+**Query Parameters:**
+- `status`: string (optional) - Filter by status: 'Pending' | 'Submitted' | 'Reviewed'
+- `patient_id`: integer (optional) - Filter by patient
+
+**Response (200 OK):**
+```json
+{
+  "success": true,
+  "total": 15,
+ "requests": [
+    {
+      "request_id": "uuid-string",
+      "request_code": "REQ-2025-889",
+      "patient_id": 55,
+      "patient_name": "Abhay Raj",
+      "requested_tests": "CBC, Lipid Profile",
+      "due_date": "2025-11-25",
+      "status": "Pending",
+      "created_at": "2025-11-19T10:30:00Z"
+    }
+  ]
+}
+```
+
+---
+
+### GET /api/upload-report-requests/me
+Get all report requests for the logged-in patient.
+
+**Request:**
+- Method: `GET`
+- Headers:
+  ```
+  Authorization: Bearer {jwt_token}
+  ```
+- Authentication: Required (Patient only)
+
+**Query Parameters:**
+- `status`: string (optional) - Filter by status
+
+**Response (200 OK):**
+```json
+{
+  "success": true,
+ "total": 3,
+  "requests": [
+    {
+      "request_id": "uuid-string",
+      "request_code": "REQ-2025-889",
+      "professional_name": "Dr. Smith",
+      "requested_tests": "CBC, Lipid Profile",
+      "due_date": "2025-11-25",
+      "status": "Pending",
+      "additional_notes": "Fasting required",
+      "created_at": "2025-11-19T10:30:00Z"
+    }
+  ]
+}
+```
+
+---
+
+### POST /api/upload-report-requests/:requestId/upload
+Patient uploads requested test report.
+
+**Path Parameter:**
+- `requestId`: UUID (required) - Report request ID
+
+**Request:**
+- Method: `POST`
+- Headers:
+  ```
+  Authorization: Bearer {jwt_token}
+  Content-Type: multipart/form-data
+  ```
+- Authentication: Required (Patient only)
+
+**Form Data:**
+- `reportFile`: file (required) - Test report document
+- `test_type`: string (required) - Type of test
+- `upload_method`: enum (required) - 'File' | 'Camera'
+
+**Response (200 OK):**
+```json
+{
+  "success": true,
+  "message": "Test report uploaded successfully",
+  "upload": {
+    "upload_id": "uuid-string",
+    "request_id": "uuid-string",
+    "test_type": "CBC",
+    "document_url": "https://storage.example.com/...",
+    "uploaded_at": "2025-11-20T14:30:00Z",
+    "upload_method": "File"
+  },
+  "request_status": "Submitted"
+}
+```
+
+**Response (403 Forbidden):**
+```json
+{
+  "error": "This request is not for you"
+}
+```
+
+**Response (404 Not Found):**
+```json
+{
+  "error": "Report request not found"
+}
+```
+
+---
+
+## Conversation Endpoints
+
+All conversation endpoints require authentication via JWT token.
+
+**Headers:**
+```
+Authorization: Bearer {jwt_token}
+```
+
+### GET /api/conversations
+
+Fetches the list of active conversations for the user (Patient or Doctor).
+
+**Request:**
+- Method: `GET`
+- Headers:
+  ```
+  Authorization: Bearer {jwt_token}
+  ```
+- Authentication: Required (Patient or Professional)
+- Parameters: None
+
+**Response (200 OK):**
+```json
+{
+  "success": true,
+  "data": [
+    {
+      "conversation_id": "uuid-string",
+      "other_user_name": "Dr. Sharma",
+      "last_message_at": "2025-11-19T09:15:00Z",
+      "is_active": true,
+      "conversation_type": "Appointment"
+    }
+  ]
+}
+```
+
+**Error Responses:**
+- `401 Unauthorized`: Invalid or missing JWT token
+- `403 Forbidden`: User role is not Patient or Professional
+- `404 Not Found`: User doesn't exist
+- `500 Internal Server Error`: Server error while fetching conversations
+
+---
+
+### GET /api/conversations/:id/messages
+
+Fetches the message history for a specific thread.
+
+**Path Parameter:**
+- `id`: UUID (required) - Conversation ID
+
+**Request:**
+- Method: `GET`
+- Headers:
+  ```
+  Authorization: Bearer {jwt_token}
+  ```
+- Authentication: Required (Patient or Professional)
+
+**Response (200 OK):**
+```json
+{
+  "success": true,
+  "data": [
+    {
+      "message_id": "uuid-string",
+      "sender_type": "Doctor",
+      "message_content": "Please share your previous report.",
+      "message_type": "Text",
+      "attachment_url": null,
+      "sent_at": "2025-11-19T09:10:00Z",
+      "is_read": true
+    }
+ ]
+}
+```
+
+**Error Responses:**
+- `400 Bad Request`: Invalid conversation ID
+- `401 Unauthorized`: Invalid or missing JWT token
+- `403 Forbidden`: User doesn't have access to this conversation
+- `404 Not Found`: Conversation doesn't exist or user doesn't exist
+- `500 Internal Server Error`: Server error while fetching messages
+
+---
+
+### POST /api/conversations/:id/messages
+
+Sends a new message. (patient or doctor can send messages)
+
+**Path Parameter:**
+- `id`: UUID (required) - Conversation ID
+
+**Request:**
+- Method: `POST`
+- Headers:
+  ```
+  Authorization: Bearer {jwt_token}
+  Content-Type: application/json
+  ```
+- Authentication: Required (Patient or Professional)
+
+**Request Body:**
+```json
+{
+  "message_content": "Here is the report you asked for.",
+  "message_type": "Text"
+}
+```
+
+**Response (201 Created):**
+```json
+{
+  "success": true,
+  "data": {
+    "message_id": "uuid-string",
+    "sent_at": "2025-11-19T09:12:00Z"
+  }
+}
+```
+
+**Error Responses:**
+- `400 Bad Request`: Message content is missing or invalid
+- `401 Unauthorized`: Invalid or missing JWT token
+- `403 Forbidden`: User doesn't have access to this conversation
+- `404 Not Found`: Conversation doesn't exist or user doesn't exist
+- `500 Internal Server Error`: Server error while sending message
+
+---
+
+## AI Chat Endpoints
+
+All AI chat endpoints require authentication via JWT token.
+
+**Headers:**
+```
+Authorization: Bearer {jwt_token}
+```
+
+### POST /api/ai/chat
+
+Send a query to AI and save response.
+
+**Request:**
+- Method: `POST`
+- Headers:
+  ```
+  Authorization: Bearer {jwt_token}
+  Content-Type: application/json
+  ```
+- Authentication: Required (Patient, Professional, or Admin)
+
+**Request Body:**
+```json
+{
+  "query": "string (required) - The user's query or message to the AI",
+  "session_id": "UUID (optional) - Existing session ID to continue conversation",
+  "image_url": "string (optional) - URL of image to analyze (if applicable)"
+}
+```
+
+**Response (200 OK):**
+```json
+{
+  "session_id": "UUID - The session ID for this conversation",
+  "reply": "string - The AI's response to the query",
+  "action": "string - The recommended action based on the query",
+  "crisis_detected": "boolean - Whether a crisis situation was detected",
+  "timestamp": "string - ISO 8601 formatted timestamp"
+}
+```
+
+**Response (400 Bad Request):**
+```json
+{
+  "success": false,
+  "error": "Query is required"
+}
+```
+
+**Response (404 Not Found):**
+```json
+{
+  "success": false,
+  "error": "Patient profile not found"
+}
+```
+
+**Response (500 Internal Server Error):**
+```json
+{
+  "success": false,
+  "error": "Failed to get response from AI service"
+}
+```
+
+---
+
+### GET /api/ai/sessions
+
+Get all past AI conversations for the authenticated user.
+
+**Request:**
+- Method: `GET`
+- Headers:
+  ```
+  Authorization: Bearer {jwt_token}
+  ```
+- Authentication: Required (Patient, Professional, or Admin)
+
+**Response (200 OK):**
+```json
+[
+  {
+    "session_id": "UUID - Unique identifier for the session",
+    "started_at": "string - ISO 8601 formatted start time",
+    "session_summary": "string - Brief summary of the session",
+    "session_type": "string - Type of session (e.g., Health Query, Mental Wellness)",
+    "last_updated": "string - ISO 8601 formatted last update time",
+    "crisis_flag": "boolean - Whether a crisis was detected in this session"
+  }
+]
+```
+
+**Response (404 Not Found):**
+```json
+{
+  "success": false,
+  "error": "Patient profile not found"
+}
+```
+
+**Response (500 Internal Server Error):**
+```json
+{
+  "success": false,
+  "error": "Database error occurred"
+}
+```
+
+---
+
+### GET /api/ai/sessions/:session_id/messages
+
+Get conversation messages for a specific session.
+
+**Path Parameter:**
+- `session_id`: UUID (required) - Session ID to retrieve messages for
+
+**Request:**
+- Method: `GET`
+- Headers:
+  ```
+  Authorization: Bearer {jwt_token}
+  ```
+- Authentication: Required (Patient, Professional, or Admin)
+
+**Response (200 OK):**
+```json
+[
+  {
+    "role": "string - Either 'user' or 'assistant'",
+    "message": "string - The message content",
+    "image_url": "string (nullable) - URL of any attached image",
+    "timestamp": "string - ISO 8601 formatted timestamp"
+  }
+]
+```
+
+**Response (404 Not Found):**
+```json
+{
+  "success": false,
+  "error": "Session not found or does not belong to user"
+}
+```
+
+**Response (500 Internal Server Error):**
+```json
+{
+  "success": false,
+  "error": "Database error occurred"
+}
+```
+
+---
+
+### DELETE /api/ai/sessions/:session_id
+
+Soft-delete a stored conversation.
+
+**Path Parameter:**
+- `session_id`: UUID (required) - Session ID to delete
+
+**Request:**
+- Method: `DELETE`
+- Headers:
+  ```
+  Authorization: Bearer {jwt_token}
+  ```
+- Authentication: Required (Patient, Professional, or Admin)
+
+**Response (200 OK):**
+```json
+{
+  "success": true,
+  "message": "Session deleted successfully"
+}
+```
+
+**Response (404 Not Found):**
+```json
+{
+  "success": false,
+  "error": "Session not found or does not belong to user"
+}
+```
+
+**Response (500 Internal Server Error):**
+```json
+{
+  "success": false,
+  "error": "Database error occurred"
+}
+```
+
+---
+
 Common status codes:
 - 400: Bad Request (validation error)
 - 401: Unauthorized (invalid/expired token)
 - 403: Forbidden (insufficient permissions)
 - 404: Not Found (resource doesn't exist)
 - 409: Conflict (duplicate email during registration)
+## Signaling Endpoints
+
+All signaling endpoints require authentication via JWT token.
+
+**Headers:**
+```
+Authorization: Bearer {jwt_token}
+```
+
+### POST /api/signaling/room
+Creates a video consultation room for an appointment.
+
+**Authentication Required:** Yes
+
+**Request Body:**
+```json
+{
+  "appointment_id": 102
+}
+```
+
+**Success Response (200):**
+```json
+{
+  "success": true,
+  "data": {
+    "room_id": "uuid-room-id",
+    "consultation_link": "https://clinico.com/room/uuid-room-id"
+  }
+}
+```
+
+**Error Responses:**
+- **400 Bad Request:** Missing appointment_id
+- **404 Not Found:** Appointment does not exist
+- **401 Unauthorized:** Invalid or missing authentication token
+
+---
+
+### GET /api/signaling/validate/:roomId
+Validates if the authenticated user is allowed to join a video consultation room.
+
+**Authentication Required:** Yes
+
+**URL Parameters:**
+- `roomId` (string): UUID of the video room
+
+**Success Response (200):**
+```json
+{
+  "success": true,
+  "data": {
+    "is_valid": true,
+    "role": "Patient",
+    "identity_name": "Abhay Raj"
+  }
+}
+```
+
+**Error Responses:**
+- **404 Not Found:** Room does not exist
+- **403 Forbidden:** User not authorized to join this room
+- **401 Unauthorized:** Invalid or missing authentication token
 - 429: Too Many Requests (rate limit exceeded)
 - 500: Internal Server Error
+
+## Reminder Endpoints
+
+### POST /api/reminders/:id/log
+Log medicine reminder status (mark as Taken, Missed, or Snoozed).
+
+**Authentication Required:** Yes (Patient only)
+
+**URL Parameters:**
+- `id` (UUID): Reminder ID
+
+**Request Body:**
+```json
+{
+  "status": "Taken",
+  "taken_time": "2025-01-15T08:05:00Z",
+ "notes": "Taken with water"
+}
+```
+
+**Success Response (201):**
+```json
+{
+  "success": true,
+  "message": "Reminder status logged successfully",
+  "data": {
+    "log_id": "uuid-string",
+    "status": "Taken",
+    "taken_time": "2025-01-15T08:05:00Z",
+    "notes": "Taken with water"
+  }
+}
+```
+
+**Error Responses:**
+- **400 Bad Request:** Missing or invalid status
+- **404 Not Found:** Reminder not found or doesn't belong to user
+- **401 Unauthorized:** Invalid or missing authentication token
+
+---
+
+### GET /api/reminders/:id/logs
+Get reminder logs for a specific reminder.
+
+**Authentication Required:** Yes (Patient only)
+
+**URL Parameters:**
+- `id` (UUID): Reminder ID
+
+**Success Response (200):**
+```json
+{
+  "success": true,
+  "data": [
+    {
+      "log_id": "uuid-string",
+      "scheduled_time": "timestamp",
+      "taken_time": "timestamp",
+      "status": "enum: Pending | Taken | Missed | Snoozed",
+      "notes": "text",
+      "created_at": "timestamp"
+    }
+  ]
+}
+```
+
+**Error Responses:**
+- **404 Not Found:** Reminder not found
+- **401 Unauthorized:** Invalid or missing authentication token
+
+## Notification Endpoints
+
+### GET /api/notifications
+Fetch in-app notifications for the logged-in user.
+
+**Authentication Required:** Yes
+
+**Query Parameters:**
+- `limit` (integer, optional, default: 50): Number of notifications to return
+- `offset` (integer, optional, default: 0): Pagination offset
+- `is_read` (boolean, optional): Filter by read status
+- `notification_type` (string, optional): Filter by type (Appointment, Prescription, Report, System)
+
+**Success Response (200):**
+```json
+{
+  "success": true,
+ "data": [
+    {
+      "notification_id": "uuid-string",
+      "title": "Appointment Reminder",
+      "message": "Your appointment is in 15 minutes.",
+      "notification_type": "Appointment",
+      "is_read": false,
+      "sent_at": "2025-01-15T09:45:00Z",
+      "created_at": "2025-01-15T09:45:00Z"
+    }
+  ],
+  "metadata": {
+    "total": 1,
+    "unread_count": 1,
+    "limit": 50,
+    "offset": 0
+  }
+}
+```
+
+**Error Responses:**
+- **401 Unauthorized:** Invalid or missing authentication token
+
+---
+
+### PUT /api/notifications/:id/read
+Mark a specific notification as read.
+
+**Authentication Required:** Yes
+
+**URL Parameters:**
+- `id` (UUID): Notification ID
+
+**Success Response (200):**
+```json
+{
+  "success": true,
+  "message": "Notification marked as read"
+}
+```
+
+**Error Responses:**
+- **404 Not Found:** Notification not found
+- **401 Unauthorized:** Invalid or missing authentication token
+
+---
+
+### PUT /api/notifications/read-all
+Mark all notifications as read.
+
+**Authentication Required:** Yes
+
+**Success Response (200):**
+```json
+{
+  "success": true,
+  "message": "All notifications marked as read"
+}
+```
+
+**Error Responses:**
+- **401 Unauthorized:** Invalid or missing authentication token
+
+---
+
+### DELETE /api/notifications/:id
+Delete a specific notification.
+
+**Authentication Required:** Yes
+
+**URL Parameters:**
+- `id` (UUID): Notification ID
+
+**Success Response (200):**
+```json
+{
+  "success": true,
+  "message": "Notification deleted successfully"
+}
+```
+
+**Error Responses:**
+- **404 Not Found:** Notification not found
+- **401 Unauthorized:** Invalid or missing authentication token

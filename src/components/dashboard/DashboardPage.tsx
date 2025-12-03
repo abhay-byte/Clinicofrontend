@@ -8,7 +8,8 @@ import imgMascot1 from "figma:asset/94d7ed97816124a20809c9809845a675f7f2459a.png
 import imgMascot2 from "figma:asset/c8f2f1e64db563d4bf0374b4fc0c8c0e2e4b32b1.png";
 import imgMascot3 from "figma:asset/e34c3b0d2ae702854348fdbfd78c79720c9838de.png";
 import imgStar from "figma:asset/6c33196cc20ee6a2e6bed740869ebff7beab78ab.png";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useDoctorDetails } from "../../hooks/useDoctorDetails";
 
 interface DashboardPageProps {
   onNavigate: (path: string, id?: string) => void;
@@ -16,13 +17,42 @@ interface DashboardPageProps {
 
 export function DashboardPage({ onNavigate }: DashboardPageProps) {
   const [consultationView, setConsultationView] = useState("Overall");
+  const { doctorProfile, dashboardStats, refreshDoctorData, isLoading, error } = useDoctorDetails();
 
-  // Mock data
-  const upcomingConsultations = 8;
+  // Refresh doctor data when dashboard loads - automatic refresh on page load
+    useEffect(() => {
+      // Check if this is the first time loading the dashboard in this session
+      // to avoid infinite refresh loops
+      const hasRefreshed = sessionStorage.getItem('dashboardRefreshed');
+      
+      if (!hasRefreshed) {
+        // Mark that we're about to refresh
+        sessionStorage.setItem('dashboardRefreshed', 'true');
+        // Perform the page refresh
+        window.location.reload();
+      } else {
+        // If we've already refreshed, clear the flag so future visits can refresh again
+        sessionStorage.removeItem('dashboardRefreshed');
+      }
+      
+      // Refresh doctor data when dashboard loads
+      const refreshData = async () => {
+        try {
+          await refreshDoctorData();
+        } catch (err) {
+          console.error('Error refreshing doctor data:', err);
+        }
+      };
+  
+      refreshData();
+    }, []); // Empty dependency array means this runs once when component mounts
+
+  // Using doctor data from context instead of mock data
+  const upcomingConsultations = dashboardStats?.total_reviews || 8;
   const hoursVolunteered = 12;
-  const consultationsToday = 3;
-  const patientsHelped = 156;
-  const rating = 4.9;
+  const consultationsToday = dashboardStats?.appointments_today_count || 3;
+  const patientsHelped = dashboardStats?.patients_treated || 156;
+  const rating = dashboardStats?.rating || 4.9;
 
   const todayAppointments = [
     { id: 1, time: "10:00 AM", patientName: "Abhay Raj", concern: "Follow-up for Anxiety", type: "Virtual" },
@@ -138,7 +168,7 @@ export function DashboardPage({ onNavigate }: DashboardPageProps) {
                   </div>
                   <p className="text-sm text-gray-600">Tuesday,</p>
                   <p className="text-xl text-[#174880]">Welcome Back!</p>
-                  <p className="text-lg text-gray-70">Dr. Bhumika Choudhary</p>
+                  <p className="text-lg text-gray-70">Dr. {doctorProfile?.full_name || 'Bhumika Choudhary'}</p>
                 </div>
                 <div className="absolute -right-4 -bottom-4">
                   <img src={imgMascot1} alt="Mascot" className="w-48 h-48 object-contain" />
