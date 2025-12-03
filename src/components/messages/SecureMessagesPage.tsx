@@ -385,10 +385,10 @@ export function SecureMessagesPage({ onNavigate }: SecureMessagesPageProps) {
 
   return (
     <DashboardLayout currentPage="messages" onNavigate={onNavigate}>
-      <div className="flex flex-1 gap-4" style={{ height: 'calc(100vh - 70px)' }}>
+      <div className="flex flex-1 gap-4 overflow-hidden h-full">
         {/* Column 1: Conversation List */}
-        <Card className="w-96 flex flex-col">
-          <CardContent className="p-0 flex flex-col h-full">
+        <Card className="w-96 flex flex-col h-full min-h-0">
+          <CardContent className="p-0 flex flex-col h-full min-h-0">
             {/* Header & Search */}
             <div className="p-4 border-b space-y-3 flex-shrink-0">
               <h1 className="text-[#174880]">Messages</h1>
@@ -404,7 +404,7 @@ export function SecureMessagesPage({ onNavigate }: SecureMessagesPageProps) {
             </div>
 
             {/* Conversation List */}
-            <ScrollArea className="flex-1">
+            <ScrollArea className="flex-1 overflow-y-auto">
               <div className="divide-y">
                 {filteredConversations.length === 0 ? (
                   <div className="p-8 text-center text-gray-500">
@@ -481,7 +481,7 @@ export function SecureMessagesPage({ onNavigate }: SecureMessagesPageProps) {
         </Card>
 
         {/* Column 2: Active Chat Window */}
-        <Card className="flex-1 flex flex-col">
+        <Card className="flex-1 flex flex-col h-full min-h-0">
           {!selectedConversation ? (
             <CardContent className="flex-1 flex items-center justify-center text-gray-500">
               <div className="text-center">
@@ -523,7 +523,7 @@ export function SecureMessagesPage({ onNavigate }: SecureMessagesPageProps) {
               </div>
 
               {/* Message Log */}
-              <ScrollArea className="flex-1 p-4">
+              <ScrollArea className="flex-1 p-4 overflow-y-auto">
                 <div className="space-y-4">
                   {conversationMessages.map((msg) => {
                     if (msg.senderType === "System") {

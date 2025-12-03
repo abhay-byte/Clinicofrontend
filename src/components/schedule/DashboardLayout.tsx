@@ -164,12 +164,13 @@ export function DashboardLayout({ children, onNavigate, currentPage = "dashboard
       <div className="flex">
         {/* Sidebar */}
         <aside
-          className={`bg-white h-full space-y-4 transition-all duration-300 overflow-hidden ${
+          className={`bg-white flex flex-col space-y-4 transition-all duration-300 overflow-y-auto ${
             sidebarOpen ? "w-64 p-4" : "w-0"
           }`}
+          style={{ height: 'calc(100vh - 70px)', maxHeight: 'calc(100vh - 70px)' }}
         >
           {sidebarOpen && (
-            <>
+            <div className="flex-1 min-h-0 flex flex-col">
               {/* Doctor Profile Section */}
               <div className="flex flex-col items-center py-4 border-b border-gray-200">
                 <div className="w-20 h-20 rounded-full overflow-hidden bg-teal-400 mb-3">
@@ -267,7 +268,7 @@ export function DashboardLayout({ children, onNavigate, currentPage = "dashboard
                   onClick={() => setLogoutDialogOpen(true)}
                 />
               </div>
-            </>
+            </div>
           )}
         </aside>
 
