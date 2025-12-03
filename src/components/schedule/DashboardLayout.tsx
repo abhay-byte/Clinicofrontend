@@ -76,7 +76,7 @@ export function DashboardLayout({ children, onNavigate, currentPage = "dashboard
   }
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: "#EBF1FA", fontFamily: "Roboto, sans-serif" }}>
+    <div className="h-screen flex flex-col" style={{ backgroundColor: "#EBF1FA", fontFamily: "Roboto, sans-serif" }}>
       {/* Top Navigation */}
       <header className="bg-white border-b border-gray-200 sticky top-0 z-40" style={{ backgroundColor: "#174880" }}>
         <div className="flex items-center justify-between px-6 py-3">
@@ -163,8 +163,8 @@ export function DashboardLayout({ children, onNavigate, currentPage = "dashboard
 
       <div className="flex">
         {/* Sidebar */}
-        <aside 
-          className={`bg-white min-h-screen space-y-4 transition-all duration-300 overflow-hidden ${
+        <aside
+          className={`bg-white h-full space-y-4 transition-all duration-300 overflow-hidden ${
             sidebarOpen ? "w-64 p-4" : "w-0"
           }`}
         >
@@ -272,7 +272,7 @@ export function DashboardLayout({ children, onNavigate, currentPage = "dashboard
         </aside>
 
         {/* Main Content */}
-        <main className={`flex-1 p-6 transition-all duration-300`}>
+        <main className={`flex-1 p-6 transition-all duration-300 overflow-y-auto`} style={{ maxHeight: 'calc(100vh - 70px)' }}>
           {children}
         </main>
       </div>

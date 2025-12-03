@@ -18,7 +18,7 @@ import {
   Eye,
   Pill,
 } from "lucide-react";
-import { toast } from "sonner@2.0.3";
+import { toast } from "sonner";
 
 interface Message {
   id: string;
@@ -385,7 +385,7 @@ export function SecureMessagesPage({ onNavigate }: SecureMessagesPageProps) {
 
   return (
     <DashboardLayout currentPage="messages" onNavigate={onNavigate}>
-      <div className="h-[calc(100vh-200px)] flex gap-4">
+      <div className="flex flex-1 gap-4" style={{ height: 'calc(100vh - 70px)' }}>
         {/* Column 1: Conversation List */}
         <Card className="w-96 flex flex-col">
           <CardContent className="p-0 flex flex-col h-full">
