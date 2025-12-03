@@ -1,13 +1,14 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { DashboardLayout } from "./DashboardLayout";
 import { ScheduleCalendar } from "./ScheduleCalendar";
 import { AvailabilityDrawer } from "./AvailabilityDrawer";
 import { AppointmentDialog } from "./AppointmentDialog";
 import { Button } from "../ui/button";
 import { Plus, Calendar, Clock, CheckCircle } from "lucide-react";
-import { addDays, addMinutes, setHours, setMinutes, startOfDay, eachDayOfInterval } from "date-fns";
+import { addDays, addMinutes, setHours, setMinutes, startOfDay, eachDayOfInterval, isToday, isAfter } from "date-fns";
 import { toast } from "sonner";
 import { Toaster } from "../ui/sonner";
+import { useDoctorDetails } from "../../hooks/useDoctorDetails";
 import imgMascot from "figma:asset/94d7ed97816124a20809c9809845a675f7f2459a.png";
 import svgPaths from "../../imports/svg-30312lo6h9";
 
@@ -20,40 +21,7 @@ export function SchedulePage({ onNavigate }: SchedulePageProps) {
   const [selectedEvent, setSelectedEvent] = useState<any>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
 
-  // Sample appointments
-  const [appointments] = useState([
-    {
-      id: "1",
-      title: "Follow-up for Anxiety",
-      patientName: "Abhay Raj",
-      start: setHours(setMinutes(new Date(), 0), 10),
-      end: setHours(setMinutes(new Date(), 30), 10),
-      type: "Virtual" as const,
-      status: "Scheduled" as const,
-      primaryConcern: "Anxiety Management",
-    },
-    {
-      id: "2",
-      title: "Sore Throat & Fever",
-      patientName: "Alok Ranjan",
-      start: setHours(setMinutes(new Date(), 30), 11),
-      end: setHours(setMinutes(new Date(), 0), 12),
-      type: "Virtual" as const,
-      status: "Scheduled" as const,
-      primaryConcern: "Cold & Flu Symptoms",
-    },
-    {
-      id: "3",
-      title: "General Wellness Check",
-      patientName: "Tejashwi Singh",
-      start: setHours(setMinutes(addDays(new Date(), 1), 0), 14),
-      end: setHours(setMinutes(addDays(new Date(), 1), 0), 15),
-      type: "In-Person" as const,
-      status: "Scheduled" as const,
-      primaryConcern: "Annual checkup",
-    },
-  ]);
-
+  const { appointments: realAppointments, isLoading, error, refreshDoctorAppointments } = useDoctorDetails();
   const [availabilitySlots, setAvailabilitySlots] = useState([
     {
       id: "avail-1",
@@ -72,6 +40,18 @@ export function SchedulePage({ onNavigate }: SchedulePageProps) {
       isAvailability: true,
     },
   ]);
+
+  // Transform real appointments to match the expected format for ScheduleCalendar
+  const transformedAppointments = realAppointments?.map(apt => ({
+    id: apt.appointment_id.toString(),
+    title: apt.patient_name || `Appointment #${apt.appointment_id}`,
+    patientName: apt.patient_name || `Patient #${apt.patient_id}`,
+    start: new Date(apt.appointment_time),
+    end: new Date(new Date(apt.appointment_time).getTime() + (apt.duration_minutes || 30) * 60000),
+    type: apt.appointment_type as "Virtual" | "In-Person" || "Virtual",
+    status: apt.status as "Scheduled" | "Completed" | "Cancelled" || "Scheduled",
+    primaryConcern: apt.patient_notes || apt.specialty || "",
+  })) || [];
 
   const handleAddSlot = (slot: any) => {
     const newSlot = {
@@ -163,11 +143,11 @@ export function SchedulePage({ onNavigate }: SchedulePageProps) {
     setDialogOpen(false);
   };
 
-  const todayAppointments = appointments.filter(
-    (apt) => apt.start.toDateString() === new Date().toDateString()
+  const todayAppointments = transformedAppointments.filter(
+    (apt) => isToday(new Date(apt.start))
   ).length;
 
-  const upcomingAppointments = appointments.filter((apt) => apt.start > new Date()).length;
+  const upcomingAppointments = transformedAppointments.filter((apt) => isAfter(new Date(apt.start), new Date())).length;
 
   const availableSlots = availabilitySlots.filter((slot) => !slot.isBooked).length;
 
@@ -185,11 +165,24 @@ export function SchedulePage({ onNavigate }: SchedulePageProps) {
             onClick={() => setDrawerOpen(true)}
             style={{ backgroundColor: "#174880" }}
             className="flex items-center gap-2"
+            disabled={isLoading}
           >
             <Plus className="h-4 w-4" />
             Set Availability
           </Button>
         </div>
+
+        {error && (
+          <div className="bg-red-50 border border-red-200 rounded-lg p-4 text-red-700">
+            Error loading appointments: {error}. <Button onClick={refreshDoctorAppointments} variant="outline" size="sm">Retry</Button>
+          </div>
+        )}
+
+        {isLoading && (
+          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 text-blue-700">
+            Loading appointments...
+          </div>
+        )}
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -238,7 +231,7 @@ export function SchedulePage({ onNavigate }: SchedulePageProps) {
 
         {/* Calendar */}
         <ScheduleCalendar
-          appointments={appointments}
+          appointments={transformedAppointments}
           availabilitySlots={availabilitySlots}
           onSelectEvent={handleSelectEvent}
         />
