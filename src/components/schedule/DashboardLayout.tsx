@@ -10,6 +10,7 @@ import { ReactNode, useState } from "react";
 import { Separator } from "../ui/separator";
 import { LogoutDialog } from "../auth/LogoutDialog";
 import { useAuth } from "../../contexts/AuthContext";
+import { doctorStorageService } from "../../services/doctor-storage.service";
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -22,6 +23,11 @@ export function DashboardLayout({ children, onNavigate, currentPage = "dashboard
   const [sidebarOpen, setSidebarOpen] = useState(true);
  const [logoutDialogOpen, setLogoutDialogOpen] = useState(false);
   const { logout } = useAuth();
+  
+  // Get doctor profile data from storage
+  const doctorProfile = doctorStorageService.getDoctorProfile();
+  const doctorName = doctorProfile?.full_name || 'Doctor';
+  const doctorSpecialty = doctorProfile?.specialty || 'Specialist';
 
   const handleNavigation = (path: string) => {
     onNavigate(path);
@@ -127,7 +133,7 @@ export function DashboardLayout({ children, onNavigate, currentPage = "dashboard
             
             {/* Doctor Profile */}
             <div className="flex items-center gap-3 ml-2">
-              <span className="text-sm text-white">Dr. lorem ipsum</span>
+              <span className="text-sm text-white">Dr. {doctorName}</span>
               <div className="w-10 h-10 rounded-full overflow-hidden bg-white border-2 border-white/30">
                 <img src={imgDoctor} alt="Doctor" className="w-full h-full object-cover" />
               </div>
@@ -151,9 +157,13 @@ export function DashboardLayout({ children, onNavigate, currentPage = "dashboard
                   <img src={imgDoctor} alt="Doctor Profile" className="w-full h-full object-cover" />
                 </div>
                 <div className="text-center">
-                  <p className="text-sm" style={{ color: "#174880" }}>Dr. lorem ipsum</p>
-                  <p className="text-xs text-gray-600 mt-0.5">Psychiatrist</p>
-                  <button className="mt-2 text-xs hover:underline" style={{ color: "#174880" }}>
+                  <p className="text-sm" style={{ color: "#174880" }}>Dr. {doctorName}</p>
+                  <p className="text-xs text-gray-600 mt-0.5">{doctorSpecialty}</p>
+                  <button
+                    className="mt-2 text-xs hover:underline"
+                    style={{ color: "#174880" }}
+                    onClick={() => onNavigate("/profile")}
+                  >
                     View/Edit Profile
                   </button>
                 </div>

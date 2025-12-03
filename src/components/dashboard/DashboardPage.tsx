@@ -87,7 +87,7 @@ export function DashboardPage({ onNavigate }: DashboardPageProps) {
   ];
 
   const topPatientConcernsData = [
-    { concern: "Jan '19", general: 51, wellness: 13, throat: 13, anxiety: 17 },
+    { concern: `Jan '${new Date().getFullYear().toString().substring(2)}`, general: 51, wellness: 13, throat: 13, anxiety: 17 },
     { concern: "Q2 Jan", general: 54, wellness: 12, throat: 14, anxiety: 15 },
     { concern: "Q3 Jan", general: 58, wellness: 13, throat: 15, anxiety: 16 },
     { concern: "Q4 Jan", general: 56, wellness: 14, throat: 12, anxiety: 18 },
@@ -152,21 +152,21 @@ export function DashboardPage({ onNavigate }: DashboardPageProps) {
                   <div className="flex items-center gap-4 mb-4">
                     <div className="flex flex-col items-center">
                       <div className="w-16 h-16 bg-white rounded-lg flex items-center justify-center shadow-md">
-                        <span className="text-3xl text-[#174880]">07</span>
+                        <span className="text-3xl text-[#174880]">{new Date().getDate().toString().padStart(2, '0')}</span>
                       </div>
                     </div>
                     <div className="flex flex-col items-center">
                       <div className="w-16 h-16 bg-white rounded-lg flex items-center justify-center shadow-md">
-                        <span className="text-3xl text-[#174880]">10</span>
+                        <span className="text-3xl text-[#174880]">{(new Date().getMonth() + 1).toString().padStart(2, '0')}</span>
                       </div>
                     </div>
                     <div className="flex flex-col items-center">
                       <div className="w-16 h-16 bg-white rounded-lg flex items-center justify-center shadow-md">
-                        <span className="text-3xl text-[#174880]">25</span>
+                        <span className="text-3xl text-[#174880]">{new Date().getFullYear().toString().substring(2)}</span>
                       </div>
                     </div>
                   </div>
-                  <p className="text-sm text-gray-600">Tuesday,</p>
+                  <p className="text-sm text-gray-600">{new Date().toLocaleDateString('en-US', { weekday: 'long' })},</p>
                   <p className="text-xl text-[#174880]">Welcome Back!</p>
                   <p className="text-lg text-gray-70">Dr. {doctorProfile?.full_name || 'Bhumika Choudhary'}</p>
                 </div>

@@ -1,7 +1,17 @@
 import { DoctorProfile, DoctorDashboardStats } from '../types/doctor.types';
 
+interface Review {
+  id: string;
+  patientName: string;
+  rating: number;
+  comment: string;
+  appreciatedAspects: string[];
+  createdAt: string;
+}
+
 const DOCTOR_PROFILE_KEY = 'doctor_profile';
 const DOCTOR_DASHBOARD_STATS_KEY = 'doctor_dashboard_stats';
+const DOCTOR_REVIEWS_KEY = 'doctor_reviews';
 
 class DoctorStorageService {
   /**
@@ -127,6 +137,86 @@ class DoctorStorageService {
   hasDoctorData(): boolean {
     return this.getDoctorProfile() !== null;
   }
+  
+  /**
+   * Store doctor reviews in local storage
+   * @param reviews Array of doctor reviews
+   */
+  setDoctorReviews(reviews: Review[]): void {
+    try {
+      localStorage.setItem(DOCTOR_REVIEWS_KEY, JSON.stringify(reviews));
+      console.log('Doctor reviews stored in local storage:', reviews);
+    } catch (error) {
+      console.error('Error storing doctor reviews in local storage:', error);
+    }
+  }
+
+  /**
+   * Retrieve doctor reviews from local storage
+   * @returns Array of doctor reviews or empty array if not found
+   */
+  getDoctorReviews(): Review[] {
+    try {
+      const reviewsData = localStorage.getItem(DOCTOR_REVIEWS_KEY);
+      if (reviewsData) {
+        const reviews: Review[] = JSON.parse(reviewsData);
+        console.log('Doctor reviews retrieved from local storage:', reviews);
+        return reviews;
+      }
+      return [];
+    } catch (error) {
+      console.error('Error retrieving doctor reviews from local storage:', error);
+      return [];
+    }
+  }
+  
+  /**
+   * Add a single review to the doctor's reviews
+   * @param review New review to add
+   */
+  addDoctorReview(review: Review): void {
+    try {
+      const currentReviews = this.getDoctorReviews();
+      const updatedReviews = [...currentReviews, review];
+      this.setDoctorReviews(updatedReviews);
+      console.log('Doctor review added to local storage:', review);
+    } catch (error) {
+      console.error('Error adding doctor review to local storage:', error);
+    }
+  }
+  
+  /**
+   * Update a specific review
+   * @param reviewId ID of the review to update
+   * @param updatedReview Updated review data
+   */
+  updateDoctorReview(reviewId: string, updatedReview: Partial<Review>): void {
+    try {
+      const currentReviews = this.getDoctorReviews();
+      const updatedReviews = currentReviews.map(review =>
+        review.id === reviewId ? { ...review, ...updatedReview } : review
+      );
+      this.setDoctorReviews(updatedReviews);
+      console.log(`Doctor review with ID '${reviewId}' updated in local storage:`, updatedReview);
+    } catch (error) {
+      console.error(`Error updating doctor review with ID '${reviewId}' in local storage:`, error);
+    }
+  }
+  
+  /**
+   * Delete a specific review
+   * @param reviewId ID of the review to delete
+   */
+  deleteDoctorReview(reviewId: string): void {
+    try {
+      const currentReviews = this.getDoctorReviews();
+      const updatedReviews = currentReviews.filter(review => review.id !== reviewId);
+      this.setDoctorReviews(updatedReviews);
+      console.log(`Doctor review with ID '${reviewId}' deleted from local storage`);
+    } catch (error) {
+      console.error(`Error deleting doctor review with ID '${reviewId}' from local storage:`, error);
+    }
+ }
 }
 
 export const doctorStorageService = new DoctorStorageService();

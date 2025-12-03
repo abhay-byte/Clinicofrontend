@@ -13,6 +13,7 @@ interface AuthService {
  getToken: () => string | null;
   cacheDoctorDetails: () => Promise<void>;
   updateDoctorProfile: (profileData: Partial<DoctorProfile>) => Promise<void>;
+  fetchDoctorReviews: (doctorId: number) => Promise<any>;
 }
 
 // Auth service methods
@@ -166,6 +167,18 @@ class AuthServiceImplementation implements AuthService {
     } catch (error: any) {
       console.error('Error updating doctor profile:', error);
       const errorMessage = error.response?.data?.message || error.message || 'Failed to update doctor profile';
+      throw new Error(errorMessage);
+    }
+  }
+  
+  // Fetch doctor reviews
+  async fetchDoctorReviews(doctorId: number) {
+    try {
+      const response = await apiRequest.get(`/clinics/doctors/${doctorId}/reviews`);
+      return response.data;
+    } catch (error: any) {
+      console.error('Error fetching doctor reviews:', error);
+      const errorMessage = error.response?.data?.message || error.message || 'Failed to fetch doctor reviews';
       throw new Error(errorMessage);
     }
   }

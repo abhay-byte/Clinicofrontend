@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { DashboardLayout } from "../schedule/DashboardLayout";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
@@ -33,93 +33,101 @@ import {
   Languages,
   FileText,
 } from "lucide-react";
-import { toast } from "sonner@2.0.3";
+import { toast } from "sonner";
 import imgDoctor from "figma:asset/e0be30dc4623008900b621d96ad20f3641641248.png";
+import { doctorStorageService } from "../../services/doctor-storage.service";
+import { DoctorProfile } from "../../types/doctor.types";
+import { useDoctorDetails } from "../../hooks/useDoctorDetails";
 
 interface MyProfilePageProps {
   onNavigate: (page: string) => void;
 }
 
-interface Review {
-  id: string;
-  patientName: string;
-  rating: number;
-  comment: string;
-  appreciatedAspects: string[];
-  createdAt: string;
-}
-
-const MOCK_REVIEWS: Review[] = [
-  {
-    id: "rev-1",
-    patientName: "Abhay Raj",
-    rating: 5,
-    comment:
-      "Dr. Ipsum was extremely patient and took the time to explain everything clearly. I felt heard and understood throughout my consultation.",
-    appreciatedAspects: ["Friendly", "Explained well", "Patient"],
-    createdAt: "2025-11-10T14:30:00",
-  },
-  {
-    id: "rev-2",
-    patientName: "Riya Patel",
-    rating: 4,
-    comment:
-      "Very professional and knowledgeable. The doctor provided great advice and made me feel comfortable during the session.",
-    appreciatedAspects: ["Professional", "Knowledgeable"],
-    createdAt: "2025-11-08T10:15:00",
-  },
-  {
-    id: "rev-3",
-    patientName: "Tejaswini Singh",
-    rating: 5,
-    comment:
-      "Excellent consultation! The doctor was very thorough and answered all my questions. Highly recommend!",
-    appreciatedAspects: ["Thorough", "Friendly", "Helpful"],
-    createdAt: "2025-11-05T16:45:00",
-  },
-  {
-    id: "rev-4",
-    patientName: "Vikram Singh",
-    rating: 4,
-    comment:
-      "Good experience overall. The doctor was attentive and provided clear instructions for my treatment plan.",
-    appreciatedAspects: ["Attentive", "Clear instructions"],
-    createdAt: "2025-11-02T11:20:00",
-  },
-  {
-    id: "rev-5",
-    patientName: "Priya Sharma",
-    rating: 5,
-    comment:
-      "Outstanding doctor! Very compassionate and genuinely cares about patients' well-being. Thank you!",
-    appreciatedAspects: ["Compassionate", "Caring", "Friendly"],
-    createdAt: "2025-10-28T09:30:00",
-  },
-];
+// No need to define Review interface here as it's already defined in doctor-storage.service.ts
 
 export function MyProfilePage({ onNavigate }: MyProfilePageProps) {
   const [isEditMode, setIsEditMode] = useState(false);
   const [showPasswordModal, setShowPasswordModal] = useState(false);
 
+  // Get reviews from storage and API
+  const [reviews, setReviews] = useState(() => doctorStorageService.getDoctorReviews());
+
+  // Get the hook functions
+ const { fetchDoctorReviews, doctorProfile: hookDoctorProfile } = useDoctorDetails();
+  
+  // Fetch reviews when component mounts
+  useEffect(() => {
+    const loadReviews = async () => {
+      if (hookDoctorProfile?.professional_id) {
+        try {
+          const reviewsData = await fetchDoctorReviews(hookDoctorProfile.professional_id);
+          if (reviewsData && reviewsData.reviews) {
+            // Transform API reviews to match our local format
+            const transformedReviews = reviewsData.reviews.map((apiReview: any) => ({
+              id: apiReview.review_id.toString(),
+              patientName: apiReview.author || 'Patient',
+              rating: apiReview.rating,
+              comment: apiReview.comment || '',
+              appreciatedAspects: apiReview.appreciated_aspects ? apiReview.appreciated_aspects.split(',').map((s: string) => s.trim()) : [],
+              createdAt: apiReview.created_at || new Date().toISOString(),
+            }));
+            
+            // Store reviews in local storage and update state
+            doctorStorageService.setDoctorReviews(transformedReviews);
+            setReviews(transformedReviews);
+            
+            // Update profile data with the actual review count from API
+            if (reviewsData.total !== undefined) {
+              setProfileData(prev => ({
+                ...prev,
+                totalReviews: reviewsData.total
+              }));
+            }
+          }
+        } catch (error) {
+          console.error('Error fetching doctor reviews:', error);
+          // If API fetch fails, continue with local storage reviews
+        }
+      }
+    };
+    
+    loadReviews();
+  }, [hookDoctorProfile?.professional_id, fetchDoctorReviews]);
+
+  // Get doctor profile data from storage
+  const localDoctorProfile = doctorStorageService.getDoctorProfile();
+  const doctorDashboardStats = doctorStorageService.getDoctorDashboardStats();
+   
   // Profile data state
   const [profileData, setProfileData] = useState({
-    fullName: "Dr. Lorem Ipsum",
-    specialty: "Psychiatrist",
-    isVerified: true,
-    isVolunteer: true,
-    rating: 4.7,
-    totalReviews: 127,
-    patientsTreated: "100+",
-    bio: "I am a board-certified psychiatrist with over 8 years of experience in treating anxiety, depression, and stress-related disorders. My approach is patient-centered and evidence-based, focusing on creating a safe and supportive environment for healing.",
-    credentials: "MBBS, MD (Psychiatry), Board Certified",
-    yearsOfExperience: 8,
-    languagesSpoken: "English, Hindi, Marathi",
-    workingHours: "Mon-Fri: 9:00 AM - 6:00 PM, Sat: 10:00 AM - 2:00 PM",
-    email: "dr.lorem.ipsum@clinico.com",
-    phoneNumber: "+91 98765 43210",
+    fullName: localDoctorProfile?.full_name || "Dr. Lorem Ipsum",
+    specialty: localDoctorProfile?.specialty || "Psychiatrist",
+    isVerified: localDoctorProfile?.verification_status === 'verified' || true,
+    isVolunteer: localDoctorProfile?.is_volunteer || true,
+    rating: doctorDashboardStats?.rating || localDoctorProfile?.rating || 4.7,
+    totalReviews: doctorDashboardStats?.total_reviews || localDoctorProfile?.total_reviews || 127,
+    patientsTreated: doctorDashboardStats?.patients_treated?.toString() || localDoctorProfile?.patients_treated?.toString() || "100+",
+    bio: localDoctorProfile?.specialty ? `I am a ${localDoctorProfile.specialty} with ${localDoctorProfile.years_of_experience || 8} years of experience. My approach is patient-centered and evidence-based, focusing on creating a safe and supportive environment for healing.` : "I am a board-certified psychiatrist with over 8 years of experience in treating anxiety, depression, and stress-related disorders. My approach is patient-centered and evidence-based, focusing on creating a safe and supportive environment for healing.",
+    credentials: localDoctorProfile?.credentials || "MBBS, MD (Psychiatry), Board Certified",
+    yearsOfExperience: localDoctorProfile?.years_of_experience || 8,
+    languagesSpoken: localDoctorProfile?.languages_spoken || "English, Hindi, Marathi",
+    workingHours: localDoctorProfile?.working_hours || "Mon-Fri: 9:00 AM - 6:00 PM, Sat: 10:00 AM - 2:00 PM",
+    email: localDoctorProfile?.email || "dr.lorem.ipsum@clinico.com",
+    phoneNumber: localDoctorProfile?.phone_number || "+91 98765 43210",
   });
 
-  const [editedData, setEditedData] = useState({ ...profileData });
+  const [editedData, setEditedData] = useState({
+    ...profileData,
+    // Initialize with actual profile data but allow editing
+    fullName: localDoctorProfile?.full_name || "Dr. Lorem Ipsum",
+    specialty: localDoctorProfile?.specialty || "Psychiatrist",
+    credentials: localDoctorProfile?.credentials || "MBBS, MD (Psychiatry), Board Certified",
+    yearsOfExperience: localDoctorProfile?.years_of_experience || 8,
+    languagesSpoken: localDoctorProfile?.languages_spoken || "English, Hindi, Marathi",
+    workingHours: localDoctorProfile?.working_hours || "Mon-Fri: 9:00 AM - 6:00 PM, Sat: 10:00 AM - 2:00 PM",
+    email: localDoctorProfile?.email || "dr.lorem.ipsum@clinico.com",
+    phoneNumber: localDoctorProfile?.phone_number || "+91 98765 43210",
+  });
 
   // Password change state
   const [passwordData, setPasswordData] = useState({
@@ -167,17 +175,33 @@ export function MyProfilePage({ onNavigate }: MyProfilePageProps) {
 
   const handleEditToggle = () => {
     if (isEditMode) {
-      // Cancel editing
+      // Cancel editing - reset edited data to current profile data
       setEditedData({ ...profileData });
       setIsEditMode(false);
     } else {
+      // Enter edit mode - initialize edited data with current profile data
+      setEditedData({ ...profileData });
       setIsEditMode(true);
     }
   };
 
   const handleSaveChanges = () => {
-    // Save the edited data
+    // Save the edited data to local state
     setProfileData({ ...editedData });
+    
+    // Update the doctor profile in storage
+    const updatedProfile: Partial<DoctorProfile> = {
+      full_name: editedData.fullName,
+      specialty: editedData.specialty,
+      credentials: editedData.credentials,
+      years_of_experience: editedData.yearsOfExperience,
+      languages_spoken: editedData.languagesSpoken,
+      working_hours: editedData.workingHours,
+      phone_number: editedData.phoneNumber,
+    };
+    
+    doctorStorageService.updateDoctorProfile(updatedProfile);
+    
     setIsEditMode(false);
     toast.success("Profile updated successfully");
   };
@@ -529,7 +553,7 @@ export function MyProfilePage({ onNavigate }: MyProfilePageProps) {
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              {MOCK_REVIEWS.map((review) => (
+              {reviews.map((review) => (
                 <Card key={review.id} className="bg-gray-50">
                   <CardContent className="pt-6">
                     <div className="flex justify-between items-start mb-3">
@@ -563,7 +587,7 @@ export function MyProfilePage({ onNavigate }: MyProfilePageProps) {
 
             <div className="mt-6 text-center">
               <Button variant="outline" className="text-[#174880]">
-                View All My Reviews ({profileData.totalReviews})
+                View All My Reviews ({reviews.length})
               </Button>
             </div>
           </CardContent>

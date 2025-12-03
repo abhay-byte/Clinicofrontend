@@ -101,5 +101,6 @@ export const useDoctorDetails = () => {
     updateDoctorProfileField,
     refreshDoctorData,
     hasDoctorData: doctorStorageService.hasDoctorData(),
+    fetchDoctorReviews: authService.fetchDoctorReviews,
   };
 };
