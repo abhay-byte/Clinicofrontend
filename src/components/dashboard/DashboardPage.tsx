@@ -17,7 +17,7 @@ interface DashboardPageProps {
 
 export function DashboardPage({ onNavigate }: DashboardPageProps) {
   const [consultationView, setConsultationView] = useState("Overall");
-  const { doctorProfile, dashboardStats, refreshDoctorData, isLoading, error } = useDoctorDetails();
+  const { doctorProfile, dashboardStats, appointments, refreshDoctorData, isLoading, error } = useDoctorDetails();
 
   // Refresh doctor data when dashboard loads - automatic refresh on page load
     useEffect(() => {
@@ -60,12 +60,33 @@ export function DashboardPage({ onNavigate }: DashboardPageProps) {
   const patientsHelped = dashboardStats?.patients_treated || 156;
   const rating = dashboardStats?.rating || 4.9;
 
-  const todayAppointments = [
-    { id: 1, time: "10:00 AM", patientName: "Abhay Raj", concern: "Follow-up for Anxiety", type: "Virtual" },
-    { id: 2, time: "11:30 AM", patientName: "Alok Ranjan", concern: "Sore Throat & Fever", type: "Virtual" },
-    { id: 3, time: "02:00 PM", patientName: "Tejaswin Singh", concern: "General Wellness Check", type: "Virtual" },
-    { id: 4, time: "(Open Slot)", patientName: "", concern: "", type: "" },
-  ];
+  // Filter appointments for today
+  const today = new Date();
+  const todayString = today.toISOString().split('T')[0]; // Format: YYYY-MM-DD
+  
+  const todayAppointments = appointments
+    .filter(appointment => {
+      // Check if the appointment date matches today
+      const appointmentDate = new Date(appointment.appointment_time);
+      const appointmentDateString = appointmentDate.toISOString().split('T')[0];
+      return appointmentDateString === todayString && appointment.status !== 'Cancelled';
+    })
+    .map((appointment, index) => ({
+      id: appointment.appointment_id,
+      time: new Date(appointment.appointment_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      patientName: appointment.patient_name || "Patient Name",
+      concern: appointment.patient_notes || "Consultation",
+      type: appointment.appointment_type || "Virtual",
+    }));
+  
+  // If no appointments for today, create an empty slot
+  const displayAppointments = todayAppointments.length > 0 ? todayAppointments : [{
+    id: 0,
+    time: "(No appointments)",
+    patientName: "",
+    concern: "",
+    type: "",
+  }];
 
   // Generate dynamic volunteer impact data based on actual stats
   const generateVolunteerImpactData = () => {
@@ -529,7 +550,7 @@ export function DashboardPage({ onNavigate }: DashboardPageProps) {
                   </tr>
                 </thead>
                 <tbody>
-                  {todayAppointments.map((appointment, index) => (
+                  {displayAppointments.map((appointment, index) => (
                     <tr key={appointment.id} className="border-b hover:bg-gray-50">
                       <td className="py-4 px-4 text-sm">{index + 1}</td>
                       <td className="py-4 px-4 text-sm">{appointment.time}</td>

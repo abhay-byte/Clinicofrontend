@@ -14,6 +14,7 @@ interface AuthService {
   cacheDoctorDetails: () => Promise<void>;
   updateDoctorProfile: (profileData: Partial<DoctorProfile>) => Promise<void>;
   fetchDoctorReviews: (doctorId: number) => Promise<any>;
+  fetchDoctorAppointments: () => Promise<void>;
 }
 
 // Auth service methods
@@ -179,6 +180,25 @@ class AuthServiceImplementation implements AuthService {
     } catch (error: any) {
       console.error('Error fetching doctor reviews:', error);
       const errorMessage = error.response?.data?.message || error.message || 'Failed to fetch doctor reviews';
+      throw new Error(errorMessage);
+    }
+  }
+  
+  // Fetch doctor appointments
+  async fetchDoctorAppointments() {
+    try {
+      // Get appointments for the logged-in user (doctor)
+      const response = await apiRequest.get('/appointments/me');
+      const appointments = response.data;
+      
+      // Store appointments in local storage using the doctor storage service
+      doctorStorageService.setDoctorAppointments(appointments);
+      
+      console.log('Doctor appointments fetched and cached successfully:', appointments);
+      return appointments;
+    } catch (error: any) {
+      console.error('Error fetching doctor appointments:', error);
+      const errorMessage = error.response?.data?.message || error.message || 'Failed to fetch doctor appointments';
       throw new Error(errorMessage);
     }
   }

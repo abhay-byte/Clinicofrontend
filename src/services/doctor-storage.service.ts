@@ -12,6 +12,8 @@ interface Review {
 const DOCTOR_PROFILE_KEY = 'doctor_profile';
 const DOCTOR_DASHBOARD_STATS_KEY = 'doctor_dashboard_stats';
 const DOCTOR_REVIEWS_KEY = 'doctor_reviews';
+const DOCTOR_APPOINTMENTS_KEY = 'doctor_appointments';
+const DOCTOR_APPOINTMENTS_LAST_UPDATED_KEY = 'doctor_appointments_last_updated';
 
 class DoctorStorageService {
   /**
@@ -216,6 +218,86 @@ class DoctorStorageService {
     } catch (error) {
       console.error(`Error deleting doctor review with ID '${reviewId}' from local storage:`, error);
     }
+ }
+ 
+ /**
+  * Store doctor appointments in local storage
+  * @param appointments Array of doctor appointments
+  */
+ setDoctorAppointments(appointments: any[]): void {
+   try {
+     localStorage.setItem(DOCTOR_APPOINTMENTS_KEY, JSON.stringify(appointments));
+     localStorage.setItem(DOCTOR_APPOINTMENTS_LAST_UPDATED_KEY, new Date().toISOString());
+     console.log('Doctor appointments stored in local storage:', appointments);
+   } catch (error) {
+     console.error('Error storing doctor appointments in local storage:', error);
+   }
+}
+
+ /**
+  * Retrieve doctor appointments from local storage
+  * @returns Array of doctor appointments or empty array if not found
+  */
+ getDoctorAppointments(): any[] {
+   try {
+     const appointmentsData = localStorage.getItem(DOCTOR_APPOINTMENTS_KEY);
+     if (appointmentsData) {
+       const appointments: any[] = JSON.parse(appointmentsData);
+       console.log('Doctor appointments retrieved from local storage:', appointments);
+       return appointments;
+     }
+     return [];
+   } catch (error) {
+     console.error('Error retrieving doctor appointments from local storage:', error);
+     return [];
+   }
+ }
+ 
+ /**
+  * Get the last updated timestamp for doctor appointments
+  * @returns Date object representing last updated time or null if not found
+  */
+ getDoctorAppointmentsLastUpdated(): Date | null {
+   try {
+     const lastUpdatedString = localStorage.getItem(DOCTOR_APPOINTMENTS_LAST_UPDATED_KEY);
+     if (lastUpdatedString) {
+       return new Date(lastUpdatedString);
+     }
+     return null;
+   } catch (error) {
+     console.error('Error retrieving doctor appointments last updated time:', error);
+     return null;
+   }
+ }
+ 
+ /**
+  * Check if doctor appointments need to be refreshed (older than 1 hour)
+  * @returns Boolean indicating if refresh is needed
+  */
+ shouldRefreshAppointments(): boolean {
+   const lastUpdated = this.getDoctorAppointmentsLastUpdated();
+   if (!lastUpdated) {
+     return true; // If no last updated time, refresh is needed
+   }
+   
+   const now = new Date();
+   const timeDiffInMs = now.getTime() - lastUpdated.getTime();
+   const timeDiffInMinutes = timeDiffInMs / (1000 * 60);
+   
+   return timeDiffInMinutes > 60; // Refresh if older than 1 hour
+ }
+ 
+ /**
+  * Clear doctor appointments from local storage
+  */
+ clearDoctorAppointments(): void {
+   try {
+     localStorage.removeItem(DOCTOR_APPOINTMENTS_KEY);
+     localStorage.removeItem(DOCTOR_APPOINTMENTS_LAST_UPDATED_KEY);
+     console.log('Doctor appointments cleared from local storage');
+   } catch (error) {
+     console.error('Error clearing doctor appointments from local storage:', error);
+   }
  }
 }
 
