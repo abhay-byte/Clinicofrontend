@@ -28,6 +28,25 @@ export function DashboardLayout({ children, onNavigate, currentPage = "dashboard
   const doctorProfile = doctorStorageService.getDoctorProfile();
   const doctorName = doctorProfile?.full_name || 'Doctor';
   const doctorSpecialty = doctorProfile?.specialty || 'Specialist';
+  
+  // Get appointment data for dynamic counts
+  const appointments = doctorStorageService.getDoctorAppointments();
+  const dashboardStats = doctorStorageService.getDoctorDashboardStats();
+  
+  // Calculate appointment counts
+  const todayAppointmentsCount = doctorProfile?.today_appointments ||
+                                (dashboardStats ? dashboardStats.appointments_today_count : 0) ||
+                                appointments.filter((apt: any) => {
+                                  const today = new Date();
+                                  const aptDate = new Date(apt.appointment_time);
+                                  return aptDate.toDateString() === today.toDateString() &&
+                                         apt.status === 'Scheduled';
+                                }).length;
+  
+  // Calculate message counts based on appointments that allow messaging
+  const messageCount = appointments.filter((apt: any) => {
+    return apt.status === 'Scheduled' || apt.status === 'Completed';
+  }).length;
 
   const handleNavigation = (path: string) => {
     onNavigate(path);
@@ -116,7 +135,7 @@ export function DashboardLayout({ children, onNavigate, currentPage = "dashboard
                 <path d={topBarSvgPaths.p4aa2980} stroke="white" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.66667" />
               </svg>
               <span className="absolute -top-1 -right-1 h-5 w-5 bg-orange-500 rounded-full flex items-center justify-center text-xs text-white" style={{ fontSize: '10px' }}>
-                6
+                {dashboardStats?.pending_reports_count || 0}
               </span>
             </Button>
             
@@ -127,7 +146,7 @@ export function DashboardLayout({ children, onNavigate, currentPage = "dashboard
                 <path d={topBarSvgPaths.pb1ea600} stroke="white" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.66667" />
               </svg>
               <span className="absolute -top-1 -right-1 h-5 w-5 bg-blue-500 rounded-full flex items-center justify-center text-xs text-white" style={{ fontSize: '10px' }}>
-                2
+                {messageCount}
               </span>
             </Button>
             
@@ -178,11 +197,11 @@ export function DashboardLayout({ children, onNavigate, currentPage = "dashboard
                   active={currentPage === "dashboard"}
                   onClick={() => handleNavigation("/dashboard")}
                 />
-                <SidebarItem 
-                  icon={<ScheduleIcon />} 
-                  label="My Schedule" 
+                <SidebarItem
+                  icon={<ScheduleIcon />}
+                  label="My Schedule"
                   active={currentPage === "schedule"}
-                  badge="3"
+                  badge={todayAppointmentsCount.toString()}
                   onClick={() => handleNavigation("/schedule")}
                 />
                 <SidebarItem 
@@ -197,11 +216,11 @@ export function DashboardLayout({ children, onNavigate, currentPage = "dashboard
                   active={currentPage === "patients" || currentPage === "patient-details"}
                   onClick={() => handleNavigation("/patients")}
                 />
-                <SidebarItem 
-                  icon={<Mail className="h-4 w-4" />} 
-                  label="Messages" 
+                <SidebarItem
+                  icon={<Mail className="h-4 w-4" />}
+                  label="Messages"
                   active={currentPage === "messages"}
-                  badge="5"
+                  badge={messageCount.toString()}
                   onClick={() => handleNavigation("/messages")}
                 />
                 <SidebarItem 
